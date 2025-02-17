@@ -1,0 +1,32 @@
+{
+  "name": "yocto/yoclib-dns",
+  "type": "library",
+  "description": "This yocLibrary enables your project to do DNS-specific operations.",
+  "keywords":[
+    "composer",
+    "dns",
+    "php",
+    "yocto",
+    "yoclib"
+  ],
+  "license": "GPL-3.0-or-later",
+  "require": {
+    "php": "^7.1||^8"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9"
+  },
+  "autoload": {
+    "psr-4": {
+      "YOCLIB\\DNS\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "YOCLIB\\DNS\\Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "test": "phpunit --coverage-clover coverage.xml ."
+  }
+}
