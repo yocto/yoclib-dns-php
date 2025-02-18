@@ -7,10 +7,16 @@ class UnsignedInteger8 implements Field{
 
     private string $value;
 
+    /**
+     * @return string
+     */
     public function serializeToPresentationFormat(): string{
         return ''.ord($this->value);
     }
 
+    /**
+     * @return string
+     */
     public function serializeToWireFormat(): string{
        return $this->value;
     }

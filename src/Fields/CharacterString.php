@@ -7,20 +7,30 @@ class CharacterString implements Field{
 
     private string $value;
 
+    /**
+     * @return string
+     */
     public function serializeToPresentationFormat(): string{
         $escapedValue = $this->value;
         $escapedValue = str_replace("\\","\\\\",$escapedValue);
-        if(strpos($this->value,' ')!==false || strpos($this->value,'"')){
+        if(strpos($this->value,' ')!==false || strpos($this->value,'"')!==false){
             $escapedValue = str_replace("\"","\\\"",$escapedValue);
             return '"'.$escapedValue.'"';
         }
         return $escapedValue;
     }
 
+    /**
+     * @return string
+     */
     public function serializeToWireFormat(): string{
         return chr(strlen($this->value)).$this->value;
     }
 
+    /**
+     * @param string $data
+     * @return CharacterString
+     */
     public static function deserializeFromPresentationFormat(string $data): CharacterString{
         $isQuoted = ($data[0] ?? null)==='"';
         $obj = new self;

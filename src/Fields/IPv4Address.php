@@ -23,7 +23,7 @@ class IPv4Address implements Field{
 
     /**
      * @param string $data
-     * @return Field
+     * @return IPv4Address
      * @throws DNSConverterException
      */
     public static function deserializeFromPresentationFormat(string $data): IPv4Address{
@@ -37,7 +37,7 @@ class IPv4Address implements Field{
 
     /**
      * @param string $data
-     * @return Field
+     * @return IPv4Address
      * @throws DNSConverterException
      */
     public static function deserializeFromWireFormat(string $data): IPv4Address{

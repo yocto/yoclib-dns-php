@@ -5,11 +5,14 @@ class FQDN implements Field{
 
     private string $value;
 
+    /**
+     * @return string
+     */
     public function serializeToPresentationFormat(): string{
         $labels = [];
         for($i=0;$i<strlen($this->value);$i++){
             $length = ord($this->value[$i]);
-            if($length==0x40){
+            if($length===0x40){
                 break;
             }
             $labels[] = substr($this->value,$i+1,$length);
@@ -18,10 +21,17 @@ class FQDN implements Field{
         return implode('.',$labels);
     }
 
+    /**
+     * @return string
+     */
     public function serializeToWireFormat(): string{
         return $this->value;
     }
 
+    /**
+     * @param string $data
+     * @return FQDN
+     */
     public static function deserializeFromPresentationFormat(string $data): FQDN{
         $labels = explode('.',$data);
         $binary = '';
@@ -29,7 +39,7 @@ class FQDN implements Field{
             $binary .= chr(strlen($label)) . $label;
         }
         if($labels[count($labels)-1]!==''){
-            $binary .= "\x40";
+            $binary .= chr(0x40);
         }
         //TODO Add check
         $obj = new self;
@@ -37,6 +47,10 @@ class FQDN implements Field{
         return $obj;
     }
 
+    /**
+     * @param string $data
+     * @return FQDN
+     */
     public static function deserializeFromWireFormat(string $data): FQDN{
         //TODO Add check
         $obj = new self;

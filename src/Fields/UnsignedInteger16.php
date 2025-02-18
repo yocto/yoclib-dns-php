@@ -7,10 +7,16 @@ class UnsignedInteger16 implements Field{
 
     private string $value;
 
+    /**
+     * @return string
+     */
     public function serializeToPresentationFormat(): string{
         return ''.unpack('n',$this->value)[1];
     }
 
+    /**
+     * @return string
+     */
     public function serializeToWireFormat(): string{
        return $this->value;
     }

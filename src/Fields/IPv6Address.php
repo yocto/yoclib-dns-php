@@ -23,7 +23,7 @@ class IPv6Address implements Field{
 
     /**
      * @param string $data
-     * @return Field
+     * @return IPv6Address
      * @throws DNSConverterException
      */
     public static function deserializeFromPresentationFormat(string $data): IPv6Address{
@@ -37,7 +37,7 @@ class IPv6Address implements Field{
 
     /**
      * @param string $data
-     * @return Field
+     * @return IPv6Address
      * @throws DNSConverterException
      */
     public static function deserializeFromWireFormat(string $data): IPv6Address{
