@@ -17,6 +17,20 @@ class FieldsTest extends TestCase{
      * @return void
      * @throws DNSFieldException
      */
+    public function testGetValue(): void{
+        self::assertEquals('1.2.3.4',(new IPv4Address('1.2.3.4'))->getValue());
+        self::assertEquals('::',(new IPv6Address('::'))->getValue());
+        self::assertEquals('This is text',(new CharacterString('This is text'))->getValue());
+        self::assertEquals(123,(new UnsignedInteger8(123))->getValue());
+        self::assertEquals(1234,(new UnsignedInteger16(1234))->getValue());
+        self::assertEquals('example.com',(new FQDN('example.com'))->getValue());
+        self::assertEquals('example.com.',(new FQDN('example.com.'))->getValue());
+    }
+
+    /**
+     * @return void
+     * @throws DNSFieldException
+     */
     public function testAll(){
         self::assertEquals("\x01\x02\x03\x04",IPv4Address::deserializeFromPresentationFormat('1.2.3.4')->serializeToWireFormat());
         self::assertEquals("1.2.3.4",IPv4Address::deserializeFromWireFormat("\x01\x02\x03\x04")->serializeToPresentationFormat());
