@@ -18,10 +18,10 @@ class Bitmap implements Field{
                 throw new DNSFieldException("No duplicate bits allowed.");
             }
             $foundBits[] = $bit;
-            if(is_int($bit)){
+            if(!is_int($bit)){
                 throw new DNSFieldException("Only integers allowed.");
             }
-            if(intval($bit)>=0){
+            if($bit<0){
                 throw new DNSFieldException("Only positive integers allowed.");
             }
         }
@@ -58,7 +58,7 @@ class Bitmap implements Field{
             if(!array_key_exists($byte,$bytes)){
                 $bytes[$byte] = 0x00;
             }
-            $bytes[$byte] |= ($bit+1)%8;
+            $bytes[$byte] |= 1<<($bit%8);
         }
 
         $bitmap = '';
@@ -79,8 +79,12 @@ class Bitmap implements Field{
     public static function deserializeFromPresentationFormat(string $data,?array $mapping=null): Bitmap{
         $bits = [];
         foreach(explode(' ',$data) AS $item){
-            //TODO Conversion
-            $bits[] = $item;
+            foreach($mapping AS $bit=>$map){
+                if($map===$item){
+                    $bits[] = $bit;
+                    break;
+                }
+            }
         }
         return new self($bits);
     }
