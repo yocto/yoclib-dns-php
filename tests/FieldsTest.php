@@ -3,7 +3,7 @@ namespace YOCLIB\DNS\Tests;
 
 use PHPUnit\Framework\TestCase;
 
-use YOCLIB\DNS\Exceptions\DNSConverterException;
+use YOCLIB\DNS\Exceptions\DNSFieldException;
 use YOCLIB\DNS\Fields\CharacterString;
 use YOCLIB\DNS\Fields\FQDN;
 use YOCLIB\DNS\Fields\IPv4Address;
@@ -15,7 +15,7 @@ class FieldsTest extends TestCase{
 
     /**
      * @return void
-     * @throws DNSConverterException
+     * @throws DNSFieldException
      */
     public function testAll(){
         self::assertEquals("\x01\x02\x03\x04",IPv4Address::deserializeFromPresentationFormat('1.2.3.4')->serializeToWireFormat());

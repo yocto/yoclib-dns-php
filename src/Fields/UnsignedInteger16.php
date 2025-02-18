@@ -1,53 +1,66 @@
 <?php
 namespace YOCLIB\DNS\Fields;
 
-use YOCLIB\DNS\Exceptions\DNSConverterException;
+use YOCLIB\DNS\Exceptions\DNSFieldException;
 
 class UnsignedInteger16 implements Field{
 
-    private string $value;
+    private int $value;
+
+    /**
+     * @param int $value
+     * @throws DNSFieldException
+     */
+    public function __construct(int $value){
+        if($value<0 || $value>65535){
+            throw new DNSFieldException("Human readable UInt16 should be in the range of 0 and 65535.");
+        }
+        $this->value = $value;
+    }
+
+    /**
+     * @return int
+     */
+    public function getValue(): int{
+        return $this->value;
+    }
 
     /**
      * @return string
      */
     public function serializeToPresentationFormat(): string{
-        return ''.unpack('n',$this->value)[1];
+        return strval($this->value);
     }
 
     /**
      * @return string
      */
     public function serializeToWireFormat(): string{
-       return $this->value;
+        return pack('n',$this->value);
     }
 
     /**
      * @param string $data
      * @return UnsignedInteger16
-     * @throws DNSConverterException
+     * @throws DNSFieldException
      */
     public static function deserializeFromPresentationFormat(string $data): UnsignedInteger16{
-        $integer = intval($data);
-        if($integer<0 || $integer>65535){
-            throw new DNSConverterException("Human readable UInt16 should be in the range of 0 and 65535.");
+        if(!preg_match('/\d+/',$data)){
+            throw new DNSFieldException("Human readable UInt16 should only contain digits.");
         }
-        $obj = new self;
-        $obj->value = pack('n',$integer);
-        return $obj;
+        return new self(intval($data));
     }
 
     /**
      * @param string $data
      * @return UnsignedInteger16
-     * @throws DNSConverterException
+     * @throws DNSFieldException
      */
     public static function deserializeFromWireFormat(string $data): UnsignedInteger16{
         if(strlen($data)!==2){
-            throw new DNSConverterException("Binary UInt16 should be 1 octet.");
+            throw new DNSFieldException("Binary UInt16 should be 1 octet.");
         }
-        $obj = new self;
-        $obj->value = $data;
-        return $obj;
+        return new self(unpack('n',$data)[1]);
     }
 
 }

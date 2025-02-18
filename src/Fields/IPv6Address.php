@@ -1,52 +1,60 @@
 <?php
 namespace YOCLIB\DNS\Fields;
 
-use YOCLIB\DNS\Exceptions\DNSConverterException;
+use YOCLIB\DNS\Exceptions\DNSFieldException;
 
 class IPv6Address implements Field{
 
     private string $value;
 
     /**
+     * @param string $value
+     * @throws DNSFieldException
+     */
+    public function __construct(string $value){
+        if(!filter_var($value,FILTER_VALIDATE_IP,FILTER_FLAG_IPV6)){
+            throw new DNSFieldException("Human readable IPv6 address isn't valid.");
+        }
+        $this->value = $value;
+    }
+
+    public function getValue(): string{
+        return $this->value;
+    }
+
+    /**
      * @return string
      */
     public function serializeToPresentationFormat(): string{
-        return inet_ntop($this->value);
+        return $this->value;
     }
 
     /**
      * @return string
      */
     public function serializeToWireFormat(): string{
-        return $this->value;
+        return inet_pton($this->value);
     }
 
     /**
      * @param string $data
      * @return IPv6Address
-     * @throws DNSConverterException
+     * @throws DNSFieldException
      */
     public static function deserializeFromPresentationFormat(string $data): IPv6Address{
-        if(!filter_var($data,FILTER_VALIDATE_IP,FILTER_FLAG_IPV6)){
-            throw new DNSConverterException("Human readable IPv6 address isn't valid.");
-        }
-        $obj = new self;
-        $obj->value = inet_pton($data);
-        return $obj;
+        return new self($data);
     }
 
     /**
      * @param string $data
      * @return IPv6Address
-     * @throws DNSConverterException
+     * @throws DNSFieldException
      */
     public static function deserializeFromWireFormat(string $data): IPv6Address{
         if(strlen($data)!==16){
-            throw new DNSConverterException("Binary IPv6 address should be 16 octets.");
+            throw new DNSFieldException("Binary IPv6 address should be 16 octets.");
         }
-        $obj = new self;
-        $obj->value = $data;
-        return $obj;
+        return new self(inet_ntop($data));
     }
 
 }

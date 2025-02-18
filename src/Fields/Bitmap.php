@@ -1,9 +1,40 @@
 <?php
 namespace YOCLIB\DNS\Fields;
 
+use YOCLIB\DNS\Exceptions\DNSFieldException;
+
 class Bitmap implements Field{
 
-    private string $value;
+    private array $value;
+
+    /**
+     * @param array|int[] $value
+     * @throws DNSFieldException
+     */
+    public function __construct(array $value){
+        $foundBits = [];
+        foreach($value AS $bit){
+            if(in_array($bit,$foundBits)){
+                throw new DNSFieldException("No duplicate bits allowed.");
+            }
+            $foundBits[] = $bit;
+            if(is_int($bit)){
+                throw new DNSFieldException("Only integers allowed.");
+            }
+            if(intval($bit)>=0){
+                throw new DNSFieldException("Only positive integers allowed.");
+            }
+        }
+        $this->value = $value;
+        sort($this->value);
+    }
+
+    /**
+     * @return array|int[]
+     */
+    public function getValue(): array{
+        return $this->value;
+    }
 
     /**
      * @param ?array|null $mapping
@@ -11,7 +42,9 @@ class Bitmap implements Field{
      */
     public function serializeToPresentationFormat(?array $mapping=null): string{
         $items = [];
-        //TODO Implement
+        foreach($this->value AS $bit){
+            $items[] = $mapping[$bit] ?? strval($bit);
+        }
         return implode(' ',$items);
     }
 
@@ -19,28 +52,57 @@ class Bitmap implements Field{
      * @return string
      */
     public function serializeToWireFormat(): string{
-        return $this->value;
+        $bytes = [];
+        foreach($this->value AS $bit){
+            $byte = intval($bit/8);
+            if(!array_key_exists($byte,$bytes)){
+                $bytes[$byte] = 0x00;
+            }
+            $bytes[$byte] |= ($bit+1)%8;
+        }
+
+        $bitmap = '';
+        if(count($bytes)){
+            for($i=0;$i<max(array_keys($bytes))+1;$i++){
+                $bitmap[$i] = chr(0x00 | ($bytes[$i] ?? 0x00));
+            }
+        }
+        return $bitmap;
     }
 
     /**
      * @param string $data
      * @param ?array|null $mapping
      * @return Bitmap
+     * @throws DNSFieldException
      */
     public static function deserializeFromPresentationFormat(string $data,?array $mapping=null): Bitmap{
-        $obj = new self;
-        //TODO Implement
-        return $obj;
+        $bits = [];
+        foreach(explode(' ',$data) AS $item){
+            //TODO Conversion
+            $bits[] = $item;
+        }
+        return new self($bits);
     }
 
     /**
      * @param string $data
      * @return Bitmap
+     * @throws DNSFieldException
      */
     public static function deserializeFromWireFormat(string $data): Bitmap{
-        $obj = new self;
-        $obj->value = $data;
-        return $obj;
+        $bytes = str_split($data);
+        $bits = [];
+        for($i=0;$i<count($bytes);$i++){
+            $octet = ord($bytes[$i]);
+            for($j=0;$j<8;$j++){
+                $bit = ($octet>>$j) & 0b1;
+                if($bit){
+                    $bits[] = $i*8 + $j;
+                }
+            }
+        }
+        return new self($bits);
     }
 
 }

@@ -3,6 +3,6 @@ namespace YOCLIB\DNS\Exceptions;
 
 use Exception;
 
-class DNSConverterException extends Exception{
+class DNSFieldException extends Exception{
 
 }

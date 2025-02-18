@@ -1,7 +1,11 @@
 <?php
 namespace YOCLIB\DNS\Fields;
 
+use Serializable;
+
 interface Field{
+
+    public function getValue(): mixed;
 
     public function serializeToPresentationFormat(): string;
 

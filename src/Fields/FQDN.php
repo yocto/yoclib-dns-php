@@ -5,6 +5,14 @@ class FQDN implements Field{
 
     private string $value;
 
+    public function __construct(mixed $value){
+        $this->value = $value;
+    }
+
+    public function getValue(): mixed{
+        return $this->value;
+    }
+
     /**
      * @return string
      */
@@ -42,9 +50,7 @@ class FQDN implements Field{
             $binary .= chr(0x40);
         }
         //TODO Add check
-        $obj = new self;
-        $obj->value = $binary;
-        return $obj;
+        return new self($binary);
     }
 
     /**
@@ -53,9 +59,7 @@ class FQDN implements Field{
      */
     public static function deserializeFromWireFormat(string $data): FQDN{
         //TODO Add check
-        $obj = new self;
-        $obj->value = $data;
-        return $obj;
+        return new self($data);
     }
 
 }
