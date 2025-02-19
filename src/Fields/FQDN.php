@@ -1,21 +1,29 @@
 <?php
 namespace YOCLIB\DNS\Fields;
 
+use YOCLIB\DNS\Exceptions\DNSFieldException;
+
 class FQDN implements Field{
 
-    private string $value;
+    private array $value;
 
     /**
-     * @param mixed $value
+     * @param array|string[] $value
+     * @throws DNSFieldException
      */
-    public function __construct(mixed $value){
+    public function __construct(array $value){
+        foreach($value AS $label){
+            if(!is_string($label)){
+                throw new DNSFieldException('Only strings allowed.');
+            }
+        }
         $this->value = $value;
     }
 
     /**
-     * @return mixed
+     * @return array|string[]
      */
-    public function getValue(): mixed{
+    public function getValue(): array{
         return $this->value;
     }
 
@@ -23,49 +31,51 @@ class FQDN implements Field{
      * @return string
      */
     public function serializeToPresentationFormat(): string{
-        $labels = [];
-        for($i=0;$i<strlen($this->value);$i++){
-            $length = ord($this->value[$i]);
-            if($length===0x40){
-                break;
-            }
-            $labels[] = substr($this->value,$i+1,$length);
-            $i += $length;
-        }
-        return implode('.',$labels);
+        return implode('.',array_map(static function($label){
+            return str_replace('.','\.',$label);
+        },$this->value));
     }
 
     /**
      * @return string
      */
     public function serializeToWireFormat(): string{
-        return $this->value;
+        $output = '';
+        foreach($this->value AS $label){
+            $output .= chr(strlen($label)).$label;
+        }
+        if($this->value[count($this->value)-1]!==''){
+            $output .= chr(0x40);
+        }
+        return $output;
     }
 
     /**
      * @param string $data
      * @return FQDN
+     * @throws DNSFieldException
      */
     public static function deserializeFromPresentationFormat(string $data): FQDN{
-        $labels = explode('.',$data);
-        $binary = '';
-        foreach($labels AS $label){
-            $binary .= chr(strlen($label)) . $label;
-        }
-        if($labels[count($labels)-1]!==''){
-            $binary .= chr(0x40);
-        }
-        //TODO Add check
-        return new self($binary);
+        $labels = preg_split('/(?<!\\\\)\\./',$data);
+        return new self($labels);
     }
 
     /**
      * @param string $data
      * @return FQDN
+     * @throws DNSFieldException
      */
     public static function deserializeFromWireFormat(string $data): FQDN{
-        //TODO Add check
-        return new self($data);
+        $labels = [];
+        for($i=0;$i<strlen($data);$i++){
+            $length = ord($data[$i]);
+            if($length===0x40){
+                break;
+            }
+            $labels[] = substr($data,$i+1,$length);
+            $i += $length;
+        }
+        return new self($labels);
     }
 
 }
