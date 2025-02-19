@@ -2,6 +2,7 @@
 namespace YOCLIB\DNS\Types;
 
 use YOCLIB\DNS\Exceptions\DNSTypeException;
+use YOCLIB\DNS\Fields\Bitmap;
 use YOCLIB\DNS\Fields\Field;
 
 abstract class Type{
@@ -34,6 +35,14 @@ abstract class Type{
     public function serializeToPresentationFormat(): string{
         $output = [];
         foreach($this->fields as $field){
+            if($field instanceof Bitmap){
+                $mapping = null;
+                if(method_exists($this,'getMapping')){
+                    $mapping = $this->getMapping();
+                }
+                $output[] = $field->serializeToPresentationFormat($mapping);
+                continue;
+            }
             $output[] = $field->serializeToPresentationFormat();
         }
         return implode(' ',$output);
