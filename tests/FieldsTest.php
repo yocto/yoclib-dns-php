@@ -20,14 +20,68 @@ class FieldsTest extends TestCase{
      * @throws DNSFieldException
      */
     public function testGetValue(): void{
-        self::assertEquals([1,2,3,4,5,6],(new Bitmap([1,2,3,4,5,6]))->getValue());
-        self::assertEquals('This is text',(new CharacterString('This is text'))->getValue());
-        self::assertEquals(['example','com'],(new FQDN('example','com'))->getValue());
-        self::assertEquals(['example','com',''],(new FQDN('example','com',''))->getValue());
-        self::assertEquals('1.2.3.4',(new IPv4Address('1.2.3.4'))->getValue());
-        self::assertEquals('::',(new IPv6Address('::'))->getValue());
-        self::assertEquals(123,(new UnsignedInteger8(123))->getValue());
-        self::assertEquals(1234,(new UnsignedInteger16(1234))->getValue());
+        self::assertSame([1,2,3,4,5,6],(new Bitmap([1,2,3,4,5,6]))->getValue());
+        self::assertSame('This is text',(new CharacterString('This is text'))->getValue());
+        self::assertSame(['example','com'],(new FQDN('example','com'))->getValue());
+        self::assertSame(['example','com',''],(new FQDN('example','com',''))->getValue());
+        self::assertSame('1.2.3.4',(new IPv4Address('1.2.3.4'))->getValue());
+        self::assertSame('::',(new IPv6Address('::'))->getValue());
+        self::assertSame(123,(new UnsignedInteger8(123))->getValue());
+        self::assertSame(1234,(new UnsignedInteger16(1234))->getValue());
+        self::assertSame(12345678,(new UnsignedInteger32(12345678))->getValue());
+    }
+
+    /**
+     * @return void
+     * @throws DNSFieldException
+     */
+    public function testSerializeToPresentationFormat(): void{
+        self::assertSame('1 2 3 4 5 6',(new Bitmap([1,2,3,4,5,6]))->serializeToPresentationFormat());
+        self::assertSame('"This is text"',(new CharacterString('This is text'))->serializeToPresentationFormat());
+        self::assertSame("example.com",(new FQDN('example','com'))->serializeToPresentationFormat());
+        self::assertSame("example.com.",(new FQDN('example','com',''))->serializeToPresentationFormat());
+        self::assertSame('1.2.3.4',(new IPv4Address('1.2.3.4'))->serializeToPresentationFormat());
+        self::assertSame('::',(new IPv6Address('::'))->serializeToPresentationFormat());
+        self::assertSame('123',(new UnsignedInteger8(123))->serializeToPresentationFormat());
+        self::assertSame('1234',(new UnsignedInteger16(1234))->serializeToPresentationFormat());
+        self::assertSame('12345678',(new UnsignedInteger32(12345678))->serializeToPresentationFormat());
+    }
+
+    /**
+     * @return void
+     * @throws DNSFieldException
+     */
+    public function testSerializeToWireFormat(): void{
+        self::assertSame(chr(0b1111110),(new Bitmap([1,2,3,4,5,6]))->serializeToWireFormat());
+        self::assertSame("\x0CThis is text",(new CharacterString('This is text'))->serializeToWireFormat());
+        self::assertSame("\x07example\x03com\x40",(new FQDN('example','com'))->serializeToWireFormat());
+        self::assertSame("\x07example\x03com\x00",(new FQDN('example','com',''))->serializeToWireFormat());
+        self::assertSame("\x01\x02\x03\x04",(new IPv4Address('1.2.3.4'))->serializeToWireFormat());
+        self::assertSame("\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00",(new IPv6Address('::'))->serializeToWireFormat());
+        self::assertSame(chr(123),(new UnsignedInteger8(123))->serializeToWireFormat());
+        self::assertSame(pack('n',1234),(new UnsignedInteger16(1234))->serializeToWireFormat());
+        self::assertSame(pack('N',12345678),(new UnsignedInteger32(12345678))->serializeToWireFormat());
+    }
+
+    public function testBitmapDuplicateBits(){
+        self::expectException(DNSFieldException::class);
+        self::expectExceptionMessage('No duplicate bits allowed.');
+
+        new Bitmap([1,2,3,3,4,5,6]);
+    }
+
+    public function testBitmapNonIntegerBits(){
+        self::expectException(DNSFieldException::class);
+        self::expectExceptionMessage('Only integers allowed.');
+
+        new Bitmap([1,2,'3',4,5,6]);
+    }
+
+    public function testBitmapNegativeIntegers(){
+        self::expectException(DNSFieldException::class);
+        self::expectExceptionMessage('Only positive integers allowed.');
+
+        new Bitmap([1,2,-3,4,5,6]);
     }
 
     /**
