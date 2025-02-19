@@ -11,7 +11,7 @@ class FQDN implements Field{
      * @param array|string[] $value
      * @throws DNSFieldException
      */
-    public function __construct(array $value){
+    public function __construct(string... $value){
         foreach($value AS $label){
             if(!is_string($label)){
                 throw new DNSFieldException('Only strings allowed.');
@@ -57,7 +57,7 @@ class FQDN implements Field{
      */
     public static function deserializeFromPresentationFormat(string $data): FQDN{
         $labels = preg_split('/(?<!\\\\)\\./',$data);
-        return new self($labels);
+        return new self(...$labels);
     }
 
     /**
@@ -75,7 +75,7 @@ class FQDN implements Field{
             $labels[] = substr($data,$i+1,$length);
             $i += $length;
         }
-        return new self($labels);
+        return new self(...$labels);
     }
 
 }
