@@ -3,7 +3,7 @@ namespace YOCLIB\DNS\Fields;
 
 use YOCLIB\DNS\Exceptions\DNSFieldException;
 
-class UnsignedInteger16 implements Field{
+class UnsignedInteger32 implements Field{
 
     private int $value;
 
@@ -12,8 +12,8 @@ class UnsignedInteger16 implements Field{
      * @throws DNSFieldException
      */
     public function __construct(int $value){
-        if($value<0 || $value>65535){
-            throw new DNSFieldException('Human readable UInt16 should be in the range of 0 and 65535.');
+        if($value<0 || $value>4294967295){
+            throw new DNSFieldException('Human readable UInt32 should be in the range of 0 and 4294967295.');
         }
         $this->value = $value;
     }
@@ -36,31 +36,31 @@ class UnsignedInteger16 implements Field{
      * @return string
      */
     public function serializeToWireFormat(): string{
-        return pack('n',$this->value);
+        return pack('N',$this->value);
     }
 
     /**
      * @param string $data
-     * @return UnsignedInteger16
+     * @return UnsignedInteger32
      * @throws DNSFieldException
      */
-    public static function deserializeFromPresentationFormat(string $data): UnsignedInteger16{
+    public static function deserializeFromPresentationFormat(string $data): UnsignedInteger32{
         if(!preg_match('/\d+/',$data)){
-            throw new DNSFieldException('Human readable UInt16 should only contain digits.');
+            throw new DNSFieldException('Human readable UInt32 should only contain digits.');
         }
         return new self(intval($data));
     }
 
     /**
      * @param string $data
-     * @return UnsignedInteger16
+     * @return UnsignedInteger32
      * @throws DNSFieldException
      */
-    public static function deserializeFromWireFormat(string $data): UnsignedInteger16{
-        if(strlen($data)!==2){
-            throw new DNSFieldException('Binary UInt16 should be 2 octets.');
+    public static function deserializeFromWireFormat(string $data): UnsignedInteger32{
+        if(strlen($data)!==4){
+            throw new DNSFieldException('Binary UInt32 should be 4 octets.');
         }
-        return new self(unpack('n',$data)[1]);
+        return new self(unpack('N',$data)[1]);
     }
 
 }
