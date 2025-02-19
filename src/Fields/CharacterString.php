@@ -29,12 +29,12 @@ class CharacterString implements Field{
      */
     public function serializeToPresentationFormat(): string{
         $backslashEscapedValue = str_replace(self::BACKSLASH,self::BACKSLASH.self::BACKSLASH,$this->value);
+        $escapedValue = str_replace(self::QUOTE,self::BACKSLASH.self::QUOTE,$backslashEscapedValue);
         //TODO Check only spaces, or also other whitespaces
         if(str_contains($this->value,' ')){
-            $escapedValue = str_replace(self::QUOTE,self::BACKSLASH.self::QUOTE,$backslashEscapedValue);
             return self::QUOTE.($escapedValue).self::QUOTE;
         }
-        return $backslashEscapedValue;
+        return $escapedValue;
     }
 
     /**
@@ -56,7 +56,8 @@ class CharacterString implements Field{
             $backslashUnescapedValue = str_replace(self::BACKSLASH.self::BACKSLASH,self::BACKSLASH,$quoteUnescapedValue);
             return new self($backslashUnescapedValue);
         }
-        $backslashUnescapedValue = str_replace(self::BACKSLASH.self::BACKSLASH,self::BACKSLASH,$data);
+        $quoteUnescapedValue = str_replace(self::BACKSLASH.self::QUOTE,self::QUOTE,$data);
+        $backslashUnescapedValue = str_replace(self::BACKSLASH.self::BACKSLASH,self::BACKSLASH,$quoteUnescapedValue);
         return new self($backslashUnescapedValue);
     }
 

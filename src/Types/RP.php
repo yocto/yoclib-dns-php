@@ -5,7 +5,7 @@ use YOCLIB\DNS\Exceptions\DNSTypeException;
 use YOCLIB\DNS\Fields\Field;
 use YOCLIB\DNS\Fields\FQDN;
 
-class MINFO extends Type{
+class RP extends Type{
 
     /**
      * @param array|Field[] $fields

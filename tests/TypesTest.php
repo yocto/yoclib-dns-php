@@ -10,6 +10,7 @@ use YOCLIB\DNS\Fields\CharacterString;
 use YOCLIB\DNS\Fields\FQDN;
 use YOCLIB\DNS\Fields\IPv4Address;
 use YOCLIB\DNS\Fields\IPv6Address;
+use YOCLIB\DNS\Fields\UnsignedInteger16;
 use YOCLIB\DNS\Fields\UnsignedInteger32;
 use YOCLIB\DNS\Fields\UnsignedInteger8;
 use YOCLIB\DNS\Types\A;
@@ -17,8 +18,10 @@ use YOCLIB\DNS\Types\AAAA;
 use YOCLIB\DNS\Types\HINFO;
 use YOCLIB\DNS\Types\MD;
 use YOCLIB\DNS\Types\MINFO;
+use YOCLIB\DNS\Types\MX;
 use YOCLIB\DNS\Types\NS;
 use YOCLIB\DNS\Types\SOA;
+use YOCLIB\DNS\Types\TXT;
 use YOCLIB\DNS\Types\WKS;
 
 class TypesTest extends TestCase{
@@ -79,6 +82,30 @@ class TypesTest extends TestCase{
         ]);
         self::assertEquals('my\.dotted\.response\.mail\.address.example.com. my\.dotted\.error\.mail\.address.example.com.',$minfoRecord->serializeToPresentationFormat());
         self::assertEquals("\x1Fmy.dotted.response.mail.address\x07example\x03com\x00"."\x1Cmy.dotted.error.mail.address\x07example\x03com\x00",$minfoRecord->serializeToWireFormat());
+
+        $mxRecord = new MX([
+            new UnsignedInteger16('10'),
+            new FQDN('mx','example','com',''),
+        ]);
+        self::assertEquals('10 mx.example.com.',$mxRecord->serializeToPresentationFormat());
+        self::assertEquals("\x00\x0A"."\x02mx\x07example\x03com\x00",$mxRecord->serializeToWireFormat());
+
+        $txtRecord = new TXT([
+            new CharacterString('TEXT'),
+            new CharacterString('"TEXT"'),
+            new CharacterString('TEXT WITH SPACE'),
+            new CharacterString('TEXT WITH "QUOTE" AND SPACE'),
+            new CharacterString('TEXT WITH BACKSPACE (\\) AND SPACE'),
+        ]);
+        self::assertEquals('TEXT \"TEXT\" "TEXT WITH SPACE" "TEXT WITH \"QUOTE\" AND SPACE" "TEXT WITH BACKSPACE (\\\\) AND SPACE"',$txtRecord->serializeToPresentationFormat());
+        self::assertEquals("\x04TEXT"."\x06\"TEXT\""."\x0FTEXT WITH SPACE"."\x1BTEXT WITH \"QUOTE\" AND SPACE"."\x21TEXT WITH BACKSPACE (\\) AND SPACE",$txtRecord->serializeToWireFormat());
+
+        $rpRecord = new MINFO([
+            new FQDN('mailbox.domainname','example','com',''),
+            new FQDN('text.domainname','example','com',''),
+        ]);
+        self::assertEquals('mailbox\.domainname.example.com. text\.domainname.example.com.',$rpRecord->serializeToPresentationFormat());
+        self::assertEquals("\x12mailbox.domainname\x07example\x03com\x00"."\x0Ftext.domainname\x07example\x03com\x00",$rpRecord->serializeToWireFormat());
 
         $aaaaRecord = new AAAA([
             new IPv6Address('::'),
