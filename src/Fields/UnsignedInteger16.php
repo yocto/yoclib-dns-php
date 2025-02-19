@@ -13,7 +13,7 @@ class UnsignedInteger16 implements Field{
      */
     public function __construct(int $value){
         if($value<0 || $value>65535){
-            throw new DNSFieldException("Human readable UInt16 should be in the range of 0 and 65535.");
+            throw new DNSFieldException('Human readable UInt16 should be in the range of 0 and 65535.');
         }
         $this->value = $value;
     }
@@ -46,7 +46,7 @@ class UnsignedInteger16 implements Field{
      */
     public static function deserializeFromPresentationFormat(string $data): UnsignedInteger16{
         if(!preg_match('/\d+/',$data)){
-            throw new DNSFieldException("Human readable UInt16 should only contain digits.");
+            throw new DNSFieldException('Human readable UInt16 should only contain digits.');
         }
         return new self(intval($data));
     }
@@ -58,7 +58,7 @@ class UnsignedInteger16 implements Field{
      */
     public static function deserializeFromWireFormat(string $data): UnsignedInteger16{
         if(strlen($data)!==2){
-            throw new DNSFieldException("Binary UInt16 should be 1 octet.");
+            throw new DNSFieldException('Binary UInt16 should be 1 octet.');
         }
         return new self(unpack('n',$data)[1]);
     }

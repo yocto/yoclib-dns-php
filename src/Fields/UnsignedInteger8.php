@@ -13,7 +13,7 @@ class UnsignedInteger8 implements Field{
      */
     public function __construct(int $value){
         if($value<0 || $value>255){
-            throw new DNSFieldException("Human readable UInt8 should be in the range of 0 and 255.");
+            throw new DNSFieldException('Human readable UInt8 should be in the range of 0 and 255.');
         }
         $this->value = $value;
     }
@@ -46,7 +46,7 @@ class UnsignedInteger8 implements Field{
      */
     public static function deserializeFromPresentationFormat(string $data): UnsignedInteger8{
         if(!preg_match('/\d+/',$data)){
-            throw new DNSFieldException("Human readable UInt8 should only contain digits.");
+            throw new DNSFieldException('Human readable UInt8 should only contain digits.');
         }
         return new self(intval($data));
     }
@@ -58,7 +58,7 @@ class UnsignedInteger8 implements Field{
      */
     public static function deserializeFromWireFormat(string $data): UnsignedInteger8{
         if(strlen($data)!==1){
-            throw new DNSFieldException("Binary UInt8 should be 1 octet.");
+            throw new DNSFieldException('Binary UInt8 should be 1 octet.');
         }
         return new self(ord($data));
     }

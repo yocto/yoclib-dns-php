@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit
-        bootstrap="vendor/autoload.php"
-        cacheResult="false"
-        failOnRisky="true"
-        failOnWarning="true"
-        verbose="true">
+	bootstrap="vendor/autoload.php"
+	cacheResult="false"
+	failOnRisky="true"
+	failOnWarning="true"
+	verbose="true">
 
-    <coverage>
-        <include>
-            <directory suffix=".php">src</directory>
-        </include>
-    </coverage>
+	<coverage>
+		<include>
+			<directory suffix=".php">src</directory>
+		</include>
+	</coverage>
 
-    <testsuites>
-        <testsuite name="default">
-            <directory>tests</directory>
-        </testsuite>
-    </testsuites>
+	<testsuites>
+		<testsuite name="default">
+			<directory>tests</directory>
+		</testsuite>
+	</testsuites>
 
 </phpunit>

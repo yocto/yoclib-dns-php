@@ -15,14 +15,14 @@ class Bitmap implements Field{
         $foundBits = [];
         foreach($value AS $bit){
             if(in_array($bit,$foundBits)){
-                throw new DNSFieldException("No duplicate bits allowed.");
+                throw new DNSFieldException('No duplicate bits allowed.');
             }
             $foundBits[] = $bit;
             if(!is_int($bit)){
-                throw new DNSFieldException("Only integers allowed.");
+                throw new DNSFieldException('Only integers allowed.');
             }
             if($bit<0){
-                throw new DNSFieldException("Only positive integers allowed.");
+                throw new DNSFieldException('Only positive integers allowed.');
             }
         }
         $this->value = $value;

@@ -5,13 +5,14 @@
   "keywords":[
     "composer",
     "dns",
+    "dnssec",
     "php",
     "yocto",
     "yoclib"
   ],
   "license": "GPL-3.0-or-later",
   "require": {
-    "php": "^7.1||^8"
+    "php": "^8"
   },
   "require-dev": {
     "phpunit/phpunit": "^9"

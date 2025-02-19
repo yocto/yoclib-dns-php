@@ -13,7 +13,7 @@ class IPv4Address implements Field{
      */
     public function __construct(string $value){
         if(!filter_var($value,FILTER_VALIDATE_IP,FILTER_FLAG_IPV4)){
-            throw new DNSFieldException("Human readable IPv4 address should have 4 unsigned integers ranging from 0 to 255, all seperated by dot.");
+            throw new DNSFieldException('Human readable IPv4 address should have 4 unsigned integers ranging from 0 to 255, all seperated by dot.');
         }
         $this->value = $value;
     }
@@ -55,7 +55,7 @@ class IPv4Address implements Field{
      */
     public static function deserializeFromWireFormat(string $data): IPv4Address{
         if(strlen($data)!==4){
-            throw new DNSFieldException("Binary IPv4 address should be 4 octets.");
+            throw new DNSFieldException('Binary IPv4 address should be 4 octets.');
         }
         return new self(inet_ntop($data));
     }

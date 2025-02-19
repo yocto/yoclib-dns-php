@@ -67,11 +67,11 @@ class CharacterString implements Field{
      */
     public static function deserializeFromWireFormat(string $data): CharacterString{
         if(strlen($data)<=0){
-            throw new DNSFieldException("A character string should have at least one octet of data to indicate the length.");
+            throw new DNSFieldException('A character string should have at least one octet of data to indicate the length.');
         }
         $length = ord($data[0]);
         if(strlen($data)<1+$length){
-            throw new DNSFieldException("A character string length is higher than the available bytes.");
+            throw new DNSFieldException('A character string length is higher than the available bytes.');
         }
         return new self(substr($data,1,$length));
     }

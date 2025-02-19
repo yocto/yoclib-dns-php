@@ -13,7 +13,7 @@ class IPv6Address implements Field{
      */
     public function __construct(string $value){
         if(!filter_var($value,FILTER_VALIDATE_IP,FILTER_FLAG_IPV6)){
-            throw new DNSFieldException("Human readable IPv6 address isn't valid.");
+            throw new DNSFieldException('Human readable IPv6 address isn\'t valid.');
         }
         $this->value = $value;
     }
