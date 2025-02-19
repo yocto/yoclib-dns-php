@@ -15,14 +15,17 @@ use YOCLIB\DNS\Fields\UnsignedInteger32;
 use YOCLIB\DNS\Fields\UnsignedInteger8;
 use YOCLIB\DNS\Types\A;
 use YOCLIB\DNS\Types\AAAA;
+use YOCLIB\DNS\Types\AFSDB;
 use YOCLIB\DNS\Types\HINFO;
 use YOCLIB\DNS\Types\MD;
 use YOCLIB\DNS\Types\MINFO;
 use YOCLIB\DNS\Types\MX;
 use YOCLIB\DNS\Types\NS;
+use YOCLIB\DNS\Types\RP;
 use YOCLIB\DNS\Types\SOA;
 use YOCLIB\DNS\Types\TXT;
 use YOCLIB\DNS\Types\WKS;
+use YOCLIB\DNS\Types\X25;
 
 class TypesTest extends TestCase{
 
@@ -84,7 +87,7 @@ class TypesTest extends TestCase{
         self::assertEquals("\x1Fmy.dotted.response.mail.address\x07example\x03com\x00"."\x1Cmy.dotted.error.mail.address\x07example\x03com\x00",$minfoRecord->serializeToWireFormat());
 
         $mxRecord = new MX([
-            new UnsignedInteger16('10'),
+            new UnsignedInteger16(10),
             new FQDN('mx','example','com',''),
         ]);
         self::assertEquals('10 mx.example.com.',$mxRecord->serializeToPresentationFormat());
@@ -100,12 +103,25 @@ class TypesTest extends TestCase{
         self::assertEquals('TEXT \"TEXT\" "TEXT WITH SPACE" "TEXT WITH \"QUOTE\" AND SPACE" "TEXT WITH BACKSPACE (\\\\) AND SPACE"',$txtRecord->serializeToPresentationFormat());
         self::assertEquals("\x04TEXT"."\x06\"TEXT\""."\x0FTEXT WITH SPACE"."\x1BTEXT WITH \"QUOTE\" AND SPACE"."\x21TEXT WITH BACKSPACE (\\) AND SPACE",$txtRecord->serializeToWireFormat());
 
-        $rpRecord = new MINFO([
+        $rpRecord = new RP([
             new FQDN('mailbox.domainname','example','com',''),
             new FQDN('text.domainname','example','com',''),
         ]);
         self::assertEquals('mailbox\.domainname.example.com. text\.domainname.example.com.',$rpRecord->serializeToPresentationFormat());
         self::assertEquals("\x12mailbox.domainname\x07example\x03com\x00"."\x0Ftext.domainname\x07example\x03com\x00",$rpRecord->serializeToWireFormat());
+
+        $afsdbRecord = new AFSDB([
+            new UnsignedInteger16(1),
+            new FQDN('afs','example','com',''),
+        ]);
+        self::assertEquals('1 afs.example.com.',$afsdbRecord->serializeToPresentationFormat());
+        self::assertEquals("\x00\x01"."\x03afs\x07example\x03com\x00",$afsdbRecord->serializeToWireFormat());
+
+        $x25Record = new X25([
+            new CharacterString('311061700956'),
+        ]);
+        self::assertEquals('311061700956',$x25Record->serializeToPresentationFormat());
+        self::assertEquals("\x0C311061700956",$x25Record->serializeToWireFormat());
 
         $aaaaRecord = new AAAA([
             new IPv6Address('::'),
