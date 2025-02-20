@@ -12,10 +12,15 @@ class FQDN implements Field{
      * @throws DNSFieldException
      */
     public function __construct(string... $value){
+        $totalLength = 0;
         foreach($value AS $label){
-            if(!is_string($label)){
-                throw new DNSFieldException('Only strings allowed.');
+            if(strlen($label)>=64){
+                throw new DNSFieldException('Label too long.');
             }
+            $totalLength += 1 + strlen($label);
+        }
+        if($totalLength>=256){
+            throw new DNSFieldException('Domain name too long.');
         }
         $this->value = $value;
     }

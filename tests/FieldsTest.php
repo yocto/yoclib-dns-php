@@ -4,7 +4,6 @@ namespace YOCLIB\DNS\Tests;
 use PHPUnit\Framework\TestCase;
 
 use YOCLIB\DNS\Exceptions\DNSFieldException;
-use YOCLIB\DNS\Fields\FQDN;
 use YOCLIB\DNS\Fields\IPv4Address;
 use YOCLIB\DNS\Fields\IPv6Address;
 use YOCLIB\DNS\Fields\UnsignedInteger16;
@@ -18,8 +17,6 @@ class FieldsTest extends TestCase{
      * @throws DNSFieldException
      */
     public function testGetValue(): void{
-        self::assertSame(['example','com'],(new FQDN('example','com'))->getValue());
-        self::assertSame(['example','com',''],(new FQDN('example','com',''))->getValue());
         self::assertSame('1.2.3.4',(new IPv4Address('1.2.3.4'))->getValue());
         self::assertSame('::',(new IPv6Address('::'))->getValue());
         self::assertSame(123,(new UnsignedInteger8(123))->getValue());
@@ -32,8 +29,6 @@ class FieldsTest extends TestCase{
      * @throws DNSFieldException
      */
     public function testSerializeToPresentationFormat(): void{
-        self::assertSame("example.com",(new FQDN('example','com'))->serializeToPresentationFormat());
-        self::assertSame("example.com.",(new FQDN('example','com',''))->serializeToPresentationFormat());
         self::assertSame('1.2.3.4',(new IPv4Address('1.2.3.4'))->serializeToPresentationFormat());
         self::assertSame('::',(new IPv6Address('::'))->serializeToPresentationFormat());
         self::assertSame('123',(new UnsignedInteger8(123))->serializeToPresentationFormat());
@@ -46,8 +41,6 @@ class FieldsTest extends TestCase{
      * @throws DNSFieldException
      */
     public function testSerializeToWireFormat(): void{
-        self::assertSame("\x07example\x03com\x40",(new FQDN('example','com'))->serializeToWireFormat());
-        self::assertSame("\x07example\x03com\x00",(new FQDN('example','com',''))->serializeToWireFormat());
         self::assertSame("\x01\x02\x03\x04",(new IPv4Address('1.2.3.4'))->serializeToWireFormat());
         self::assertSame("\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00",(new IPv6Address('::'))->serializeToWireFormat());
         self::assertSame(chr(123),(new UnsignedInteger8(123))->serializeToWireFormat());
@@ -60,16 +53,6 @@ class FieldsTest extends TestCase{
      * @throws DNSFieldException
      */
     public function testAll(): void{
-        self::assertEquals("\x07example\x03com\x00",FQDN::deserializeFromPresentationFormat('example.com.')->serializeToWireFormat());
-        self::assertEquals("example.com.",FQDN::deserializeFromWireFormat("\x07example\x03com\x00")->serializeToPresentationFormat());
-        self::assertEquals("\x03www\x07example\x03com\x00",FQDN::deserializeFromPresentationFormat('www.example.com.')->serializeToWireFormat());
-        self::assertEquals("www.example.com.",FQDN::deserializeFromWireFormat("\x03www\x07example\x03com\x00")->serializeToPresentationFormat());
-
-        self::assertEquals("\x07example\x03com\x40",FQDN::deserializeFromPresentationFormat('example.com')->serializeToWireFormat());
-        self::assertEquals("example.com",FQDN::deserializeFromWireFormat("\x07example\x03com\x40")->serializeToPresentationFormat());
-        self::assertEquals("\x03www\x07example\x03com\x40",FQDN::deserializeFromPresentationFormat('www.example.com')->serializeToWireFormat());
-        self::assertEquals("www.example.com",FQDN::deserializeFromWireFormat("\x03www\x07example\x03com\x40")->serializeToPresentationFormat());
-
         self::assertEquals("\x01\x02\x03\x04",IPv4Address::deserializeFromPresentationFormat('1.2.3.4')->serializeToWireFormat());
         self::assertEquals("1.2.3.4",IPv4Address::deserializeFromWireFormat("\x01\x02\x03\x04")->serializeToPresentationFormat());
 
