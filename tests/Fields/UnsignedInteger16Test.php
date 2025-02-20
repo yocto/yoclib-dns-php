@@ -89,6 +89,17 @@ class UnsignedInteger16Test extends TestCase{
      * @return void
      * @throws DNSFieldException
      */
+    public function testDeserializeFromPresentationFormatNoInteger(): void{
+        self::expectException(DNSFieldException::class);
+        self::expectExceptionMessage('Human readable UInt16 should only contain digits.');
+
+        UnsignedInteger16::deserializeFromPresentationFormat('abc');
+    }
+
+    /**
+     * @return void
+     * @throws DNSFieldException
+     */
     public function testDeserializeFromWireFormat(): void{
         self::assertSame(0,UnsignedInteger16::deserializeFromWireFormat("\x00\x00")->getValue());
         self::assertSame(32639,UnsignedInteger16::deserializeFromWireFormat("\x7F\x7F")->getValue());
