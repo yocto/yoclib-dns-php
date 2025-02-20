@@ -4,9 +4,7 @@ namespace YOCLIB\DNS\Types;
 use YOCLIB\DNS\Exceptions\DNSTypeException;
 use YOCLIB\DNS\Fields\Bitmap;
 use YOCLIB\DNS\Fields\Field;
-use YOCLIB\DNS\Fields\FQDN;
 use YOCLIB\DNS\Fields\IPv4Address;
-use YOCLIB\DNS\Fields\UnsignedInteger32;
 use YOCLIB\DNS\Fields\UnsignedInteger8;
 
 class WKS extends Type{

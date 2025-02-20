@@ -16,7 +16,7 @@ class CharacterString implements Field{
      */
     public function __construct(string $value){
         if(strlen($value)>255){
-            throw new DNSFieldException("Character string can have 255 characters at most.");
+            throw new DNSFieldException('Character string can have 255 characters at most.');
         }
         $this->value = $value;
     }
@@ -52,6 +52,7 @@ class CharacterString implements Field{
     /**
      * @param string $data
      * @return CharacterString
+     * @throws DNSFieldException
      */
     public static function deserializeFromPresentationFormat(string $data): CharacterString{
         $isQuoted = ($data[0] ?? null)===self::QUOTE;

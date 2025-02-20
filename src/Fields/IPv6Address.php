@@ -55,7 +55,7 @@ class IPv6Address implements Field{
      */
     public static function deserializeFromWireFormat(string $data): IPv6Address{
         if(strlen($data)!==16){
-            throw new DNSFieldException("Binary IPv6 address should be 16 octets.");
+            throw new DNSFieldException('Binary IPv6 address should be 16 octets.');
         }
         return new self(inet_ntop($data));
     }
