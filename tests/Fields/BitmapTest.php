@@ -13,9 +13,9 @@ class BitmapTest extends TestCase{
      * @throws DNSFieldException
      */
     public function testConstructor(): void{
-        self::assertInstanceOf(Bitmap::class,(new Bitmap([1,2,3,4])));
-        self::assertInstanceOf(Bitmap::class,(new Bitmap([1,2,3,4,5])));
-        self::assertInstanceOf(Bitmap::class,(new Bitmap([1,2,3,4,5,6])));
+        self::assertInstanceOf(Bitmap::class,new Bitmap([1,2,3,4]));
+        self::assertInstanceOf(Bitmap::class,new Bitmap([1,2,3,4,5]));
+        self::assertInstanceOf(Bitmap::class,new Bitmap([1,2,3,4,5,6]));
     }
 
     /**

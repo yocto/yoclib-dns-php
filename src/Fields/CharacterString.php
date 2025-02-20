@@ -12,8 +12,12 @@ class CharacterString implements Field{
 
     /**
      * @param string $value
+     * @throws DNSFieldException
      */
     public function __construct(string $value){
+        if(strlen($value)>255){
+            throw new DNSFieldException("Character string can have 255 characters at most.");
+        }
         $this->value = $value;
     }
 
@@ -31,7 +35,7 @@ class CharacterString implements Field{
         $backslashEscapedValue = str_replace(self::BACKSLASH,self::BACKSLASH.self::BACKSLASH,$this->value);
         $escapedValue = str_replace(self::QUOTE,self::BACKSLASH.self::QUOTE,$backslashEscapedValue);
         //TODO Check only spaces, or also other whitespaces
-        if(str_contains($this->value,' ')){
+        if($this->value==='' || str_contains($this->value,' ')){
             return self::QUOTE.($escapedValue).self::QUOTE;
         }
         return $escapedValue;

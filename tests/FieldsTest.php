@@ -4,7 +4,6 @@ namespace YOCLIB\DNS\Tests;
 use PHPUnit\Framework\TestCase;
 
 use YOCLIB\DNS\Exceptions\DNSFieldException;
-use YOCLIB\DNS\Fields\CharacterString;
 use YOCLIB\DNS\Fields\FQDN;
 use YOCLIB\DNS\Fields\IPv4Address;
 use YOCLIB\DNS\Fields\IPv6Address;
@@ -19,7 +18,6 @@ class FieldsTest extends TestCase{
      * @throws DNSFieldException
      */
     public function testGetValue(): void{
-        self::assertSame('This is text',(new CharacterString('This is text'))->getValue());
         self::assertSame(['example','com'],(new FQDN('example','com'))->getValue());
         self::assertSame(['example','com',''],(new FQDN('example','com',''))->getValue());
         self::assertSame('1.2.3.4',(new IPv4Address('1.2.3.4'))->getValue());
@@ -34,7 +32,6 @@ class FieldsTest extends TestCase{
      * @throws DNSFieldException
      */
     public function testSerializeToPresentationFormat(): void{
-        self::assertSame('"This is text"',(new CharacterString('This is text'))->serializeToPresentationFormat());
         self::assertSame("example.com",(new FQDN('example','com'))->serializeToPresentationFormat());
         self::assertSame("example.com.",(new FQDN('example','com',''))->serializeToPresentationFormat());
         self::assertSame('1.2.3.4',(new IPv4Address('1.2.3.4'))->serializeToPresentationFormat());
@@ -49,7 +46,6 @@ class FieldsTest extends TestCase{
      * @throws DNSFieldException
      */
     public function testSerializeToWireFormat(): void{
-        self::assertSame("\x0CThis is text",(new CharacterString('This is text'))->serializeToWireFormat());
         self::assertSame("\x07example\x03com\x40",(new FQDN('example','com'))->serializeToWireFormat());
         self::assertSame("\x07example\x03com\x00",(new FQDN('example','com',''))->serializeToWireFormat());
         self::assertSame("\x01\x02\x03\x04",(new IPv4Address('1.2.3.4'))->serializeToWireFormat());
@@ -64,13 +60,6 @@ class FieldsTest extends TestCase{
      * @throws DNSFieldException
      */
     public function testAll(): void{
-        self::assertEquals("\x04Text",CharacterString::deserializeFromPresentationFormat('Text')->serializeToWireFormat());
-        self::assertEquals("Text",CharacterString::deserializeFromWireFormat("\x04Text")->serializeToPresentationFormat());
-        self::assertEquals("\x0FText with space",CharacterString::deserializeFromPresentationFormat('"Text with space"')->serializeToWireFormat());
-        self::assertEquals('"Text with space"',CharacterString::deserializeFromWireFormat("\x0FText with space")->serializeToPresentationFormat());
-        self::assertEquals("\x11Text \"with\" quote",CharacterString::deserializeFromPresentationFormat('"Text \"with\" quote"')->serializeToWireFormat());
-        self::assertEquals('"Text \"with\" quote"',CharacterString::deserializeFromWireFormat("\x11Text \"with\" quote")->serializeToPresentationFormat());
-
         self::assertEquals("\x07example\x03com\x00",FQDN::deserializeFromPresentationFormat('example.com.')->serializeToWireFormat());
         self::assertEquals("example.com.",FQDN::deserializeFromWireFormat("\x07example\x03com\x00")->serializeToPresentationFormat());
         self::assertEquals("\x03www\x07example\x03com\x00",FQDN::deserializeFromPresentationFormat('www.example.com.')->serializeToWireFormat());
