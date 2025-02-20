@@ -4,7 +4,6 @@ namespace YOCLIB\DNS\Tests;
 use PHPUnit\Framework\TestCase;
 
 use YOCLIB\DNS\Exceptions\DNSFieldException;
-use YOCLIB\DNS\Fields\Bitmap;
 use YOCLIB\DNS\Fields\CharacterString;
 use YOCLIB\DNS\Fields\FQDN;
 use YOCLIB\DNS\Fields\IPv4Address;
@@ -20,7 +19,6 @@ class FieldsTest extends TestCase{
      * @throws DNSFieldException
      */
     public function testGetValue(): void{
-        self::assertSame([1,2,3,4,5,6],(new Bitmap([1,2,3,4,5,6]))->getValue());
         self::assertSame('This is text',(new CharacterString('This is text'))->getValue());
         self::assertSame(['example','com'],(new FQDN('example','com'))->getValue());
         self::assertSame(['example','com',''],(new FQDN('example','com',''))->getValue());
@@ -36,7 +34,6 @@ class FieldsTest extends TestCase{
      * @throws DNSFieldException
      */
     public function testSerializeToPresentationFormat(): void{
-        self::assertSame('1 2 3 4 5 6',(new Bitmap([1,2,3,4,5,6]))->serializeToPresentationFormat());
         self::assertSame('"This is text"',(new CharacterString('This is text'))->serializeToPresentationFormat());
         self::assertSame("example.com",(new FQDN('example','com'))->serializeToPresentationFormat());
         self::assertSame("example.com.",(new FQDN('example','com',''))->serializeToPresentationFormat());
@@ -52,7 +49,6 @@ class FieldsTest extends TestCase{
      * @throws DNSFieldException
      */
     public function testSerializeToWireFormat(): void{
-        self::assertSame(chr(0b1111110),(new Bitmap([1,2,3,4,5,6]))->serializeToWireFormat());
         self::assertSame("\x0CThis is text",(new CharacterString('This is text'))->serializeToWireFormat());
         self::assertSame("\x07example\x03com\x40",(new FQDN('example','com'))->serializeToWireFormat());
         self::assertSame("\x07example\x03com\x00",(new FQDN('example','com',''))->serializeToWireFormat());
@@ -63,41 +59,11 @@ class FieldsTest extends TestCase{
         self::assertSame(pack('N',12345678),(new UnsignedInteger32(12345678))->serializeToWireFormat());
     }
 
-    public function testBitmapDuplicateBits(){
-        self::expectException(DNSFieldException::class);
-        self::expectExceptionMessage('No duplicate bits allowed.');
-
-        new Bitmap([1,2,3,3,4,5,6]);
-    }
-
-    public function testBitmapNonIntegerBits(){
-        self::expectException(DNSFieldException::class);
-        self::expectExceptionMessage('Only integers allowed.');
-
-        new Bitmap([1,2,'3',4,5,6]);
-    }
-
-    public function testBitmapNegativeIntegers(){
-        self::expectException(DNSFieldException::class);
-        self::expectExceptionMessage('Only positive integers allowed.');
-
-        new Bitmap([1,2,-3,4,5,6]);
-    }
-
     /**
      * @return void
      * @throws DNSFieldException
      */
     public function testAll(): void{
-        $mapping = [
-            1 => 'A',
-            2 => 'NS',
-            3 => 'MD',
-            4 => 'MF',
-        ];
-        self::assertEquals(chr((1<<1) | (1<<3)),Bitmap::deserializeFromPresentationFormat('A MD',$mapping)->serializeToWireFormat());
-        self::assertEquals('A MD',Bitmap::deserializeFromWireFormat(chr((1<<1) | (1<<3)))->serializeToPresentationFormat($mapping));
-
         self::assertEquals("\x04Text",CharacterString::deserializeFromPresentationFormat('Text')->serializeToWireFormat());
         self::assertEquals("Text",CharacterString::deserializeFromWireFormat("\x04Text")->serializeToPresentationFormat());
         self::assertEquals("\x0FText with space",CharacterString::deserializeFromPresentationFormat('"Text with space"')->serializeToWireFormat());
