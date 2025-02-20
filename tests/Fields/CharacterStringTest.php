@@ -85,4 +85,26 @@ class CharacterStringTest extends TestCase{
         self::assertSame('Text "with" quote',CharacterString::deserializeFromWireFormat("\x11Text \"with\" quote")->getValue());
     }
 
+    /**
+     * @return void
+     * @throws DNSFieldException
+     */
+    public function testDeserializeFromWireFormatNoData(): void{
+        self::expectException(DNSFieldException::class);
+        self::expectExceptionMessage('A character string should have at least one octet of data to indicate the length.');
+
+        CharacterString::deserializeFromWireFormat('');
+    }
+
+    /**
+     * @return void
+     * @throws DNSFieldException
+     */
+    public function testDeserializeFromWireFormatTooLessData(): void{
+        self::expectException(DNSFieldException::class);
+        self::expectExceptionMessage('The character string length is higher than the available bytes.');
+
+        CharacterString::deserializeFromWireFormat("\x04AB");
+    }
+
 }

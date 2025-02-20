@@ -76,7 +76,7 @@ class CharacterString implements Field{
         }
         $length = ord($data[0]);
         if(strlen($data)<1+$length){
-            throw new DNSFieldException('A character string length is higher than the available bytes.');
+            throw new DNSFieldException('The character string length is higher than the available bytes.');
         }
         return new self(substr($data,1,$length));
     }
