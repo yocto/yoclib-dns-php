@@ -48,6 +48,7 @@ class CharacterStringTest extends TestCase{
     public function testSerializeToPresentationFormat(): void{
         self::assertSame('""',(new CharacterString(''))->serializeToPresentationFormat());
         self::assertSame('Text',(new CharacterString('Text'))->serializeToPresentationFormat());
+        self::assertSame('"Text"',(new CharacterString('Text'))->serializeToPresentationFormat(true));
         self::assertSame('"Text with space"',(new CharacterString('Text with space'))->serializeToPresentationFormat());
         self::assertSame('"Text \"with\" quote"',(new CharacterString('Text "with" quote'))->serializeToPresentationFormat());
     }

@@ -29,13 +29,14 @@ class CharacterString implements Field{
     }
 
     /**
+     * @param ?bool|null $alwaysQuoted
      * @return string
      */
-    public function serializeToPresentationFormat(): string{
+    public function serializeToPresentationFormat(?bool $alwaysQuoted=false): string{
         $backslashEscapedValue = str_replace(self::BACKSLASH,self::BACKSLASH.self::BACKSLASH,$this->value);
         $escapedValue = str_replace(self::QUOTE,self::BACKSLASH.self::QUOTE,$backslashEscapedValue);
         //TODO Check only spaces, or also other whitespaces
-        if($this->value==='' || str_contains($this->value,' ')){
+        if($alwaysQuoted || $this->value==='' || str_contains($this->value,' ')){
             return self::QUOTE.($escapedValue).self::QUOTE;
         }
         return $escapedValue;
