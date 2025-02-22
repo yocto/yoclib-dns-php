@@ -63,7 +63,7 @@ class FQDN implements Field{
         foreach($this->value AS $label){
             $output .= chr(strlen($label)).$label;
         }
-        if($this->value[count($this->value)-1]!==''){
+        if($this->isRelative()){
             $output .= chr(0x40);
         }
         return $output;
@@ -92,6 +92,9 @@ class FQDN implements Field{
                 break;
             }
             $labels[] = substr($data,$i+1,$length);
+            if($length===0x00){
+                break;
+            }
             $i += $length;
         }
         return new self(...$labels);
