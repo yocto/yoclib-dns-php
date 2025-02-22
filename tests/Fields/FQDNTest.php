@@ -56,6 +56,28 @@ class FQDNTest extends TestCase{
      * @return void
      * @throws DNSFieldException
      */
+    public function testIsAbsolute(){
+        self::assertFalse((new FQDN('example','com'))->isAbsolute());
+        self::assertTrue((new FQDN('example','com',''))->isAbsolute());
+        self::assertFalse((new FQDN('www','example','com'))->isAbsolute());
+        self::assertTrue((new FQDN('www','example','com',''))->isAbsolute());
+    }
+
+    /**
+     * @return void
+     * @throws DNSFieldException
+     */
+    public function testIsRelative(){
+        self::assertTrue((new FQDN('example','com'))->isRelative());
+        self::assertFalse((new FQDN('example','com',''))->isRelative());
+        self::assertTrue((new FQDN('www','example','com'))->isRelative());
+        self::assertFalse((new FQDN('www','example','com',''))->isRelative());
+    }
+
+    /**
+     * @return void
+     * @throws DNSFieldException
+     */
     public function testSerializeToPresentationFormat(): void{
         self::assertSame('example.com',(new FQDN('example','com'))->serializeToPresentationFormat());
         self::assertSame('example.com.',(new FQDN('example','com',''))->serializeToPresentationFormat());

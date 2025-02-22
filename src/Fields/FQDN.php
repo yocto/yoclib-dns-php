@@ -33,6 +33,20 @@ class FQDN implements Field{
     }
 
     /**
+     * @return bool
+     */
+    public function isAbsolute(): bool{
+        return $this->value[count($this->value)-1]==='';
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRelative(): bool{
+        return !$this->isAbsolute();
+    }
+
+    /**
      * @return string
      */
     public function serializeToPresentationFormat(): string{
