@@ -36,7 +36,14 @@ class FQDN implements Field{
      * @return bool
      */
     public function isAbsolute(): bool{
-        return $this->value[count($this->value)-1]==='';
+        return ($this->value[count($this->value)-1] ?? null)==='';
+    }
+
+    /**
+     * @return bool
+     */
+    public function isApex(): bool{
+        return count($this->value)===0;
     }
 
     /**
@@ -47,11 +54,60 @@ class FQDN implements Field{
     }
 
     /**
+     * @param FQDN $origin
+     * @param ?bool|null $ignoreCurrentState
+     * @return FQDN
+     * @throws DNSFieldException
+     */
+    public function makeAbsolute(FQDN $origin,?bool $ignoreCurrentState=false): FQDN{
+        if($origin->isRelative()){
+            throw new DNSFieldException('Origin FQDN cannot be relative.');
+        }
+        if($this->isAbsolute()){
+            if($ignoreCurrentState){
+                return $this;
+            }
+            throw new DNSFieldException("FQDN already absolute.");
+        }
+        return new FQDN(...array_merge($this->value,$origin->value));
+    }
+
+    /**
+     * @param FQDN $origin
+     * @param ?bool|null $ignoreCurrentState
+     * @return FQDN
+     * @throws DNSFieldException
+     */
+    public function makeRelative(FQDN $origin,?bool $ignoreCurrentState=false): FQDN{
+        if($origin->isRelative()){
+            throw new DNSFieldException('Origin FQDN cannot be relative.');
+        }
+        if($this->isRelative()){
+            if($ignoreCurrentState){
+                return $this;
+            }
+            throw new DNSFieldException("FQDN already relative.");
+        }
+        for($i=0;$i<count($origin->value);$i++){
+            if(($origin->value[count($origin->value)-$i] ?? null)!==($this->value[count($this->value)-$i] ?? null)){
+                if($ignoreCurrentState){
+                    return $this;
+                }
+                throw new DNSFieldException("FQDN is not subordinate to origin.");
+            }
+        }
+        return new FQDN(...array_slice($this->value,0,count($this->value)-count($origin->value)));
+    }
+
+    /**
      * @return string
      */
     public function serializeToPresentationFormat(): string{
+        if($this->isApex()){
+            return '@';
+        }
         return implode('.',array_map(static function($label){
-            return str_replace('.','\.',$label);
+            return str_replace(['@','.'],['\@','\.'],$label);
         },$this->value));
     }
 
@@ -76,6 +132,15 @@ class FQDN implements Field{
      */
     public static function deserializeFromPresentationFormat(string $data): FQDN{
         $labels = preg_split('/(?<!\\\\)\\./',$data);
+        if(count($labels)===1 && ($labels[0] ?? null)==='@'){
+            return new FQDN();
+        }
+        foreach($labels AS &$label){
+            if($label==='@'){
+                throw new DNSFieldException('At-sign cannot appear without backslash when having multiple labels.');
+            }
+            $label = str_replace(['\@','\.'],['@','.'],$label);
+        }
         return new self(...$labels);
     }
 

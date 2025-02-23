@@ -47,10 +47,10 @@ class TypesTest extends TestCase{
         self::assertSame("\x02ns\x07example\x03com\x00",$nsRecord->serializeToWireFormat());
 
         $mdRecord = new MD([
-            new FQDN('@'),
+            new FQDN(),
         ]);
         self::assertSame('@',$mdRecord->serializeToPresentationFormat());
-        self::assertSame("\x01@\x40",$mdRecord->serializeToWireFormat());
+        self::assertSame("\x40",$mdRecord->serializeToWireFormat());
 
         $soaRecord = new SOA([
             new FQDN('ns','example','com',''),
