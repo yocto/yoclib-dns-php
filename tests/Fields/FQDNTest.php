@@ -126,6 +126,19 @@ class FQDNTest extends TestCase{
      * @return void
      * @throws DNSFieldException
      */
+    public function testMakeAbsoluteOriginRelative(){
+        self::expectException(DNSFieldException::class);
+        self::expectExceptionMessage('Origin FQDN cannot be relative.');
+
+        $origin = new FQDN('example','com');
+
+        (new FQDN('example','com'))->makeAbsolute($origin,true);
+    }
+
+    /**
+     * @return void
+     * @throws DNSFieldException
+     */
     public function testMakeRelative(){
         $origin = new FQDN('example','com','');
 
@@ -133,6 +146,19 @@ class FQDNTest extends TestCase{
         self::assertSame([],(new FQDN('example','com',''))->makeRelative($origin,true)->getValue());
         self::assertSame(['www','example','com'],(new FQDN('www','example','com','example','com',''))->makeRelative($origin,true)->getValue());
         self::assertSame(['www'],(new FQDN('www','example','com',''))->makeRelative($origin,true)->getValue());
+    }
+
+    /**
+     * @return void
+     * @throws DNSFieldException
+     */
+    public function testMakeRelativeOriginRelative(){
+        self::expectException(DNSFieldException::class);
+        self::expectExceptionMessage('Origin FQDN cannot be relative.');
+
+        $origin = new FQDN('example','com');
+
+        (new FQDN('example','com','example','com',''))->makeRelative($origin,true);
     }
 
     /**
