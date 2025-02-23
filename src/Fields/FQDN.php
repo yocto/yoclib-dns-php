@@ -89,7 +89,7 @@ class FQDN implements Field{
             throw new DNSFieldException("FQDN already relative.");
         }
         for($i=0;$i<count($origin->value);$i++){
-            if(($origin->value[count($origin->value)-$i] ?? null)!==($this->value[count($this->value)-$i] ?? null)){
+            if(($origin->value[count($origin->value)-$i-1] ?? null)!==($this->value[count($this->value)-$i-1] ?? null)){
                 if($ignoreCurrentState){
                     return $this;
                 }

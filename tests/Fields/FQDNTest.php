@@ -139,13 +139,28 @@ class FQDNTest extends TestCase{
      * @return void
      * @throws DNSFieldException
      */
+    public function testMakeAbsoluteAlreadyAbsolute(){
+        self::expectException(DNSFieldException::class);
+        self::expectExceptionMessage('FQDN already absolute.');
+
+        $origin = new FQDN('example','com','');
+
+        (new FQDN('example','com',''))->makeAbsolute($origin);
+    }
+
+    /**
+     * @return void
+     * @throws DNSFieldException
+     */
     public function testMakeRelative(){
         $origin = new FQDN('example','com','');
 
         self::assertSame(['example','com'],(new FQDN('example','com','example','com',''))->makeRelative($origin,true)->getValue());
         self::assertSame([],(new FQDN('example','com',''))->makeRelative($origin,true)->getValue());
+        self::assertSame(['example','com'],(new FQDN('example','com'))->makeRelative($origin,true)->getValue());
         self::assertSame(['www','example','com'],(new FQDN('www','example','com','example','com',''))->makeRelative($origin,true)->getValue());
         self::assertSame(['www'],(new FQDN('www','example','com',''))->makeRelative($origin,true)->getValue());
+        self::assertSame(['www','example','com'],(new FQDN('www','example','com'))->makeRelative($origin,true)->getValue());
     }
 
     /**
@@ -159,6 +174,32 @@ class FQDNTest extends TestCase{
         $origin = new FQDN('example','com');
 
         (new FQDN('example','com','example','com',''))->makeRelative($origin,true);
+    }
+
+    /**
+     * @return void
+     * @throws DNSFieldException
+     */
+    public function testMakeRelativeAlreadyRelative(){
+        self::expectException(DNSFieldException::class);
+        self::expectExceptionMessage('FQDN already relative.');
+
+        $origin = new FQDN('example','com','');
+
+        (new FQDN('www'))->makeRelative($origin);
+    }
+
+    /**
+     * @return void
+     * @throws DNSFieldException
+     */
+    public function testMakeRelativeNonSubordinate(){
+        self::expectException(DNSFieldException::class);
+        self::expectExceptionMessage('FQDN is not subordinate to origin.');
+
+        $origin = new FQDN('test','example','com','');
+
+        (new FQDN('www','example','com',''))->makeRelative($origin);
     }
 
     /**
