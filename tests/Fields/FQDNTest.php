@@ -161,6 +161,8 @@ class FQDNTest extends TestCase{
         self::assertSame(['www','example','com'],(new FQDN('www','example','com','example','com',''))->makeRelative($origin,true)->getValue());
         self::assertSame(['www'],(new FQDN('www','example','com',''))->makeRelative($origin,true)->getValue());
         self::assertSame(['www','example','com'],(new FQDN('www','example','com'))->makeRelative($origin,true)->getValue());
+
+        self::assertSame(['www','example','net',''],(new FQDN('www','example','net',''))->makeRelative($origin,true)->getValue());
     }
 
     /**
