@@ -33,7 +33,7 @@ abstract class Type{
     /**
      * @return bool
      */
-    public function hasFQDN(): bool{
+    public function hasFQDNs(): bool{
         foreach($this->fields as $field){
             if($field instanceof FQDN){
                 return true;
