@@ -4,6 +4,7 @@ namespace YOCLIB\DNS\Types;
 use YOCLIB\DNS\Exceptions\DNSTypeException;
 use YOCLIB\DNS\Fields\Bitmap;
 use YOCLIB\DNS\Fields\Field;
+use YOCLIB\DNS\Fields\FQDN;
 
 abstract class Type{
 
@@ -27,6 +28,18 @@ abstract class Type{
      */
     public function getFields(): array{
         return $this->fields;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasFQDN(): bool{
+        foreach($this->fields as $field){
+            if($field instanceof FQDN){
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
