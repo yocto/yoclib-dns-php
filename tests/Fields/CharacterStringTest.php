@@ -79,6 +79,17 @@ class CharacterStringTest extends TestCase{
      * @return void
      * @throws DNSFieldException
      */
+    public function testDeserializeFromPresentationFormatMissingQuote(): void{
+        self::expectException(DNSFieldException::class);
+        self::expectExceptionMessage('Quoted character string should also end with a quote.');
+
+        CharacterString::deserializeFromPresentationFormat('"THIS IS AN UNBALANCED TEXT');
+    }
+
+    /**
+     * @return void
+     * @throws DNSFieldException
+     */
     public function testDeserializeFromWireFormat(): void{
         self::assertSame('',CharacterString::deserializeFromWireFormat("\x00")->getValue());
         self::assertSame('Text',CharacterString::deserializeFromWireFormat("\x04Text")->getValue());

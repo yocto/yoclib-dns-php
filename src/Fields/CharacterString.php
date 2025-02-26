@@ -57,6 +57,9 @@ class CharacterString implements Field{
     public static function deserializeFromPresentationFormat(string $data): CharacterString{
         $isQuoted = ($data[0] ?? null)===self::QUOTE;
         if($isQuoted){
+            if($data[strlen($data)-1]!==self::QUOTE){
+                throw new DNSFieldException('Quoted character string should also end with a quote.');
+            }
             $unquotedValue = substr($data,1,strlen($data)-2);
             $quoteUnescapedValue = str_replace(self::BACKSLASH.self::QUOTE,self::QUOTE,$unquotedValue);
             $backslashUnescapedValue = str_replace(self::BACKSLASH.self::BACKSLASH,self::BACKSLASH,$quoteUnescapedValue);
