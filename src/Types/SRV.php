@@ -44,7 +44,6 @@ class SRV extends Type{
         if(count($tokens)!==4){
             throw new DNSTypeException('SRV record should contain 4 fields.');
         }
-
         return new self([
             UnsignedInteger16::deserializeFromPresentationFormat($tokens[0]),
             UnsignedInteger16::deserializeFromPresentationFormat($tokens[1]),
@@ -78,7 +77,7 @@ class SRV extends Type{
         if(strlen($remaining)>0){
             throw new DNSTypeException('Cannot have remaining data.');
         }
-        return new SRV([
+        return new self([
             UnsignedInteger16::deserializeFromWireFormat($priority),
             UnsignedInteger16::deserializeFromWireFormat($weight),
             UnsignedInteger16::deserializeFromWireFormat($port),

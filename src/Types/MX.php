@@ -38,7 +38,6 @@ class MX extends Type{
         if(count($tokens)!==2){
             throw new DNSTypeException('MX record should contain 2 fields.');
         }
-
         return new self([
             UnsignedInteger16::deserializeFromPresentationFormat($tokens[0]),
             FQDN::deserializeFromPresentationFormat($tokens[1]),
