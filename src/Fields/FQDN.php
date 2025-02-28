@@ -69,7 +69,7 @@ class FQDN implements Field{
             }
             throw new DNSFieldException("FQDN already absolute.");
         }
-        return new FQDN(...array_merge($this->value,$origin->value));
+        return new self(...array_merge($this->value,$origin->value));
     }
 
     /**
@@ -96,7 +96,7 @@ class FQDN implements Field{
                 throw new DNSFieldException("FQDN is not subordinate to origin.");
             }
         }
-        return new FQDN(...array_slice($this->value,0,count($this->value)-count($origin->value)));
+        return new self(...array_slice($this->value,0,count($this->value)-count($origin->value)));
     }
 
     /**
@@ -155,7 +155,7 @@ class FQDN implements Field{
     public static function deserializeFromPresentationFormat(string $data): FQDN{
         $labels = preg_split('/(?<!\\\\)\\./',$data);
         if(count($labels)===1 && ($labels[0] ?? null)==='@'){
-            return new FQDN();
+            return new self();
         }
         foreach($labels AS &$label){
             if($label==='@'){

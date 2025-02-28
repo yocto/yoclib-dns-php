@@ -68,7 +68,7 @@ class Binary implements Field{
         if(strlen($output)!==$length){
             throw new DNSFieldException('Binary length is not same as actual data.');
         }
-        return new Binary($output);
+        return new self($output);
     }
 
     /**

@@ -47,7 +47,10 @@ class AAAA extends Type{
      */
     public static function deserializeFromWireFormat(string $data): AAAA{
         $offset = 0;
-        $address = substr($data,$offset,IPv6Address::calculateLength($data));
+
+        $address = substr($data,$offset,IPv6Address::calculateLength(substr($data,$offset)));
+        $offset += strlen($address);
+
         $remaining = substr($data,$offset);
         if(strlen($remaining)>0){
             throw new DNSTypeException('Cannot have remaining data.');

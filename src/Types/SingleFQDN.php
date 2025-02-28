@@ -47,7 +47,10 @@ class SingleFQDN extends Type{
      */
     public static function deserializeFromWireFormat(string $data): self{
         $offset = 0;
-        $name = substr($data,$offset,FQDN::calculateLength($data));
+
+        $name = substr($data,$offset,FQDN::calculateLength(substr($data,$offset)));
+        $offset += strlen($name);
+
         $remaining = substr($data,$offset);
         if(strlen($remaining)>0){
             throw new DNSTypeException('Cannot have remaining data.');

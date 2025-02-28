@@ -51,7 +51,10 @@ class A extends Type{
      */
     public static function deserializeFromWireFormat(string $data): A{
         $offset = 0;
-        $address = substr($data,$offset,IPv4Address::calculateLength($data));
+
+        $address = substr($data,$offset,IPv4Address::calculateLength(substr($data,$offset)));
+        $offset += strlen($address);
+
         $remaining = substr($data,$offset);
         if(strlen($remaining)>0){
             throw new DNSTypeException('Cannot have remaining data.');
