@@ -29,4 +29,12 @@ class CAA extends Type{
         }
     }
 
+    public static function deserializeFromPresentationFormat(string $data): CAA{
+        throw new \RuntimeException('Not implemented');
+    }
+
+    public static function deserializeFromWireFormat(string $data): CAA{
+        throw new \RuntimeException('Not implemented');
+    }
+
 }

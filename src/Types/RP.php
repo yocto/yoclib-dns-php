@@ -24,4 +24,12 @@ class RP extends Type{
         }
     }
 
+    public static function deserializeFromPresentationFormat(string $data): RP{
+        throw new \RuntimeException('Not implemented');
+    }
+
+    public static function deserializeFromWireFormat(string $data): RP{
+        throw new \RuntimeException('Not implemented');
+    }
+
 }

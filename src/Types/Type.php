@@ -72,4 +72,8 @@ abstract class Type{
         return implode('',$output);
     }
 
+    public abstract static function deserializeFromPresentationFormat(string $data): self;
+
+    public abstract static function deserializeFromWireFormat(string $data): self;
+
 }

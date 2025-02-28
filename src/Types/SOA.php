@@ -40,4 +40,12 @@ class SOA extends Type{
         }
     }
 
+    public static function deserializeFromPresentationFormat(string $data): SOA{
+        throw new \RuntimeException('Not implemented');
+    }
+
+    public static function deserializeFromWireFormat(string $data): SOA{
+        throw new \RuntimeException('Not implemented');
+    }
+
 }

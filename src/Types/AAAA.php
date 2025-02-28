@@ -21,4 +21,12 @@ class AAAA extends Type{
         }
     }
 
+    public static function deserializeFromPresentationFormat(string $data): AAAA{
+        throw new \RuntimeException('Not implemented');
+    }
+
+    public static function deserializeFromWireFormat(string $data): AAAA{
+        throw new \RuntimeException('Not implemented');
+    }
+
 }

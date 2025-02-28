@@ -21,4 +21,12 @@ class X25 extends Type{
         }
     }
 
+    public static function deserializeFromPresentationFormat(string $data): X25{
+        throw new \RuntimeException('Not implemented');
+    }
+
+    public static function deserializeFromWireFormat(string $data): X25{
+        throw new \RuntimeException('Not implemented');
+    }
+
 }

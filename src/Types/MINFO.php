@@ -24,4 +24,12 @@ class MINFO extends Type{
         }
     }
 
+    public static function deserializeFromPresentationFormat(string $data): MINFO{
+        throw new \RuntimeException('Not implemented');
+    }
+
+    public static function deserializeFromWireFormat(string $data): MINFO{
+        throw new \RuntimeException('Not implemented');
+    }
+
 }

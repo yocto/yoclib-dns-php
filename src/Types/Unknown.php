@@ -21,4 +21,12 @@ class Unknown extends Type{
         }
     }
 
+    public static function deserializeFromPresentationFormat(string $data): Unknown{
+        throw new \RuntimeException('Not implemented');
+    }
+
+    public static function deserializeFromWireFormat(string $data): Unknown{
+        throw new \RuntimeException('Not implemented');
+    }
+
 }

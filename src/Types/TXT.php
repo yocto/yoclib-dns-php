@@ -28,4 +28,12 @@ class TXT extends Type{
         }
     }
 
+    public static function deserializeFromPresentationFormat(string $data): TXT{
+        throw new \RuntimeException('Not implemented');
+    }
+
+    public static function deserializeFromWireFormat(string $data): TXT{
+        throw new \RuntimeException('Not implemented');
+    }
+
 }

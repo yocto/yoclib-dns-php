@@ -25,4 +25,12 @@ class MX extends Type{
         }
     }
 
+    public static function deserializeFromPresentationFormat(string $data): MX{
+        throw new \RuntimeException('Not implemented');
+    }
+
+    public static function deserializeFromWireFormat(string $data): MX{
+        throw new \RuntimeException('Not implemented');
+    }
+
 }

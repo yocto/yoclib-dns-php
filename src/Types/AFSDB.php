@@ -25,4 +25,12 @@ class AFSDB extends Type{
         }
     }
 
+    public static function deserializeFromPresentationFormat(string $data): AFSDB{
+        throw new \RuntimeException('Not implemented');
+    }
+
+    public static function deserializeFromWireFormat(string $data): AFSDB{
+        throw new \RuntimeException('Not implemented');
+    }
+
 }

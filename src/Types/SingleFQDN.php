@@ -21,4 +21,12 @@ class SingleFQDN extends Type{
         }
     }
 
+    public static function deserializeFromPresentationFormat(string $data): self{
+        throw new \RuntimeException('Not implemented');
+    }
+
+    public static function deserializeFromWireFormat(string $data): self{
+        throw new \RuntimeException('Not implemented');
+    }
+
 }

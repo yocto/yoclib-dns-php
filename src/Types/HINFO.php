@@ -24,4 +24,12 @@ class HINFO extends Type{
         }
     }
 
+    public static function deserializeFromPresentationFormat(string $data): HINFO{
+        throw new \RuntimeException('Not implemented');
+    }
+
+    public static function deserializeFromWireFormat(string $data): HINFO{
+        throw new \RuntimeException('Not implemented');
+    }
+
 }

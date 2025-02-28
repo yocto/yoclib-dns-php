@@ -31,4 +31,12 @@ class SRV extends Type{
         }
     }
 
+    public static function deserializeFromPresentationFormat(string $data): SRV{
+        throw new \RuntimeException('Not implemented');
+    }
+
+    public static function deserializeFromWireFormat(string $data): SRV{
+        throw new \RuntimeException('Not implemented');
+    }
+
 }

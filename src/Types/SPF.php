@@ -28,4 +28,12 @@ class SPF extends Type{
         }
     }
 
+    public static function deserializeFromPresentationFormat(string $data): SPF{
+        throw new \RuntimeException('Not implemented');
+    }
+
+    public static function deserializeFromWireFormat(string $data): SPF{
+        throw new \RuntimeException('Not implemented');
+    }
+
 }

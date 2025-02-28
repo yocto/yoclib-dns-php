@@ -35,4 +35,12 @@ class WKS extends Type{
         ];
     }
 
+    public static function deserializeFromPresentationFormat(string $data): WKS{
+        throw new \RuntimeException('Not implemented');
+    }
+
+    public static function deserializeFromWireFormat(string $data): WKS{
+        throw new \RuntimeException('Not implemented');
+    }
+
 }

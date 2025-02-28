@@ -25,4 +25,12 @@ class A extends Type{
         }
     }
 
+    public static function deserializeFromPresentationFormat(string $data): A{
+        throw new \RuntimeException('Not implemented');
+    }
+
+    public static function deserializeFromWireFormat(string $data): A{
+        throw new \RuntimeException('Not implemented');
+    }
+
 }
