@@ -41,6 +41,14 @@ class UnsignedInteger32 implements Field{
 
     /**
      * @param string $data
+     * @return int
+     */
+    public static function calculateLength(string $data): int{
+        return 4;
+    }
+
+    /**
+     * @param string $data
      * @return UnsignedInteger32
      * @throws DNSFieldException
      */

@@ -72,6 +72,14 @@ class Bitmap implements Field{
 
     /**
      * @param string $data
+     * @return int
+     */
+    public static function calculateLength(string $data): int{
+        return -1;
+    }
+
+    /**
+     * @param string $data
      * @param ?array|null $mapping
      * @return Bitmap
      * @throws DNSFieldException

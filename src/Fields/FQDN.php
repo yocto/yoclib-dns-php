@@ -127,6 +127,28 @@ class FQDN implements Field{
 
     /**
      * @param string $data
+     * @return int
+     */
+    public static function calculateLength(string $data): int{
+        $totalLength = 0;
+        for($i=0;$i<strlen($data);){
+            $length = ord($data[$i]);
+            $i++;
+            $totalLength++;
+            if($length===0x40){
+                break;
+            }
+            $i += $length;
+            $totalLength += $length;
+            if($length===0x00){
+                break;
+            }
+        }
+        return $totalLength;
+    }
+
+    /**
+     * @param string $data
      * @return FQDN
      * @throws DNSFieldException
      */

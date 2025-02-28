@@ -37,6 +37,14 @@ class Binary implements Field{
 
     /**
      * @param string $data
+     * @return int
+     */
+    public static function calculateLength(string $data): int{
+        return -1;
+    }
+
+    /**
+     * @param string $data
      * @return Binary
      * @throws DNSFieldException
      */

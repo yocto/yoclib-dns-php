@@ -41,6 +41,14 @@ class IPv4Address implements Field{
 
     /**
      * @param string $data
+     * @return int
+     */
+    public static function calculateLength(string $data): int{
+        return 4;
+    }
+
+    /**
+     * @param string $data
      * @return IPv4Address
      * @throws DNSFieldException
      */

@@ -51,6 +51,18 @@ class CharacterString implements Field{
 
     /**
      * @param string $data
+     * @return int
+     */
+    public static function calculateLength(string $data): int{
+        if(strlen($data)>0){
+            $length = ord($data[0]);
+            return 1+$length;
+        }
+        return 0;
+    }
+
+    /**
+     * @param string $data
      * @return CharacterString
      * @throws DNSFieldException
      */

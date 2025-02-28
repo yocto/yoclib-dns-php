@@ -41,6 +41,14 @@ class IPv6Address implements Field{
 
     /**
      * @param string $data
+     * @return int
+     */
+    public static function calculateLength(string $data): int{
+        return 16;
+    }
+
+    /**
+     * @param string $data
      * @return IPv6Address
      * @throws DNSFieldException
      */
