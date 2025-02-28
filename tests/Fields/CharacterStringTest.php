@@ -68,6 +68,7 @@ class CharacterStringTest extends TestCase{
      * @return void
      */
     public function testCalculateLength(): void{
+        self::assertSame(0,CharacterString::calculateLength(''));
         self::assertSame(1,CharacterString::calculateLength("\x00"));
         self::assertSame(1,CharacterString::calculateLength("\x00trailingBytes"));
         self::assertSame(5,CharacterString::calculateLength("\x04Text"));
