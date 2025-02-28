@@ -65,6 +65,20 @@ class IPv4AddressTest extends TestCase{
 
     /**
      * @return void
+     */
+    public function testCalculateLength(): void{
+        self::assertSame(4,IPv4Address::calculateLength("\x0A\x00\x01\x01"));
+        self::assertSame(4,IPv4Address::calculateLength("\x0A\x00\x01\x01trailingBytes"));
+        self::assertSame(4,IPv4Address::calculateLength("\x7F\x00\x02\x01"));
+        self::assertSame(4,IPv4Address::calculateLength("\x7F\x00\x02\x01trailingBytes"));
+        self::assertSame(4,IPv4Address::calculateLength("\xAC\x14\x03\x01"));
+        self::assertSame(4,IPv4Address::calculateLength("\xAC\x14\x03\x01trailingBytes"));
+        self::assertSame(4,IPv4Address::calculateLength("\xC0\xA8\x04\x01"));
+        self::assertSame(4,IPv4Address::calculateLength("\xC0\xA8\x04\x01trailingBytes"));
+    }
+
+    /**
+     * @return void
      * @throws DNSFieldException
      */
     public function testDeserializeFromPresentationFormat(): void{

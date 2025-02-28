@@ -238,6 +238,29 @@ class FQDNTest extends TestCase{
 
     /**
      * @return void
+     */
+    public function testCalculateLength(): void{
+        self::assertSame(1,FQDN::calculateLength("\x40"));
+        self::assertSame(1,FQDN::calculateLength("\x40trailingBytes"));
+        self::assertSame(3,FQDN::calculateLength("\x01@\x40"));
+        self::assertSame(3,FQDN::calculateLength("\x01@\x40trailingBytes"));
+        self::assertSame(14,FQDN::calculateLength("\x0Cdotted.label\x40"));
+        self::assertSame(14,FQDN::calculateLength("\x0Cdotted.label\x40trailingBytes"));
+        self::assertSame(16,FQDN::calculateLength("\x01@\x0Cdotted.label\x40"));
+        self::assertSame(16,FQDN::calculateLength("\x01@\x0Cdotted.label\x40trailingBytes"));
+
+        self::assertSame(13,FQDN::calculateLength("\x07example\x03com\x40"));
+        self::assertSame(13,FQDN::calculateLength("\x07example\x03com\x40trailingBytes"));
+        self::assertSame(13,FQDN::calculateLength("\x07example\x03com\x00"));
+        self::assertSame(13,FQDN::calculateLength("\x07example\x03com\x00trailingBytes"));
+        self::assertSame(17,FQDN::calculateLength("\x03www\x07example\x03com\x40"));
+        self::assertSame(17,FQDN::calculateLength("\x03www\x07example\x03com\x40trailingBytes"));
+        self::assertSame(17,FQDN::calculateLength("\x03www\x07example\x03com\x00"));
+        self::assertSame(17,FQDN::calculateLength("\x03www\x07example\x03com\x00trailingBytes"));
+    }
+
+    /**
+     * @return void
      * @throws DNSFieldException
      */
     public function testDeserializeFromPresentationFormat(): void{

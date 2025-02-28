@@ -76,6 +76,20 @@ class UnsignedInteger16Test extends TestCase{
 
     /**
      * @return void
+     */
+    public function testCalculateLength(): void{
+        self::assertSame(2,UnsignedInteger16::calculateLength("\x00\x00"));
+        self::assertSame(2,UnsignedInteger16::calculateLength("\x00\x00trailingBytes"));
+        self::assertSame(2,UnsignedInteger16::calculateLength("\x7F\x7F"));
+        self::assertSame(2,UnsignedInteger16::calculateLength("\x7F\x7FtrailingBytes"));
+        self::assertSame(2,UnsignedInteger16::calculateLength("\x80\x80"));
+        self::assertSame(2,UnsignedInteger16::calculateLength("\x80\x80trailingBytes"));
+        self::assertSame(2,UnsignedInteger16::calculateLength("\xFF\xFF"));
+        self::assertSame(2,UnsignedInteger16::calculateLength("\xFF\xFFtrailingBytes"));
+    }
+
+    /**
+     * @return void
      * @throws DNSFieldException
      */
     public function testDeserializeFromPresentationFormat(): void{

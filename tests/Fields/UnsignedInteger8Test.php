@@ -76,6 +76,20 @@ class UnsignedInteger8Test extends TestCase{
 
     /**
      * @return void
+     */
+    public function testCalculateLength(): void{
+        self::assertSame(1,UnsignedInteger8::calculateLength("\x00"));
+        self::assertSame(1,UnsignedInteger8::calculateLength("\x00trailingBytes"));
+        self::assertSame(1,UnsignedInteger8::calculateLength("\x7F"));
+        self::assertSame(1,UnsignedInteger8::calculateLength("\x7FtrailingBytes"));
+        self::assertSame(1,UnsignedInteger8::calculateLength("\x80"));
+        self::assertSame(1,UnsignedInteger8::calculateLength("\x80trailingBytes"));
+        self::assertSame(1,UnsignedInteger8::calculateLength("\xFF"));
+        self::assertSame(1,UnsignedInteger8::calculateLength("\xFFtrailingBytes"));
+    }
+
+    /**
+     * @return void
      * @throws DNSFieldException
      */
     public function testDeserializeFromPresentationFormat(): void{

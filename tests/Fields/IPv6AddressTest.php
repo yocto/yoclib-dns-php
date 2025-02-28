@@ -65,6 +65,20 @@ class IPv6AddressTest extends TestCase{
 
     /**
      * @return void
+     */
+    public function testCalculateLength(): void{
+        self::assertSame(16,IPv6Address::calculateLength("\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"));
+        self::assertSame(16,IPv6Address::calculateLength("\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00trailingBytes"));
+        self::assertSame(16,IPv6Address::calculateLength("\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01"));
+        self::assertSame(16,IPv6Address::calculateLength("\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01trailingBytes"));
+        self::assertSame(16,IPv6Address::calculateLength("\xFE\x80\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"));
+        self::assertSame(16,IPv6Address::calculateLength("\xFE\x80\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00trailingBytes"));
+        self::assertSame(16,IPv6Address::calculateLength("\xFE\x80\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01"));
+        self::assertSame(16,IPv6Address::calculateLength("\xFE\x80\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01trailingBytes"));
+    }
+
+    /**
+     * @return void
      * @throws DNSFieldException
      */
     public function testDeserializeFromPresentationFormat(): void{

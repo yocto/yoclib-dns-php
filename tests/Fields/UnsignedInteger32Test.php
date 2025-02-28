@@ -76,6 +76,20 @@ class UnsignedInteger32Test extends TestCase{
 
     /**
      * @return void
+     */
+    public function testCalculateLength(): void{
+        self::assertSame(4,UnsignedInteger32::calculateLength("\x00\x00\x00\x00"));
+        self::assertSame(4,UnsignedInteger32::calculateLength("\x00\x00\x00\x00trailingBytes"));
+        self::assertSame(4,UnsignedInteger32::calculateLength("\x7F\x7F\x7F\x7F"));
+        self::assertSame(4,UnsignedInteger32::calculateLength("\x7F\x7F\x7F\x7FtrailingBytes"));
+        self::assertSame(4,UnsignedInteger32::calculateLength("\x80\x80\x80\x80"));
+        self::assertSame(4,UnsignedInteger32::calculateLength("\x80\x80\x80\x80trailingBytes"));
+        self::assertSame(4,UnsignedInteger32::calculateLength("\xFF\xFF\xFF\xFF"));
+        self::assertSame(4,UnsignedInteger32::calculateLength("\xFF\xFF\xFF\xFFtrailingBytes"));
+    }
+
+    /**
+     * @return void
      * @throws DNSFieldException
      */
     public function testDeserializeFromPresentationFormat(): void{

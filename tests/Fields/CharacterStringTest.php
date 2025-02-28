@@ -66,6 +66,20 @@ class CharacterStringTest extends TestCase{
 
     /**
      * @return void
+     */
+    public function testCalculateLength(): void{
+        self::assertSame(1,CharacterString::calculateLength("\x00"));
+        self::assertSame(1,CharacterString::calculateLength("\x00trailingBytes"));
+        self::assertSame(5,CharacterString::calculateLength("\x04Text"));
+        self::assertSame(5,CharacterString::calculateLength("\x04TexttrailingBytes"));
+        self::assertSame(16,CharacterString::calculateLength("\x0FText with space"));
+        self::assertSame(16,CharacterString::calculateLength("\x0FText with spacetrailingBytes"));
+        self::assertSame(18,CharacterString::calculateLength("\x11Text \"with\" quote"));
+        self::assertSame(18,CharacterString::calculateLength("\x11Text \"with\" quotetrailingBytes"));
+    }
+
+    /**
+     * @return void
      * @throws DNSFieldException
      */
     public function testDeserializeFromPresentationFormat(): void{
