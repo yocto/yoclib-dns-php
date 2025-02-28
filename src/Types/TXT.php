@@ -1,9 +1,11 @@
 <?php
 namespace YOCLIB\DNS\Types;
 
+use YOCLIB\DNS\Exceptions\DNSFieldException;
 use YOCLIB\DNS\Exceptions\DNSTypeException;
 use YOCLIB\DNS\Fields\CharacterString;
 use YOCLIB\DNS\Fields\Field;
+use YOCLIB\DNS\LineLexer;
 
 class TXT extends Type{
 
@@ -28,12 +30,40 @@ class TXT extends Type{
         }
     }
 
+    /**
+     * @param string $data
+     * @return TXT
+     * @throws DNSFieldException
+     * @throws DNSTypeException
+     */
     public static function deserializeFromPresentationFormat(string $data): TXT{
-        throw new \RuntimeException('Not implemented');
+        $tokens = LineLexer::tokenizeLine($data);
+        if(count($tokens)<1){
+            throw new DNSTypeException('A TXT record should have at least one character string.');
+        }
+        return new self(array_map(static function(string $token){
+            return CharacterString::deserializeFromPresentationFormat($token);
+        },$tokens));
     }
 
+    /**
+     * @param string $data
+     * @return TXT
+     * @throws DNSFieldException
+     * @throws DNSTypeException
+     */
     public static function deserializeFromWireFormat(string $data): TXT{
-        throw new \RuntimeException('Not implemented');
+        $offset = 0;
+
+        $strings = [];
+        while($offset<strlen($data)){
+            $string = substr($data,$offset,CharacterString::calculateLength(substr($data,$offset)));
+            $strings[] = $string;
+            $offset += strlen($string);
+        }
+        return new self(array_map(static function(string $string){
+            return CharacterString::deserializeFromWireFormat($string);
+        },$strings));
     }
 
 }

@@ -45,8 +45,8 @@ class SOA extends Type{
     /**
      * @param string $data
      * @return SOA
-     * @throws DNSTypeException
      * @throws DNSFieldException
+     * @throws DNSTypeException
      */
     public static function deserializeFromPresentationFormat(string $data): SOA{
         $tokens = LineLexer::tokenizeLine($data);

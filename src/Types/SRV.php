@@ -36,8 +36,8 @@ class SRV extends Type{
     /**
      * @param string $data
      * @return SRV
-     * @throws DNSTypeException
      * @throws DNSFieldException
+     * @throws DNSTypeException
      */
     public static function deserializeFromPresentationFormat(string $data): SRV{
         $tokens = LineLexer::tokenizeLine($data);

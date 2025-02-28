@@ -30,8 +30,8 @@ class MX extends Type{
     /**
      * @param string $data
      * @return MX
-     * @throws DNSTypeException
      * @throws DNSFieldException
+     * @throws DNSTypeException
      */
     public static function deserializeFromPresentationFormat(string $data): MX{
         $tokens = LineLexer::tokenizeLine($data);
