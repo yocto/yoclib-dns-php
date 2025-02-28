@@ -1,9 +1,11 @@
 <?php
 namespace YOCLIB\DNS\Types;
 
+use YOCLIB\DNS\Exceptions\DNSFieldException;
 use YOCLIB\DNS\Exceptions\DNSTypeException;
 use YOCLIB\DNS\Fields\Field;
 use YOCLIB\DNS\Fields\FQDN;
+use YOCLIB\DNS\LineLexer;
 
 class SingleFQDN extends Type{
 
@@ -21,12 +23,38 @@ class SingleFQDN extends Type{
         }
     }
 
+    /**
+     * @param string $data
+     * @return self
+     * @throws DNSFieldException
+     * @throws DNSTypeException
+     */
     public static function deserializeFromPresentationFormat(string $data): self{
-        throw new \RuntimeException('Not implemented');
+        $tokens = LineLexer::tokenizeLine($data);
+        if(count($tokens)!==1){
+            throw new DNSTypeException('Record should contain 1 field.');
+        }
+        return new self([
+            FQDN::deserializeFromPresentationFormat($tokens[0]),
+        ]);
     }
 
+    /**
+     * @param string $data
+     * @return self
+     * @throws DNSFieldException
+     * @throws DNSTypeException
+     */
     public static function deserializeFromWireFormat(string $data): self{
-        throw new \RuntimeException('Not implemented');
+        $offset = 0;
+        $name = substr($data,$offset,FQDN::calculateLength($data));
+        $remaining = substr($data,$offset);
+        if(strlen($remaining)>0){
+            throw new DNSTypeException('Cannot have remaining data.');
+        }
+        return new self([
+            FQDN::deserializeFromWireFormat($name),
+        ]);
     }
 
 }
