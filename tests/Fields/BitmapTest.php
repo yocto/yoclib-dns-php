@@ -94,12 +94,12 @@ class BitmapTest extends TestCase{
      * @return void
      */
     public function testCalculateLength(): void{
-        self::assertSame(-1,Bitmap::calculateLength("\x1E"));
-        self::assertSame(-1,Bitmap::calculateLength("\x1EtrailingBytes"));
-        self::assertSame(-1,Bitmap::calculateLength("\x3E"));
-        self::assertSame(-1,Bitmap::calculateLength("\x3EtrailingBytes"));
-        self::assertSame(-1,Bitmap::calculateLength("\x7E"));
-        self::assertSame(-1,Bitmap::calculateLength("\x7EtrailingBytes"));
+        self::assertSame(1,Bitmap::calculateLength("\x1E"));
+        self::assertSame(14,Bitmap::calculateLength("\x1EtrailingBytes"));
+        self::assertSame(1,Bitmap::calculateLength("\x3E"));
+        self::assertSame(14,Bitmap::calculateLength("\x3EtrailingBytes"));
+        self::assertSame(1,Bitmap::calculateLength("\x7E"));
+        self::assertSame(14,Bitmap::calculateLength("\x7EtrailingBytes"));
     }
 
     /**

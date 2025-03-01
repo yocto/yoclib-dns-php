@@ -75,7 +75,7 @@ class Bitmap implements Field{
      * @return int
      */
     public static function calculateLength(string $data): int{
-        return -1;
+        return strlen($data);
     }
 
     /**

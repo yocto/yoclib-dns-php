@@ -23,9 +23,10 @@ class Binary implements Field{
 
     /**
      * @return string
+     * @throws DNSFieldException
      */
     public function serializeToPresentationFormat(): string{
-        return '\# '.strlen($this->value).' '.strtoupper(bin2hex($this->value));
+        throw new DNSFieldException('Cannot serialize binary. The presentation format is type dependent.');
     }
 
     /**
@@ -40,7 +41,7 @@ class Binary implements Field{
      * @return int
      */
     public static function calculateLength(string $data): int{
-        return -1;
+        return strlen($data);
     }
 
     /**
@@ -49,26 +50,7 @@ class Binary implements Field{
      * @throws DNSFieldException
      */
     public static function deserializeFromPresentationFormat(string $data): Binary{
-        $parts = explode(' ',$data);
-        if($parts[0]!=='\#'){
-            throw new DNSFieldException('Binary should start with \# characters.');
-        }
-        if(!preg_match('/\d+/',$parts[1] ?? '')){
-            throw new DNSFieldException('Binary length should only contain digits.');
-        }
-        $length = intval($parts[1]) ?? -1;
-        $output = '';
-        for($i=2;$i<count($parts);$i++){
-            $word = $parts[$i];
-            if(strlen($word)%2!==0){
-                throw new DNSFieldException('Every part of hexadecimal data should come in pairs of two.');
-            }
-            $output .= hex2bin($word);
-        }
-        if(strlen($output)!==$length){
-            throw new DNSFieldException('Binary length is not same as actual data.');
-        }
-        return new self($output);
+        throw new DNSFieldException('Cannot deserialize binary. The presentation format is type dependent.');
     }
 
     /**
