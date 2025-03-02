@@ -148,6 +148,40 @@ class FQDN implements Field{
     }
 
     /**
+     * @param FQDN $a
+     * @param FQDN $b
+     * @return int
+     */
+    public static function compare(FQDN $a,FQDN $b): int{
+        if($a===$b){
+            return 0;
+        }
+        $labelsA = $a->getValue();
+        $labelsB = $b->getValue();
+
+        $compares = min(count($labelsA),count($labelsB));
+        for($i=1;$i<=$compares;$i++){
+            $startA = count($labelsA) - $i;
+            $startB = count($labelsB) - $i;
+
+            $labelA = $labelsA[$startA];
+            $labelB = $labelsB[$startB];
+
+            for($j=0;($j<strlen($labelA) && $j<strlen($labelB));$j++){
+                $diff = strcmp($labelA,$labelB);
+                if($diff!=0){
+                    return $diff;
+                }
+            }
+
+            if(strlen($labelA)!=strlen($labelB)){
+                return strlen($labelA) - strlen($labelB);
+            }
+        }
+        return count($labelsA) - count($labelsB);
+    }
+
+    /**
      * @param string $data
      * @return FQDN
      * @throws DNSFieldException
