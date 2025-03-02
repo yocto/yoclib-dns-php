@@ -37,7 +37,7 @@ class Unknown extends Type{
      */
     public static function deserializeFromPresentationFormat(string $data): Unknown{
         $tokens = LineLexer::tokenizeLine($data);
-        if(count($tokens)>=3){
+        if(count($tokens)<3){
             throw new DNSTypeException('Unknown record should contain at least 3 fields.');
         }
         if($tokens[0]!=='\#'){

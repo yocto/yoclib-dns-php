@@ -24,6 +24,8 @@ class DNSType{
 
     public const SRV = 33;
 
+    public const DS = 43;
+
     public const RRSIG = 46;
     public const NSEC = 47;
     public const DNSKEY = 48;

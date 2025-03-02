@@ -11,6 +11,7 @@ use YOCLIB\DNS\Types\A;
 use YOCLIB\DNS\Types\AAAA;
 use YOCLIB\DNS\Types\CAA;
 use YOCLIB\DNS\Types\CNAME;
+use YOCLIB\DNS\Types\DS;
 use YOCLIB\DNS\Types\MB;
 use YOCLIB\DNS\Types\MD;
 use YOCLIB\DNS\Types\MF;
@@ -191,6 +192,12 @@ class TypeHelper{
         //TODO CERT
         //TODO A6
         //TODO DNAME
+        if($type===DNSType::DS){
+            try{
+                return DS::deserializeFromPresentationFormat($data);
+            }catch(Throwable){}
+            return DS::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+        }
         if($type===DNSType::SPF){
             try{
                 return SPF::deserializeFromPresentationFormat($data);
@@ -263,6 +270,9 @@ class TypeHelper{
         }
         if($type===DNSType::SRV){
             return SRV::deserializeFromWireFormat($data);
+        }
+        if($type===DNSType::DS){
+            return DS::deserializeFromWireFormat($data);
         }
         if($type===DNSType::SPF){
             return SPF::deserializeFromWireFormat($data);
