@@ -1,6 +1,7 @@
 <?php
 namespace YOCLIB\DNS\Types;
 
+use YOCLIB\DNS\Exceptions\DNSFieldException;
 use YOCLIB\DNS\Exceptions\DNSTypeException;
 use YOCLIB\DNS\Fields\Bitmap;
 use YOCLIB\DNS\Fields\Field;
@@ -40,6 +41,28 @@ abstract class Type{
             }
         }
         return false;
+    }
+
+    /**
+     * @param FQDN $origin
+     * @param ?bool|null $ignoreCurrentState
+     * @return self
+     * @throws DNSFieldException
+     */
+    public function makeAbsolute(FQDN $origin,?bool $ignoreCurrentState=false): self{
+        if(!$this->hasFQDNs()){
+            return $this;
+        }
+        $newFields = [];
+        foreach($this->getFields() as $field){
+            if($field instanceof FQDN){
+                $newFields[] = $field->makeAbsolute($origin,$ignoreCurrentState);
+                continue;
+            }
+            $newFields[] = $field;
+        }
+        /**@var Type $typeObj*/
+        return new (self::class)($newFields);
     }
 
     /**
