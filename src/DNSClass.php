@@ -8,4 +8,7 @@ class DNSClass{
     public const CH = 3;
     public const HS = 4;
 
+    public const NONE = 254;
+    public const ANY = 255;
+
 }
