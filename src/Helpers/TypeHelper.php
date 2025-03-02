@@ -6,6 +6,7 @@ use Throwable;
 use YOCLIB\DNS\DNSType;
 use YOCLIB\DNS\Exceptions\DNSFieldException;
 use YOCLIB\DNS\Exceptions\DNSTypeException;
+use YOCLIB\DNS\Fields\FQDN;
 use YOCLIB\DNS\Types\A;
 use YOCLIB\DNS\Types\AAAA;
 use YOCLIB\DNS\Types\CAA;
@@ -26,6 +27,48 @@ use YOCLIB\DNS\Types\Type;
 use YOCLIB\DNS\Types\Unknown;
 
 class TypeHelper{
+
+    /**
+     * @param string $nameA
+     * @param string $dataA
+     * @param int $classA
+     * @param int $typeA
+     * @param string $nameB
+     * @param string $dataB
+     * @param int $classB
+     * @param int $typeB
+     * @return int
+     * @throws DNSFieldException
+     */
+    public static function compare(string $nameA,string $dataA,int $classA,int $typeA,string $nameB,string $dataB,int $classB,int $typeB): int{
+        if($dataA===$dataB && $classA===$classB && $typeA===$typeB){
+            return 0;
+        }
+
+        $diff = FQDN::compare(FQDN::deserializeFromPresentationFormat($nameA),FQDN::deserializeFromPresentationFormat($nameB));
+        if($diff!=0){
+            return $diff;
+        }
+
+        $diff = $classA - $classB;
+        if($diff!=0){
+            return $diff;
+        }
+
+        $diff = $typeA - $typeB;
+        if($diff!=0){
+            return $diff;
+        }
+
+        for($i=0;($i<strlen($dataA) && $i<strlen($dataB));$i++){
+            $diff = ord($dataA[$i]) - ord($dataB[$i]);
+            if($diff!=0){
+                return $diff;
+            }
+        }
+
+        return strlen($dataA) - strlen($dataB);
+    }
 
     /**
      * @param string $data
