@@ -263,6 +263,18 @@ class FQDNTest extends TestCase{
      * @return void
      * @throws DNSFieldException
      */
+    public function testCompare(): void{
+        self::assertSame(0,FQDN::compare(FQDN::deserializeFromPresentationFormat('example.com.'),FQDN::deserializeFromPresentationFormat('example.com.')));
+        self::assertSame(-1,FQDN::compare(FQDN::deserializeFromPresentationFormat('sub.example.com.'),FQDN::deserializeFromPresentationFormat('sub2.example.com.')));
+        self::assertSame(1,FQDN::compare(FQDN::deserializeFromPresentationFormat('sub2.example.com.'),FQDN::deserializeFromPresentationFormat('sub.example.com.')));
+        self::assertSame(-1,FQDN::compare(FQDN::deserializeFromPresentationFormat('example.com.'),FQDN::deserializeFromPresentationFormat('sub.example.com.')));
+        self::assertSame(1,FQDN::compare(FQDN::deserializeFromPresentationFormat('sub.example.com.'),FQDN::deserializeFromPresentationFormat('example.com.')));
+    }
+
+    /**
+     * @return void
+     * @throws DNSFieldException
+     */
     public function testDeserializeFromPresentationFormat(): void{
         self::assertSame([],FQDN::deserializeFromPresentationFormat('@')->getValue());
         self::assertSame(['@'],FQDN::deserializeFromPresentationFormat('\@')->getValue());
