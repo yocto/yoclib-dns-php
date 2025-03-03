@@ -10,7 +10,6 @@ class IPv4AddressTest extends TestCase{
 
     /**
      * @return void
-     * @throws DNSFieldException
      */
     public function testConstructor(): void{
         self::assertInstanceOf(IPv4Address::class,new IPv4Address('10.0.1.1'));

@@ -10,7 +10,6 @@ class FQDNTest extends TestCase{
 
     /**
      * @return void
-     * @throws DNSFieldException
      */
     public function testConstructor(): void{
         self::assertInstanceOf(FQDN::class,new FQDN());

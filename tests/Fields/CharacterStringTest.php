@@ -10,7 +10,6 @@ class CharacterStringTest extends TestCase{
 
     /**
      * @return void
-     * @throws DNSFieldException
      */
     public function testConstructor(): void{
         self::assertInstanceOf(CharacterString::class,new CharacterString(''));

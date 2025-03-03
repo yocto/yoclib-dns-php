@@ -10,7 +10,6 @@ class IPv6AddressTest extends TestCase{
 
     /**
      * @return void
-     * @throws DNSFieldException
      */
     public function testConstructor(): void{
         self::assertInstanceOf(IPv6Address::class,new IPv6Address('::'));
