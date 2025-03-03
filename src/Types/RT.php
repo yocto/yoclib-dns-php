@@ -8,7 +8,7 @@ use YOCLIB\DNS\Fields\FQDN;
 use YOCLIB\DNS\Fields\UnsignedInteger16;
 use YOCLIB\DNS\LineLexer;
 
-class AFSDB extends Type{
+class RT extends Type{
 
     /**
      * @param array|Field[] $fields
@@ -29,11 +29,11 @@ class AFSDB extends Type{
 
     /**
      * @param string $data
-     * @return AFSDB
+     * @return RT
      * @throws DNSFieldException
      * @throws DNSTypeException
      */
-    public static function deserializeFromPresentationFormat(string $data): AFSDB{
+    public static function deserializeFromPresentationFormat(string $data): RT{
         $tokens = LineLexer::tokenizeLine($data);
         if(count($tokens)!==2){
             throw new DNSTypeException('MX record should contain 2 fields.');
@@ -46,18 +46,18 @@ class AFSDB extends Type{
 
     /**
      * @param string $data
-     * @return AFSDB
+     * @return RT
      * @throws DNSFieldException
      * @throws DNSTypeException
      */
-    public static function deserializeFromWireFormat(string $data): AFSDB{
+    public static function deserializeFromWireFormat(string $data): RT{
         $offset = 0;
 
-        $subtype = substr($data,$offset,UnsignedInteger16::calculateLength(substr($data,$offset)));
-        $offset += strlen($subtype);
+        $preference = substr($data,$offset,UnsignedInteger16::calculateLength(substr($data,$offset)));
+        $offset += strlen($preference);
 
-        $hostname = substr($data,$offset,FQDN::calculateLength(substr($data,$offset)));
-        $offset += strlen($hostname);
+        $intermediateHost = substr($data,$offset,FQDN::calculateLength(substr($data,$offset)));
+        $offset += strlen($intermediateHost);
 
         $remaining = substr($data,$offset);
         if(strlen($remaining)>0){
@@ -65,8 +65,8 @@ class AFSDB extends Type{
         }
 
         return new self([
-            UnsignedInteger16::deserializeFromWireFormat($subtype),
-            FQDN::deserializeFromWireFormat($hostname),
+            UnsignedInteger16::deserializeFromWireFormat($preference),
+            FQDN::deserializeFromWireFormat($intermediateHost),
         ]);
     }
 

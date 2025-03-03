@@ -9,10 +9,12 @@ use YOCLIB\DNS\Exceptions\DNSTypeException;
 use YOCLIB\DNS\Fields\FQDN;
 use YOCLIB\DNS\Types\A;
 use YOCLIB\DNS\Types\AAAA;
+use YOCLIB\DNS\Types\AFSDB;
 use YOCLIB\DNS\Types\CAA;
 use YOCLIB\DNS\Types\CNAME;
 use YOCLIB\DNS\Types\DS;
 use YOCLIB\DNS\Types\HINFO;
+use YOCLIB\DNS\Types\ISDN;
 use YOCLIB\DNS\Types\MB;
 use YOCLIB\DNS\Types\MD;
 use YOCLIB\DNS\Types\MF;
@@ -22,6 +24,8 @@ use YOCLIB\DNS\Types\MR;
 use YOCLIB\DNS\Types\MX;
 use YOCLIB\DNS\Types\NS;
 use YOCLIB\DNS\Types\PTR;
+use YOCLIB\DNS\Types\RP;
+use YOCLIB\DNS\Types\RT;
 use YOCLIB\DNS\Types\SOA;
 use YOCLIB\DNS\Types\SPF;
 use YOCLIB\DNS\Types\SRV;
@@ -29,6 +33,7 @@ use YOCLIB\DNS\Types\TXT;
 use YOCLIB\DNS\Types\Type;
 use YOCLIB\DNS\Types\Unknown;
 use YOCLIB\DNS\Types\WKS;
+use YOCLIB\DNS\Types\X25;
 
 class TypeHelper{
 
@@ -179,11 +184,36 @@ class TypeHelper{
             }catch(Throwable){}
             return TXT::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
         }
-        //TODO RP
-        //TODO AFSDB
-        //TODO X25
-        //TODO ISDN
-        //TODO RT
+        if($type===DNSType::RP){
+            try{
+                return RP::deserializeFromPresentationFormat($data);
+            }catch(Throwable){}
+            return RP::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+        }
+        if($type===DNSType::AFSDB){
+            try{
+                return AFSDB::deserializeFromPresentationFormat($data);
+            }catch(Throwable){}
+            return AFSDB::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+        }
+        if($type===DNSType::X25){
+            try{
+                return X25::deserializeFromPresentationFormat($data);
+            }catch(Throwable){}
+            return X25::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+        }
+        if($type===DNSType::ISDN){
+            try{
+                return ISDN::deserializeFromPresentationFormat($data);
+            }catch(Throwable){}
+            return ISDN::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+        }
+        if($type===DNSType::RT){
+            try{
+                return RT::deserializeFromPresentationFormat($data);
+            }catch(Throwable){}
+            return RT::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+        }
         //TODO NSAP
         //TODO NSAP-PTR
         //TODO SIG
@@ -292,6 +322,21 @@ class TypeHelper{
         }
         if($type===DNSType::TXT){
             return TXT::deserializeFromWireFormat($data);
+        }
+        if($type===DNSType::RP){
+            return RP::deserializeFromWireFormat($data);
+        }
+        if($type===DNSType::AFSDB){
+            return AFSDB::deserializeFromWireFormat($data);
+        }
+        if($type===DNSType::X25){
+            return X25::deserializeFromWireFormat($data);
+        }
+        if($type===DNSType::ISDN){
+            return ISDN::deserializeFromWireFormat($data);
+        }
+        if($type===DNSType::RT){
+            return RT::deserializeFromWireFormat($data);
         }
         if($type===DNSType::AAAA){
             return AAAA::deserializeFromWireFormat($data);

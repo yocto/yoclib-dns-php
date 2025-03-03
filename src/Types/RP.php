@@ -1,9 +1,11 @@
 <?php
 namespace YOCLIB\DNS\Types;
 
+use YOCLIB\DNS\Exceptions\DNSFieldException;
 use YOCLIB\DNS\Exceptions\DNSTypeException;
 use YOCLIB\DNS\Fields\Field;
 use YOCLIB\DNS\Fields\FQDN;
+use YOCLIB\DNS\LineLexer;
 
 class RP extends Type{
 
@@ -24,12 +26,46 @@ class RP extends Type{
         }
     }
 
+    /**
+     * @param string $data
+     * @return RP
+     * @throws DNSFieldException
+     * @throws DNSTypeException
+     */
     public static function deserializeFromPresentationFormat(string $data): RP{
-        throw new \RuntimeException('Not implemented');
+        $tokens = LineLexer::tokenizeLine($data);
+        if(count($tokens)!==2){
+            throw new DNSTypeException('RP record should contain 2 fields.');
+        }
+        return new self([
+            FQDN::deserializeFromPresentationFormat($tokens[0]),
+            FQDN::deserializeFromPresentationFormat($tokens[1]),
+        ]);
     }
 
+    /**
+     * @param string $data
+     * @return RP
+     * @throws DNSFieldException
+     * @throws DNSTypeException
+     */
     public static function deserializeFromWireFormat(string $data): RP{
-        throw new \RuntimeException('Not implemented');
+        $offset = 0;
+
+        $mboxDName = substr($data,$offset,FQDN::calculateLength(substr($data,$offset)));
+        $offset += strlen($mboxDName);
+
+        $txtDName = substr($data,$offset,FQDN::calculateLength(substr($data,$offset)));
+        $offset += strlen($txtDName);
+
+        $remaining = substr($data,$offset);
+        if(strlen($remaining)>0){
+            throw new DNSTypeException('Cannot have remaining data.');
+        }
+        return new self([
+            FQDN::deserializeFromWireFormat($mboxDName),
+            FQDN::deserializeFromWireFormat($txtDName),
+        ]);
     }
 
 }
