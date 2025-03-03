@@ -168,7 +168,7 @@ class FQDN implements Field{
             $labelB = $labelsB[$startB];
 
             for($j=0;($j<strlen($labelA) && $j<strlen($labelB));$j++){
-                $diff = strcmp($labelA,$labelB);
+                $diff = strcmp($labelA[$j],$labelB[$j]);
                 if($diff!=0){
                     return $diff;
                 }
