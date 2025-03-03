@@ -20,7 +20,6 @@ class IPv6AddressTest extends TestCase{
 
     /**
      * @return void
-     * @throws DNSFieldException
      */
     public function testNotIPv4(): void{
         self::expectException(DNSFieldException::class);
@@ -31,7 +30,6 @@ class IPv6AddressTest extends TestCase{
 
     /**
      * @return void
-     * @throws DNSFieldException
      */
     public function testGetValue(): void{
         self::assertSame('::',(new IPv6Address('::'))->getValue());
@@ -42,7 +40,6 @@ class IPv6AddressTest extends TestCase{
 
     /**
      * @return void
-     * @throws DNSFieldException
      */
     public function testSerializeToPresentationFormat(): void{
         self::assertSame('::',(new IPv6Address('::'))->serializeToPresentationFormat());
@@ -53,7 +50,6 @@ class IPv6AddressTest extends TestCase{
 
     /**
      * @return void
-     * @throws DNSFieldException
      */
     public function testSerializeToWireFormat(): void{
         self::assertSame("\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00",(new IPv6Address('::'))->serializeToWireFormat());

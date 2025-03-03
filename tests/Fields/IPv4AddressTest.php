@@ -20,7 +20,6 @@ class IPv4AddressTest extends TestCase{
 
     /**
      * @return void
-     * @throws DNSFieldException
      */
     public function testNotIPv4(): void{
         self::expectException(DNSFieldException::class);
@@ -31,7 +30,6 @@ class IPv4AddressTest extends TestCase{
 
     /**
      * @return void
-     * @throws DNSFieldException
      */
     public function testGetValue(): void{
         self::assertSame('10.0.1.1',(new IPv4Address('10.0.1.1'))->getValue());
@@ -42,7 +40,6 @@ class IPv4AddressTest extends TestCase{
 
     /**
      * @return void
-     * @throws DNSFieldException
      */
     public function testSerializeToPresentationFormat(): void{
         self::assertSame('10.0.1.1',(new IPv4Address('10.0.1.1'))->serializeToPresentationFormat());
@@ -53,7 +50,6 @@ class IPv4AddressTest extends TestCase{
 
     /**
      * @return void
-     * @throws DNSFieldException
      */
     public function testSerializeToWireFormat(): void{
         self::assertSame("\x0A\x00\x01\x01",(new IPv4Address('10.0.1.1'))->serializeToWireFormat());

@@ -20,7 +20,6 @@ class CharacterStringTest extends TestCase{
 
     /**
      * @return void
-     * @throws DNSFieldException
      */
     public function testTooLong(): void{
         self::expectException(DNSFieldException::class);
@@ -31,7 +30,6 @@ class CharacterStringTest extends TestCase{
 
     /**
      * @return void
-     * @throws DNSFieldException
      */
     public function testGetValue(): void{
         self::assertSame('',(new CharacterString(''))->getValue());
@@ -42,7 +40,6 @@ class CharacterStringTest extends TestCase{
 
     /**
      * @return void
-     * @throws DNSFieldException
      */
     public function testSerializeToPresentationFormat(): void{
         self::assertSame('""',(new CharacterString(''))->serializeToPresentationFormat());
@@ -54,7 +51,6 @@ class CharacterStringTest extends TestCase{
 
     /**
      * @return void
-     * @throws DNSFieldException
      */
     public function testSerializeToWireFormat(): void{
         self::assertSame("\x00",(new CharacterString(''))->serializeToWireFormat());

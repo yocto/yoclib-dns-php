@@ -25,7 +25,6 @@ class FQDNTest extends TestCase{
 
     /**
      * @return void
-     * @throws DNSFieldException
      */
     public function testTooLongLabel(): void{
         self::expectException(DNSFieldException::class);
@@ -36,7 +35,6 @@ class FQDNTest extends TestCase{
 
     /**
      * @return void
-     * @throws DNSFieldException
      */
     public function testTooLongDomainName(): void{
         self::expectException(DNSFieldException::class);
@@ -47,7 +45,6 @@ class FQDNTest extends TestCase{
 
     /**
      * @return void
-     * @throws DNSFieldException
      */
     public function testGetValue(): void{
         self::assertSame([],(new FQDN())->getValue());
@@ -63,7 +60,6 @@ class FQDNTest extends TestCase{
 
     /**
      * @return void
-     * @throws DNSFieldException
      */
     public function testIsAbsolute(){
         self::assertFalse((new FQDN())->isAbsolute());
@@ -79,7 +75,6 @@ class FQDNTest extends TestCase{
 
     /**
      * @return void
-     * @throws DNSFieldException
      */
     public function testIsApex(){
         self::assertTrue((new FQDN())->isApex());
@@ -94,7 +89,6 @@ class FQDNTest extends TestCase{
 
     /**
      * @return void
-     * @throws DNSFieldException
      */
     public function testIsRelative(){
         self::assertTrue((new FQDN())->isRelative());
@@ -205,7 +199,6 @@ class FQDNTest extends TestCase{
 
     /**
      * @return void
-     * @throws DNSFieldException
      */
     public function testSerializeToPresentationFormat(): void{
         self::assertSame('@',(new FQDN())->serializeToPresentationFormat());
@@ -221,7 +214,6 @@ class FQDNTest extends TestCase{
 
     /**
      * @return void
-     * @throws DNSFieldException
      */
     public function testSerializeToWireFormat(): void{
         self::assertSame("\x40",(new FQDN())->serializeToWireFormat());
