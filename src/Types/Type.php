@@ -48,6 +48,7 @@ abstract class Type{
      * @param ?bool|null $ignoreCurrentState
      * @return self
      * @throws DNSFieldException
+     * @throws DNSTypeException
      */
     public function makeAbsolute(FQDN $origin,?bool $ignoreCurrentState=false): self{
         if(!$this->hasFQDNs()){
@@ -61,8 +62,7 @@ abstract class Type{
             }
             $newFields[] = $field;
         }
-        /**@var Type $typeObj*/
-        return new (self::class)($newFields);
+        return new static($newFields);
     }
 
     /**
