@@ -12,10 +12,12 @@ use YOCLIB\DNS\Types\AAAA;
 use YOCLIB\DNS\Types\CAA;
 use YOCLIB\DNS\Types\CNAME;
 use YOCLIB\DNS\Types\DS;
+use YOCLIB\DNS\Types\HINFO;
 use YOCLIB\DNS\Types\MB;
 use YOCLIB\DNS\Types\MD;
 use YOCLIB\DNS\Types\MF;
 use YOCLIB\DNS\Types\MG;
+use YOCLIB\DNS\Types\MINFO;
 use YOCLIB\DNS\Types\MR;
 use YOCLIB\DNS\Types\MX;
 use YOCLIB\DNS\Types\NS;
@@ -143,7 +145,7 @@ class TypeHelper{
         }
         if($type===DNSType::WKS){
             try{
-                return WKS::deserializeFromPresentationFormat($data,[]); //TODO Improve mapping
+                return WKS::deserializeFromPresentationFormat($data,[/*TODO Improve mapping*/]);
             }catch(Throwable){}
             return WKS::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
         }
@@ -153,8 +155,18 @@ class TypeHelper{
             }catch(Throwable){}
             return PTR::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
         }
-        //TODO HINFO
-        //TODO MINFO
+        if($type===DNSType::HINFO){
+            try{
+                return HINFO::deserializeFromPresentationFormat($data);
+            }catch(Throwable){}
+            return HINFO::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+        }
+        if($type===DNSType::MINFO){
+            try{
+                return MINFO::deserializeFromPresentationFormat($data);
+            }catch(Throwable){}
+            return MINFO::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+        }
         if($type===DNSType::MX){
             try{
                 return MX::deserializeFromPresentationFormat($data);
@@ -269,8 +281,12 @@ class TypeHelper{
         if($type===DNSType::PTR){
             return PTR::deserializeFromWireFormat($data);
         }
-        //TODO HINFO
-        //TODO MINFO
+        if($type===DNSType::HINFO){
+            return HINFO::deserializeFromWireFormat($data);
+        }
+        if($type===DNSType::MINFO){
+            return MINFO::deserializeFromWireFormat($data);
+        }
         if($type===DNSType::MX){
             return MX::deserializeFromWireFormat($data);
         }
