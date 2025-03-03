@@ -12,6 +12,7 @@ use YOCLIB\DNS\Types\AAAA;
 use YOCLIB\DNS\Types\AFSDB;
 use YOCLIB\DNS\Types\CAA;
 use YOCLIB\DNS\Types\CNAME;
+use YOCLIB\DNS\Types\DNAME;
 use YOCLIB\DNS\Types\DS;
 use YOCLIB\DNS\Types\GPOS;
 use YOCLIB\DNS\Types\HINFO;
@@ -36,6 +37,7 @@ use YOCLIB\DNS\Types\SRV;
 use YOCLIB\DNS\Types\TXT;
 use YOCLIB\DNS\Types\Type;
 use YOCLIB\DNS\Types\Unknown;
+use YOCLIB\DNS\Types\URI;
 use YOCLIB\DNS\Types\WKS;
 use YOCLIB\DNS\Types\X25;
 
@@ -266,18 +268,36 @@ class TypeHelper{
         //TODO KX
         //TODO CERT
         //TODO A6
-        //TODO DNAME
+        if($type===DNSType::DNAME){
+            try{
+                return DNAME::deserializeFromPresentationFormat($data);
+            }catch(Throwable){}
+            return DNAME::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+        }
         if($type===DNSType::DS){
             try{
                 return DS::deserializeFromPresentationFormat($data);
             }catch(Throwable){}
             return DS::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
         }
+        //TODO HTTPS
+//        if($type===DNSType::HTTPS){
+//            try{
+//                return HTTPS::deserializeFromPresentationFormat($data);
+//            }catch(Throwable){}
+//            return HTTPS::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+//        }
         if($type===DNSType::SPF){
             try{
                 return SPF::deserializeFromPresentationFormat($data);
             }catch(Throwable){}
             return SPF::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+        }
+        if($type===DNSType::URI){
+            try{
+                return URI::deserializeFromPresentationFormat($data);
+            }catch(Throwable){}
+            return URI::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
         }
         if($type===DNSType::CAA){
             try{
@@ -381,11 +401,21 @@ class TypeHelper{
         if($type===DNSType::SRV){
             return SRV::deserializeFromWireFormat($data);
         }
+        if($type===DNSType::DNAME){
+            return DNAME::deserializeFromWireFormat($data);
+        }
         if($type===DNSType::DS){
             return DS::deserializeFromWireFormat($data);
         }
+        //TODO HTTPS
+//        if($type===DNSType::HTTPS){
+//            return HTTPS::deserializeFromWireFormat($data);
+//        }
         if($type===DNSType::SPF){
             return SPF::deserializeFromWireFormat($data);
+        }
+        if($type===DNSType::URI){
+            return URI::deserializeFromWireFormat($data);
         }
         if($type===DNSType::CAA){
             return CAA::deserializeFromWireFormat($data);
