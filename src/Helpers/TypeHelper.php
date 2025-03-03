@@ -23,6 +23,8 @@ use YOCLIB\DNS\Types\MINFO;
 use YOCLIB\DNS\Types\MR;
 use YOCLIB\DNS\Types\MX;
 use YOCLIB\DNS\Types\NS;
+use YOCLIB\DNS\Types\NSAP;
+use YOCLIB\DNS\Types\NSAP_PTR;
 use YOCLIB\DNS\Types\PTR;
 use YOCLIB\DNS\Types\RP;
 use YOCLIB\DNS\Types\RT;
@@ -214,8 +216,19 @@ class TypeHelper{
             }catch(Throwable){}
             return RT::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
         }
-        //TODO NSAP
-        //TODO NSAP-PTR
+
+        if($type===DNSType::NSAP){
+            try{
+                return NSAP::deserializeFromPresentationFormat($data);
+            }catch(Throwable){}
+            return NSAP::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+        }
+        if($type===DNSType::NSAP_PTR){
+            try{
+                return NSAP_PTR::deserializeFromPresentationFormat($data);
+            }catch(Throwable){}
+            return NSAP_PTR::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+        }
         //TODO SIG
         //TODO KEY
         //TODO PX
@@ -337,6 +350,12 @@ class TypeHelper{
         }
         if($type===DNSType::RT){
             return RT::deserializeFromWireFormat($data);
+        }
+        if($type===DNSType::NSAP){
+            return NSAP::deserializeFromWireFormat($data);
+        }
+        if($type===DNSType::NSAP_PTR){
+            return NSAP_PTR::deserializeFromWireFormat($data);
         }
         if($type===DNSType::AAAA){
             return AAAA::deserializeFromWireFormat($data);

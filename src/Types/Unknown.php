@@ -70,7 +70,7 @@ class Unknown extends Type{
      */
     public static function deserializeFromWireFormat(string $data): Unknown{
         return new self([
-            new Binary($data),
+            Binary::deserializeFromWireFormat($data),
         ]);
     }
 
