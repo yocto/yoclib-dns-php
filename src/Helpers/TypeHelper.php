@@ -26,6 +26,7 @@ use YOCLIB\DNS\Types\NS;
 use YOCLIB\DNS\Types\NSAP;
 use YOCLIB\DNS\Types\NSAP_PTR;
 use YOCLIB\DNS\Types\PTR;
+use YOCLIB\DNS\Types\PX;
 use YOCLIB\DNS\Types\RP;
 use YOCLIB\DNS\Types\RT;
 use YOCLIB\DNS\Types\SOA;
@@ -231,7 +232,12 @@ class TypeHelper{
         }
         //TODO SIG
         //TODO KEY
-        //TODO PX
+        if($type===DNSType::PX){
+            try{
+                return PX::deserializeFromPresentationFormat($data);
+            }catch(Throwable){}
+            return PX::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+        }
         //TODO GPOS
         if($type===DNSType::AAAA){
             try{
@@ -356,6 +362,9 @@ class TypeHelper{
         }
         if($type===DNSType::NSAP_PTR){
             return NSAP_PTR::deserializeFromWireFormat($data);
+        }
+        if($type===DNSType::PX){
+            return PX::deserializeFromWireFormat($data);
         }
         if($type===DNSType::AAAA){
             return AAAA::deserializeFromWireFormat($data);
