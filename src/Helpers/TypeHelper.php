@@ -13,6 +13,7 @@ use YOCLIB\DNS\Types\AFSDB;
 use YOCLIB\DNS\Types\CAA;
 use YOCLIB\DNS\Types\CNAME;
 use YOCLIB\DNS\Types\DS;
+use YOCLIB\DNS\Types\GPOS;
 use YOCLIB\DNS\Types\HINFO;
 use YOCLIB\DNS\Types\ISDN;
 use YOCLIB\DNS\Types\MB;
@@ -238,7 +239,12 @@ class TypeHelper{
             }catch(Throwable){}
             return PX::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
         }
-        //TODO GPOS
+        if($type===DNSType::GPOS){
+            try{
+                return GPOS::deserializeFromPresentationFormat($data);
+            }catch(Throwable){}
+            return GPOS::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+        }
         if($type===DNSType::AAAA){
             try{
                 return AAAA::deserializeFromPresentationFormat($data);
@@ -365,6 +371,9 @@ class TypeHelper{
         }
         if($type===DNSType::PX){
             return PX::deserializeFromWireFormat($data);
+        }
+        if($type===DNSType::GPOS){
+            return GPOS::deserializeFromWireFormat($data);
         }
         if($type===DNSType::AAAA){
             return AAAA::deserializeFromWireFormat($data);
