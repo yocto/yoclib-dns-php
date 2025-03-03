@@ -268,11 +268,11 @@ class FQDNTest extends TestCase{
 
         self::assertSame(0,FQDN::compare($fqdn,$fqdn));
         self::assertSame(0,FQDN::compare(FQDN::deserializeFromPresentationFormat('sub.example.com.'),FQDN::deserializeFromPresentationFormat('sub.example.com.')));
-        self::assertSame(-1,FQDN::compare(FQDN::deserializeFromPresentationFormat('sub.example.com.'),FQDN::deserializeFromPresentationFormat('sub2.example.com.')));
-        self::assertSame(1,FQDN::compare(FQDN::deserializeFromPresentationFormat('sub2.example.com.'),FQDN::deserializeFromPresentationFormat('sub.example.com.')));
-        self::assertSame(-1,FQDN::compare(FQDN::deserializeFromPresentationFormat('example.com.'),FQDN::deserializeFromPresentationFormat('sub.example.com.')));
-        self::assertSame(1,FQDN::compare(FQDN::deserializeFromPresentationFormat('sub.example.com.'),FQDN::deserializeFromPresentationFormat('example.com.')));
-        self::assertSame(-1,FQDN::compare(FQDN::deserializeFromPresentationFormat('abc.example.com.'),FQDN::deserializeFromPresentationFormat('def.example.com.')));
+        self::assertLessThan(0,FQDN::compare(FQDN::deserializeFromPresentationFormat('sub.example.com.'),FQDN::deserializeFromPresentationFormat('sub2.example.com.')));
+        self::assertGreaterThan(0,FQDN::compare(FQDN::deserializeFromPresentationFormat('sub2.example.com.'),FQDN::deserializeFromPresentationFormat('sub.example.com.')));
+        self::assertLessThan(0,FQDN::compare(FQDN::deserializeFromPresentationFormat('example.com.'),FQDN::deserializeFromPresentationFormat('sub.example.com.')));
+        self::assertGreaterThan(0,FQDN::compare(FQDN::deserializeFromPresentationFormat('sub.example.com.'),FQDN::deserializeFromPresentationFormat('example.com.')));
+        self::assertLessThan(0,FQDN::compare(FQDN::deserializeFromPresentationFormat('abc.example.com.'),FQDN::deserializeFromPresentationFormat('def.example.com.')));
     }
 
     /**
