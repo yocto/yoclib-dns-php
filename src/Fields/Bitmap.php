@@ -37,7 +37,7 @@ class Bitmap implements Field{
     }
 
     /**
-     * @param ?array|null $mapping
+     * @param ?array|string[]|null $mapping
      * @return string
      */
     public function serializeToPresentationFormat(?array $mapping=null): string{
@@ -80,7 +80,7 @@ class Bitmap implements Field{
 
     /**
      * @param string $data
-     * @param ?array|null $mapping
+     * @param ?array|string[]|null $mapping
      * @return Bitmap
      * @throws DNSFieldException
      */

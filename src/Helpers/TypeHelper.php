@@ -26,6 +26,7 @@ use YOCLIB\DNS\Types\SRV;
 use YOCLIB\DNS\Types\TXT;
 use YOCLIB\DNS\Types\Type;
 use YOCLIB\DNS\Types\Unknown;
+use YOCLIB\DNS\Types\WKS;
 
 class TypeHelper{
 
@@ -137,8 +138,15 @@ class TypeHelper{
             }catch(Throwable){}
             return MR::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
         }
-        //TODO NULL
-        //TODO WKS
+        if($type===DNSType::NULL){
+            return Unknown::deserializeFromPresentationFormat($data);
+        }
+        if($type===DNSType::WKS){
+            try{
+                return WKS::deserializeFromPresentationFormat($data,[]); //TODO Improve mapping
+            }catch(Throwable){}
+            return WKS::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+        }
         if($type===DNSType::PTR){
             try{
                 return PTR::deserializeFromPresentationFormat($data);
@@ -252,8 +260,12 @@ class TypeHelper{
         if($type===DNSType::MR){
             return MR::deserializeFromWireFormat($data);
         }
-        //TODO NULL
-        //TODO WKS
+        if($type===DNSType::NULL){
+            return Unknown::deserializeFromWireFormat($data);
+        }
+        if($type===DNSType::WKS){
+            return WKS::deserializeFromWireFormat($data);
+        }
         if($type===DNSType::PTR){
             return PTR::deserializeFromWireFormat($data);
         }
