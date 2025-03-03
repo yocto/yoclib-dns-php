@@ -28,6 +28,6 @@
     }
   },
   "scripts": {
-    "test": "phpunit --coverage-clover coverage.xml ."
+    "test": "phpunit --coverage-clover coverage.xml --log-junit junit.xml ."
   }
 }
