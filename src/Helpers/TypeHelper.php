@@ -29,17 +29,21 @@ use YOCLIB\DNS\Types\MG;
 use YOCLIB\DNS\Types\MINFO;
 use YOCLIB\DNS\Types\MR;
 use YOCLIB\DNS\Types\MX;
+use YOCLIB\DNS\Types\NINFO;
 use YOCLIB\DNS\Types\NS;
 use YOCLIB\DNS\Types\NSAP;
 use YOCLIB\DNS\Types\NSAP_PTR;
 use YOCLIB\DNS\Types\PTR;
 use YOCLIB\DNS\Types\PX;
+use YOCLIB\DNS\Types\RKEY;
 use YOCLIB\DNS\Types\RP;
 use YOCLIB\DNS\Types\RT;
+use YOCLIB\DNS\Types\SMIMEA;
 use YOCLIB\DNS\Types\SOA;
 use YOCLIB\DNS\Types\SPF;
 use YOCLIB\DNS\Types\SRV;
 use YOCLIB\DNS\Types\TA;
+use YOCLIB\DNS\Types\TLSA;
 use YOCLIB\DNS\Types\TXT;
 use YOCLIB\DNS\Types\Type;
 use YOCLIB\DNS\Types\Unknown;
@@ -306,11 +310,31 @@ class TypeHelper{
         //TODO DHCID
         //TODO NSEC3
         //TODO NSEC3PARAM
-        //TODO TLSA
-        //TODO SMIMEA
+        if($type===DNSType::TLSA){
+            try{
+                return TLSA::deserializeFromPresentationFormat($data);
+            }catch(Throwable){}
+            return TLSA::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+        }
+        if($type===DNSType::SMIMEA){
+            try{
+                return SMIMEA::deserializeFromPresentationFormat($data);
+            }catch(Throwable){}
+            return SMIMEA::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+        }
         //TODO HIP
-        //TODO NINFO
-        //TODO RKEY
+        if($type===DNSType::NINFO){
+            try{
+                return NINFO::deserializeFromPresentationFormat($data);
+            }catch(Throwable){}
+            return NINFO::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+        }
+        if($type===DNSType::RKEY){
+            try{
+                return RKEY::deserializeFromPresentationFormat($data);
+            }catch(Throwable){}
+            return RKEY::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+        }
         //TODO TALINK
         //TODO CDS
         //TODO CDNSKEY
@@ -486,6 +510,18 @@ class TypeHelper{
         }
         if($type===DNSType::DS){
             return DS::deserializeFromWireFormat($data);
+        }
+        if($type===DNSType::TLSA){
+            return TLSA::deserializeFromWireFormat($data);
+        }
+        if($type===DNSType::SMIMEA){
+            return SMIMEA::deserializeFromWireFormat($data);
+        }
+        if($type===DNSType::NINFO){
+            return NINFO::deserializeFromWireFormat($data);
+        }
+        if($type===DNSType::RKEY){
+            return RKEY::deserializeFromWireFormat($data);
         }
         //TODO HTTPS
 //        if($type===DNSType::HTTPS){
