@@ -33,7 +33,9 @@ class LineLexer{
             $token .= $c;
         }
         $tokens[] = $token;
-        return array_filter($tokens);
+        return array_filter($tokens,static function(string $token){
+            return $token!=='';
+        });
     }
 
 }

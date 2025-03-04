@@ -499,7 +499,7 @@ class TypeHelper{
             return MR::deserializeFromWireFormat($data);
         }
         if($type===DNSType::NULL){
-            return Unknown::deserializeFromWireFormat($data);
+            return NULLType::deserializeFromWireFormat($data);
         }
         if($type===DNSType::WKS){
             return WKS::deserializeFromWireFormat($data);
