@@ -19,6 +19,7 @@ use YOCLIB\DNS\Types\DS;
 use YOCLIB\DNS\Types\GPOS;
 use YOCLIB\DNS\Types\HINFO;
 use YOCLIB\DNS\Types\ISDN;
+use YOCLIB\DNS\Types\KEY;
 use YOCLIB\DNS\Types\KX;
 use YOCLIB\DNS\Types\LP;
 use YOCLIB\DNS\Types\MB;
@@ -238,7 +239,12 @@ class TypeHelper{
             return NSAP_PTR::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
         }
         //TODO SIG
-        //TODO KEY
+        if($type===DNSType::KEY){
+            try{
+                return KEY::deserializeFromPresentationFormat($data);
+            }catch(Throwable){}
+            return KEY::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+        }
         if($type===DNSType::PX){
             try{
                 return PX::deserializeFromPresentationFormat($data);
@@ -459,6 +465,9 @@ class TypeHelper{
         }
         if($type===DNSType::NSAP_PTR){
             return NSAP_PTR::deserializeFromWireFormat($data);
+        }
+        if($type===DNSType::KEY){
+            return KEY::deserializeFromWireFormat($data);
         }
         if($type===DNSType::PX){
             return PX::deserializeFromWireFormat($data);

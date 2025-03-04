@@ -63,7 +63,6 @@ class AFSDB extends Type{
         if(strlen($remaining)>0){
             throw new DNSTypeException('Cannot have remaining data.');
         }
-
         return new self([
             UnsignedInteger16::deserializeFromWireFormat($subtype),
             FQDN::deserializeFromWireFormat($hostname),
