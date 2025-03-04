@@ -12,9 +12,11 @@ use YOCLIB\DNS\Types\AAAA;
 use YOCLIB\DNS\Types\AFSDB;
 use YOCLIB\DNS\Types\AVC;
 use YOCLIB\DNS\Types\CAA;
+use YOCLIB\DNS\Types\CLA;
 use YOCLIB\DNS\Types\CNAME;
 use YOCLIB\DNS\Types\DLV;
 use YOCLIB\DNS\Types\DNAME;
+use YOCLIB\DNS\Types\DOA;
 use YOCLIB\DNS\Types\DS;
 use YOCLIB\DNS\Types\GPOS;
 use YOCLIB\DNS\Types\HINFO;
@@ -35,9 +37,11 @@ use YOCLIB\DNS\Types\NSAP;
 use YOCLIB\DNS\Types\NSAP_PTR;
 use YOCLIB\DNS\Types\PTR;
 use YOCLIB\DNS\Types\PX;
+use YOCLIB\DNS\Types\RESINFO;
 use YOCLIB\DNS\Types\RKEY;
 use YOCLIB\DNS\Types\RP;
 use YOCLIB\DNS\Types\RT;
+use YOCLIB\DNS\Types\SINK;
 use YOCLIB\DNS\Types\SMIMEA;
 use YOCLIB\DNS\Types\SOA;
 use YOCLIB\DNS\Types\SPF;
@@ -48,6 +52,7 @@ use YOCLIB\DNS\Types\TXT;
 use YOCLIB\DNS\Types\Type;
 use YOCLIB\DNS\Types\Unknown;
 use YOCLIB\DNS\Types\URI;
+use YOCLIB\DNS\Types\WALLET;
 use YOCLIB\DNS\Types\WKS;
 use YOCLIB\DNS\Types\X25;
 
@@ -293,7 +298,12 @@ class TypeHelper{
             }catch(Throwable){}
             return DNAME::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
         }
-        //TODO SINK
+        if($type===DNSType::SINK){
+            try{
+                return SINK::deserializeFromPresentationFormat($data);
+            }catch(Throwable){}
+            return SINK::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+        }
         //TODO OPT
         //TODO APL
         if($type===DNSType::DS){
@@ -388,11 +398,31 @@ class TypeHelper{
             }catch(Throwable){}
             return AVC::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
         }
-        //TODO DOA
+        if($type===DNSType::DOA){
+            try{
+                return DOA::deserializeFromPresentationFormat($data);
+            }catch(Throwable){}
+            return DOA::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+        }
         //TODO AMTRELAY
-        //TODO RESINFO
-        //TODO WALLET
-        //TODO CLA
+        if($type===DNSType::RESINFO){
+            try{
+                return RESINFO::deserializeFromPresentationFormat($data);
+            }catch(Throwable){}
+            return RESINFO::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+        }
+        if($type===DNSType::WALLET){
+            try{
+                return WALLET::deserializeFromPresentationFormat($data);
+            }catch(Throwable){}
+            return WALLET::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+        }
+        if($type===DNSType::CLA){
+            try{
+                return CLA::deserializeFromPresentationFormat($data);
+            }catch(Throwable){}
+            return CLA::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+        }
         //TODO IPN
         if($type===DNSType::TA){
             try{
@@ -541,6 +571,18 @@ class TypeHelper{
         }
         if($type===DNSType::AVC){
             return AVC::deserializeFromWireFormat($data);
+        }
+        if($type===DNSType::DOA){
+            return DOA::deserializeFromWireFormat($data);
+        }
+        if($type===DNSType::RESINFO){
+            return RESINFO::deserializeFromWireFormat($data);
+        }
+        if($type===DNSType::WALLET){
+            return WALLET::deserializeFromWireFormat($data);
+        }
+        if($type===DNSType::CLA){
+            return CLA::deserializeFromWireFormat($data);
         }
         if($type===DNSType::TA){
             return TA::deserializeFromWireFormat($data);
