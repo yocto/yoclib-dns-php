@@ -58,7 +58,7 @@ class Unknown extends Type{
         if(strlen($output)!==$length){
             throw new DNSTypeException('Length is not same as actual data.');
         }
-        return new self([
+        return new static([
             new Binary($output),
         ]);
     }
@@ -69,7 +69,7 @@ class Unknown extends Type{
      * @throws DNSTypeException
      */
     public static function deserializeFromWireFormat(string $data): Unknown{
-        return new self([
+        return new static([
             Binary::deserializeFromWireFormat($data),
         ]);
     }

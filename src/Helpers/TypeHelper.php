@@ -34,6 +34,7 @@ use YOCLIB\DNS\Types\NINFO;
 use YOCLIB\DNS\Types\NS;
 use YOCLIB\DNS\Types\NSAP;
 use YOCLIB\DNS\Types\NSAP_PTR;
+use YOCLIB\DNS\Types\NULLType;
 use YOCLIB\DNS\Types\PTR;
 use YOCLIB\DNS\Types\PX;
 use YOCLIB\DNS\Types\RESINFO;
@@ -176,7 +177,7 @@ class TypeHelper{
             return MR::deserializeFromPresentationFormat($data);
         }
         if($type===DNSType::NULL){
-            return Unknown::deserializeFromPresentationFormat($data);
+            return NULLType::deserializeFromPresentationFormat($data);
         }
         if($type===DNSType::WKS){
             if(Unknown::detectUnknown($data)){
