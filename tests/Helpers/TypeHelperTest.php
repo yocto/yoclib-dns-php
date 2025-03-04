@@ -9,9 +9,11 @@ use YOCLIB\DNS\Exceptions\DNSFieldException;
 use YOCLIB\DNS\Exceptions\DNSTypeException;
 use YOCLIB\DNS\Helpers\TypeHelper;
 use YOCLIB\DNS\Types\A;
+use YOCLIB\DNS\Types\AFSDB;
 use YOCLIB\DNS\Types\CNAME;
 use YOCLIB\DNS\Types\DNAME;
 use YOCLIB\DNS\Types\HINFO;
+use YOCLIB\DNS\Types\ISDN;
 use YOCLIB\DNS\Types\MB;
 use YOCLIB\DNS\Types\MD;
 use YOCLIB\DNS\Types\MF;
@@ -20,12 +22,16 @@ use YOCLIB\DNS\Types\MINFO;
 use YOCLIB\DNS\Types\MR;
 use YOCLIB\DNS\Types\MX;
 use YOCLIB\DNS\Types\NS;
+use YOCLIB\DNS\Types\NSAP;
 use YOCLIB\DNS\Types\NSAP_PTR;
 use YOCLIB\DNS\Types\NULLType;
 use YOCLIB\DNS\Types\PTR;
+use YOCLIB\DNS\Types\RP;
+use YOCLIB\DNS\Types\RT;
 use YOCLIB\DNS\Types\SOA;
 use YOCLIB\DNS\Types\TXT;
 use YOCLIB\DNS\Types\WKS;
+use YOCLIB\DNS\Types\X25;
 
 class TypeHelperTest extends TestCase{
 
@@ -82,17 +88,25 @@ class TypeHelperTest extends TestCase{
         $this->assertInstanceOf(TXT::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('"Text 1" "Text 2" "Text 3"',DNSClass::IN,DNSType::TXT));
         $this->assertInstanceOf(TXT::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 21 06546578742031 06546578742032 06546578742033',DNSClass::IN,DNSType::TXT));
 
-        //TODO RP
+        $this->assertInstanceOf(RP::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('mailbox.example.com. text.example.com.',DNSClass::IN,DNSType::RP));
+        $this->assertInstanceOf(RP::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 39 076D61696C626F78076578616D706C6503636F6D00 0474657874076578616D706C6503636F6D00',DNSClass::IN,DNSType::RP));
 
-        //TODO AFSDB
+        $this->assertInstanceOf(AFSDB::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('1 afs.example.com.',DNSClass::IN,DNSType::AFSDB));
+        $this->assertInstanceOf(AFSDB::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 19 0001 03616673076578616D706C6503636F6D00',DNSClass::IN,DNSType::AFSDB));
 
-        //TODO X25
+        $this->assertInstanceOf(X25::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('311061700956',DNSClass::IN,DNSType::X25));
+        $this->assertInstanceOf(X25::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 13 0C333131303631373030393536',DNSClass::IN,DNSType::X25));
 
-        //TODO ISDN
+        $this->assertInstanceOf(ISDN::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('150862028003217',DNSClass::IN,DNSType::ISDN));
+        $this->assertInstanceOf(ISDN::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('150862028003217 004',DNSClass::IN,DNSType::ISDN));
+        $this->assertInstanceOf(ISDN::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 9 081508620280032170',DNSClass::IN,DNSType::ISDN));
+        $this->assertInstanceOf(ISDN::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 13 081508620280032170 03303034',DNSClass::IN,DNSType::ISDN));
 
-        //TODO RT
+        $this->assertInstanceOf(RT::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('20 relay.example.com.',DNSClass::IN,DNSType::RT));
+        $this->assertInstanceOf(RT::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 21 0014 0572656C6179076578616D706C6503636F6D00',DNSClass::IN,DNSType::RT));
 
-        //TODO NSAP
+        $this->assertInstanceOf(NSAP::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('0x47.0005.80.005a00.0000.0001.e133.ffffff000161.00',DNSClass::IN,DNSType::NSAP));
+        $this->assertInstanceOf(NSAP::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 20 47000580005A0000000001E133FFFFFF00016100',DNSClass::IN,DNSType::NSAP));
 
         $this->assertInstanceOf(NSAP_PTR::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('example.com.',DNSClass::IN,DNSType::NSAP_PTR));
         $this->assertInstanceOf(NSAP_PTR::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 13 076578616D706C6503636F6D00',DNSClass::IN,DNSType::NSAP_PTR));
@@ -138,6 +152,22 @@ class TypeHelperTest extends TestCase{
         $this->assertInstanceOf(MX::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('000A').hex2bin('026D78076578616D706C6503636F6D00'),DNSClass::IN,DNSType::MX));
 
         $this->assertInstanceOf(TXT::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('06546578742031').hex2bin('06546578742032').hex2bin('06546578742033'),DNSClass::IN,DNSType::TXT));
+
+        $this->assertInstanceOf(RP::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('076D61696C626F78076578616D706C6503636F6D00').hex2bin('0474657874076578616D706C6503636F6D00'),DNSClass::IN,DNSType::RP));
+
+        $this->assertInstanceOf(AFSDB::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('0001').hex2bin('03616673076578616D706C6503636F6D00'),DNSClass::IN,DNSType::AFSDB));
+
+        $this->assertInstanceOf(X25::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('0C333131303631373030393536'),DNSClass::IN,DNSType::X25));
+
+        $this->assertInstanceOf(ISDN::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('081508620280032170').hex2bin('03303034'),DNSClass::IN,DNSType::ISDN));
+
+        $this->assertInstanceOf(RT::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('0014').hex2bin('0572656C6179076578616D706C6503636F6D00'),DNSClass::IN,DNSType::RT));
+
+        $this->assertInstanceOf(NSAP::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('47000580005A0000000001E133FFFFFF00016100'),DNSClass::IN,DNSType::NSAP));
+
+        $this->assertInstanceOf(NSAP_PTR::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('076578616D706C6503636F6D00'),DNSClass::IN,DNSType::NSAP_PTR));
+
+        $this->assertInstanceOf(DNAME::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('076578616D706C6503636F6D00'),DNSClass::IN,DNSType::DNAME));
     }
 
 }

@@ -122,6 +122,9 @@ class TypeHelper{
         if($class===0){
             throw new DNSTypeException('Class cannot be zero.');
         }
+        if($type===0){
+            throw new DNSTypeException('Type cannot be zero.');
+        }
         if($type===DNSType::A){
             if(Unknown::detectUnknown($data)){
                 return A::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
@@ -470,6 +473,9 @@ class TypeHelper{
     public static function deserializeFromWireFormatByClassAndType(string $data,int $class,int $type): Type{
         if($class===0){
             throw new DNSTypeException('Class cannot be zero.');
+        }
+        if($type===0){
+            throw new DNSTypeException('Type cannot be zero.');
         }
         if($type===DNSType::A){
             return A::deserializeFromWireFormat($data);
