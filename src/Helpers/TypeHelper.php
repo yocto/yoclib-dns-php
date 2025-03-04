@@ -1,8 +1,6 @@
 <?php
 namespace YOCLIB\DNS\Helpers;
 
-use Throwable;
-
 use YOCLIB\DNS\DNSType;
 use YOCLIB\DNS\Exceptions\DNSFieldException;
 use YOCLIB\DNS\Exceptions\DNSTypeException;
@@ -12,6 +10,7 @@ use YOCLIB\DNS\Types\AAAA;
 use YOCLIB\DNS\Types\AFSDB;
 use YOCLIB\DNS\Types\AVC;
 use YOCLIB\DNS\Types\CAA;
+use YOCLIB\DNS\Types\CDS;
 use YOCLIB\DNS\Types\CLA;
 use YOCLIB\DNS\Types\CNAME;
 use YOCLIB\DNS\Types\DLV;
@@ -47,6 +46,7 @@ use YOCLIB\DNS\Types\SOA;
 use YOCLIB\DNS\Types\SPF;
 use YOCLIB\DNS\Types\SRV;
 use YOCLIB\DNS\Types\TA;
+use YOCLIB\DNS\Types\TALINK;
 use YOCLIB\DNS\Types\TLSA;
 use YOCLIB\DNS\Types\TXT;
 use YOCLIB\DNS\Types\Type;
@@ -102,6 +102,15 @@ class TypeHelper{
 
     /**
      * @param string $data
+     * @return string
+     * @throws DNSTypeException
+     */
+    public static function convertFromUnknown(string $data): string{
+        return Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat();
+    }
+
+    /**
+     * @param string $data
      * @param int $class
      * @param int $type
      * @return Type
@@ -113,204 +122,204 @@ class TypeHelper{
             throw new DNSTypeException('Class cannot be zero.');
         }
         if($type===DNSType::A){
-            try{
-                return A::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return A::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return A::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return A::deserializeFromPresentationFormat($data);
         }
         if($type===DNSType::NS){
-            try{
-                return NS::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return NS::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return NS::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return NS::deserializeFromPresentationFormat($data);
         }
         if($type===DNSType::MD){
-            try{
-                return MD::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return MD::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return MD::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return MD::deserializeFromPresentationFormat($data);
         }
         if($type===DNSType::MF){
-            try{
-                return MF::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return MF::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return MF::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return MF::deserializeFromPresentationFormat($data);
         }
         if($type===DNSType::CNAME){
-            try{
-                return CNAME::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return CNAME::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return CNAME::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return CNAME::deserializeFromPresentationFormat($data);
         }
         if($type===DNSType::SOA){
-            try{
-                return SOA::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return SOA::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return SOA::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return SOA::deserializeFromPresentationFormat($data);
         }
         if($type===DNSType::MB){
-            try{
-                return MB::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return MB::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return MB::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return MB::deserializeFromPresentationFormat($data);
         }
         if($type===DNSType::MG){
-            try{
-                return MG::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return MG::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return MG::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return MG::deserializeFromPresentationFormat($data);
         }
         if($type===DNSType::MR){
-            try{
-                return MR::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return MR::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return MR::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return MR::deserializeFromPresentationFormat($data);
         }
         if($type===DNSType::NULL){
             return Unknown::deserializeFromPresentationFormat($data);
         }
         if($type===DNSType::WKS){
-            try{
-                return WKS::deserializeFromPresentationFormat($data,[/*TODO Improve mapping*/]);
-            }catch(Throwable){}
-            return WKS::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return WKS::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return WKS::deserializeFromPresentationFormat($data,[/*TODO Improve mapping*/]);
         }
         if($type===DNSType::PTR){
-            try{
-                return PTR::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return PTR::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return PTR::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return PTR::deserializeFromPresentationFormat($data);
         }
         if($type===DNSType::HINFO){
-            try{
-                return HINFO::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return HINFO::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return HINFO::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return HINFO::deserializeFromPresentationFormat($data);
         }
         if($type===DNSType::MINFO){
-            try{
-                return MINFO::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return MINFO::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return MINFO::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return MINFO::deserializeFromPresentationFormat($data);
         }
         if($type===DNSType::MX){
-            try{
-                return MX::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return MX::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return MX::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return MX::deserializeFromPresentationFormat($data);
         }
         if($type===DNSType::TXT){
-            try{
-                return TXT::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return TXT::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return TXT::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return TXT::deserializeFromPresentationFormat($data);
         }
         if($type===DNSType::RP){
-            try{
-                return RP::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return RP::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return RP::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return RP::deserializeFromPresentationFormat($data);
         }
         if($type===DNSType::AFSDB){
-            try{
-                return AFSDB::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return AFSDB::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return AFSDB::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return AFSDB::deserializeFromPresentationFormat($data);
         }
         if($type===DNSType::X25){
-            try{
-                return X25::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return X25::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return X25::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return X25::deserializeFromPresentationFormat($data);
         }
         if($type===DNSType::ISDN){
-            try{
-                return ISDN::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return ISDN::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return ISDN::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return ISDN::deserializeFromPresentationFormat($data);
         }
         if($type===DNSType::RT){
-            try{
-                return RT::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return RT::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return RT::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return RT::deserializeFromPresentationFormat($data);
         }
         if($type===DNSType::NSAP){
-            try{
-                return NSAP::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return NSAP::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return NSAP::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return NSAP::deserializeFromPresentationFormat($data);
         }
         if($type===DNSType::NSAP_PTR){
-            try{
-                return NSAP_PTR::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return NSAP_PTR::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return NSAP_PTR::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return NSAP_PTR::deserializeFromPresentationFormat($data);
         }
         //TODO SIG
         if($type===DNSType::KEY){
-            try{
-                return KEY::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return KEY::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return KEY::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return KEY::deserializeFromPresentationFormat($data);
         }
         if($type===DNSType::PX){
-            try{
-                return PX::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return PX::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return PX::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return PX::deserializeFromPresentationFormat($data);
         }
         if($type===DNSType::GPOS){
-            try{
-                return GPOS::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return GPOS::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return GPOS::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return GPOS::deserializeFromPresentationFormat($data);
         }
         if($type===DNSType::AAAA){
-            try{
-                return AAAA::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return AAAA::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return AAAA::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return AAAA::deserializeFromPresentationFormat($data);
         }
         //TODO LOC
         //TODO NXT
         //TODO EID
         //TODO NIMLOC
         if($type===DNSType::SRV){
-            try{
-                return SRV::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return SRV::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return SRV::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return SRV::deserializeFromPresentationFormat($data);
         }
         //TODO ATMA
         //TODO NAPTR
         if($type===DNSType::KX){
-            try{
-                return KX::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return KX::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return KX::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return KX::deserializeFromPresentationFormat($data);
         }
         //TODO CERT
         //TODO A6
         if($type===DNSType::DNAME){
-            try{
-                return DNAME::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return DNAME::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return DNAME::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return DNAME::deserializeFromPresentationFormat($data);
         }
         if($type===DNSType::SINK){
-            try{
-                return SINK::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return SINK::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return SINK::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return SINK::deserializeFromPresentationFormat($data);
         }
         //TODO OPT
         //TODO APL
         if($type===DNSType::DS){
-            try{
-                return DS::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return DS::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return DS::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return DS::deserializeFromPresentationFormat($data);
         }
         //TODO SSHFP
         //TODO IPSECKEY
@@ -321,32 +330,42 @@ class TypeHelper{
         //TODO NSEC3
         //TODO NSEC3PARAM
         if($type===DNSType::TLSA){
-            try{
-                return TLSA::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return TLSA::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return TLSA::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return TLSA::deserializeFromPresentationFormat($data);
         }
         if($type===DNSType::SMIMEA){
-            try{
-                return SMIMEA::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return SMIMEA::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return SMIMEA::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return SMIMEA::deserializeFromPresentationFormat($data);
         }
         //TODO HIP
         if($type===DNSType::NINFO){
-            try{
-                return NINFO::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return NINFO::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return NINFO::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return NINFO::deserializeFromPresentationFormat($data);
         }
         if($type===DNSType::RKEY){
-            try{
-                return RKEY::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return RKEY::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return RKEY::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return RKEY::deserializeFromPresentationFormat($data);
         }
-        //TODO TALINK
-        //TODO CDS
+        if($type===DNSType::TALINK){
+            if(Unknown::detectUnknown($data)){
+                return TALINK::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return TALINK::deserializeFromPresentationFormat($data);
+        }
+        if($type===DNSType::CDS){
+            if(Unknown::detectUnknown($data)){
+                return CDS::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return CDS::deserializeFromPresentationFormat($data);
+        }
         //TODO CDNSKEY
         //TODO OPENPGPKEY
         //TODO CSYNC
@@ -361,19 +380,19 @@ class TypeHelper{
 //        }
         //TODO DSYNC
         if($type===DNSType::SPF){
-            try{
-                return SPF::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return SPF::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return SPF::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return SPF::deserializeFromPresentationFormat($data);
         }
         //TODO NID
         //TODO L32
         //TODO L64
         if($type===DNSType::LP){
-            try{
-                return LP::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return LP::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return LP::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return LP::deserializeFromPresentationFormat($data);
         }
         //TODO EUI48
         //TODO EUI64
@@ -381,60 +400,60 @@ class TypeHelper{
         //TODO TKEY
         //TODO TSIG
         if($type===DNSType::URI){
-            try{
-                return URI::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return URI::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return URI::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return URI::deserializeFromPresentationFormat($data);
         }
         if($type===DNSType::CAA){
-            try{
-                return CAA::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return CAA::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return CAA::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return CAA::deserializeFromPresentationFormat($data);
         }
         if($type===DNSType::AVC){
-            try{
-                return AVC::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return AVC::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return AVC::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return AVC::deserializeFromPresentationFormat($data);
         }
         if($type===DNSType::DOA){
-            try{
-                return DOA::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return DOA::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return DOA::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return DOA::deserializeFromPresentationFormat($data);
         }
         //TODO AMTRELAY
         if($type===DNSType::RESINFO){
-            try{
-                return RESINFO::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return RESINFO::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return RESINFO::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return RESINFO::deserializeFromPresentationFormat($data);
         }
         if($type===DNSType::WALLET){
-            try{
-                return WALLET::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return WALLET::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return WALLET::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return WALLET::deserializeFromPresentationFormat($data);
         }
         if($type===DNSType::CLA){
-            try{
-                return CLA::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return CLA::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return CLA::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return CLA::deserializeFromPresentationFormat($data);
         }
         //TODO IPN
         if($type===DNSType::TA){
-            try{
-                return TA::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return TA::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return TA::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return TA::deserializeFromPresentationFormat($data);
         }
         if($type===DNSType::DLV){
-            try{
-                return DLV::deserializeFromPresentationFormat($data);
-            }catch(Throwable){}
-            return DLV::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
+            if(Unknown::detectUnknown($data)){
+                return DLV::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+            }
+            return DLV::deserializeFromPresentationFormat($data);
         }
         throw new DNSTypeException('Trying to deserialize an unsupported type from presentation format.');
     }
@@ -552,6 +571,12 @@ class TypeHelper{
         }
         if($type===DNSType::RKEY){
             return RKEY::deserializeFromWireFormat($data);
+        }
+        if($type===DNSType::TALINK){
+            return TALINK::deserializeFromWireFormat($data);
+        }
+        if($type===DNSType::CDS){
+            return CDS::deserializeFromWireFormat($data);
         }
         //TODO HTTPS
 //        if($type===DNSType::HTTPS){

@@ -74,4 +74,13 @@ class Unknown extends Type{
         ]);
     }
 
+    /**
+     * @param $data
+     * @return bool
+     */
+    public static function detectUnknown($data): bool{
+        $tokens = LineLexer::tokenizeLine($data);
+        return $tokens[0]==='\#';
+    }
+
 }

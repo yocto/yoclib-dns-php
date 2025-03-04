@@ -34,7 +34,7 @@ class SingleFQDN extends Type{
         if(count($tokens)!==1){
             throw new DNSTypeException('Record should contain 1 field.');
         }
-        return new self([
+        return new static([
             FQDN::deserializeFromPresentationFormat($tokens[0]),
         ]);
     }
@@ -55,7 +55,7 @@ class SingleFQDN extends Type{
         if(strlen($remaining)>0){
             throw new DNSTypeException('Cannot have remaining data.');
         }
-        return new self([
+        return new static([
             FQDN::deserializeFromWireFormat($name),
         ]);
     }
