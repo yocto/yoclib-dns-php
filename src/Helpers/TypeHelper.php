@@ -57,6 +57,7 @@ use YOCLIB\DNS\Types\URI;
 use YOCLIB\DNS\Types\WALLET;
 use YOCLIB\DNS\Types\WKS;
 use YOCLIB\DNS\Types\X25;
+use YOCLIB\DNS\Types\ZONEMD;
 
 class TypeHelper{
 
@@ -380,7 +381,12 @@ class TypeHelper{
             //TODO CDNSKEY
             //TODO OPENPGPKEY
             //TODO CSYNC
-            //TODO ZONEMD
+            case DNSType::ZONEMD:{
+                if(Unknown::detectUnknown($data)){
+                    return ZONEMD::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+                }
+                return ZONEMD::deserializeFromPresentationFormat($data);
+            }
             //TODO SVCB
             //TODO HTTPS
 //        case DNSType::HTTPS){
@@ -602,6 +608,9 @@ class TypeHelper{
             }
             case DNSType::CDS:{
                 return CDS::deserializeFromWireFormat($data);
+            }
+            case DNSType::ZONEMD:{
+                return ZONEMD::deserializeFromWireFormat($data);
             }
             //TODO HTTPS
 //        case DNSType::HTTPS){

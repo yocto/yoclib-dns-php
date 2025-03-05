@@ -58,6 +58,7 @@ use YOCLIB\DNS\Types\URI;
 use YOCLIB\DNS\Types\WALLET;
 use YOCLIB\DNS\Types\WKS;
 use YOCLIB\DNS\Types\X25;
+use YOCLIB\DNS\Types\ZONEMD;
 
 class TypeHelperTest extends TestCase{
 
@@ -252,7 +253,8 @@ class TypeHelperTest extends TestCase{
 
         //TODO CSYNC
 
-        //TODO ZONEMD
+        $this->assertInstanceOf(ZONEMD::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('2018031500 1 1 FEBE3D4CE2EC2FFA4BA99D46CD69D6D29711E55217057BEE7EB1A7B641A47BA7FED2DD5B97AE499FAFA4F22C6BD647DE',DNSClass::IN,DNSType::ZONEMD));
+        $this->assertInstanceOf(ZONEMD::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 54 7848B78C 01 01 FEBE3D4CE2EC2FFA4BA99D46CD69D6D29711E55217057BEE7EB1A7B641A47BA7FED2DD5B97AE499FAFA4F22C6BD647DE',DNSClass::IN,DNSType::ZONEMD));
 
         //TODO SVCB
 
@@ -476,7 +478,7 @@ class TypeHelperTest extends TestCase{
 
         //TODO CSYNC
 
-        //TODO ZONEMD
+        $this->assertInstanceOf(ZONEMD::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('7848B78C').hex2bin('01').hex2bin('01').hex2bin('FEBE3D4CE2EC2FFA4BA99D46CD69D6D29711E55217057BEE7EB1A7B641A47BA7FED2DD5B97AE499FAFA4F22C6BD647DE'),DNSClass::IN,DNSType::ZONEMD));
 
         //TODO SVCB
 
