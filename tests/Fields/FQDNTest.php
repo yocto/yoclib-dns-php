@@ -309,4 +309,22 @@ class FQDNTest extends TestCase{
         self::assertSame(['www','example','com',''],FQDN::deserializeFromWireFormat("\x03www\x07example\x03com\x00")->getValue());
     }
 
+    /**
+     * @return void
+     * @throws DNSFieldException
+     */
+    public function testDeserializeFromWireFormatEmpty(): void{
+        self::expectException(DNSFieldException::class);
+        self::expectExceptionMessage('FQDN should at be least one byte long.');
+
+        FQDN::deserializeFromWireFormat('');
+    }
+
+    public function testDeserializeFromWireFormatTooLessLabelData(): void{
+        self::expectException(DNSFieldException::class);
+        self::expectExceptionMessage('Too less data available to read label.');
+
+        FQDN::deserializeFromWireFormat("\x05abc");
+    }
+
 }
