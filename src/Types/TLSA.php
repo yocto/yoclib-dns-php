@@ -54,7 +54,7 @@ class TLSA extends Type{
     public static function deserializeFromPresentationFormat(string $data): TLSA{
         $tokens = LineLexer::tokenizeLine($data);
         if(count($tokens)<4){
-            throw new DNSTypeException('A TLSA record should contain at least 4 fields.');
+            throw new DNSTypeException('TLSA record should contain at least 4 fields.');
         }
         $output = '';
         for($i=3;$i<count($tokens);$i++){

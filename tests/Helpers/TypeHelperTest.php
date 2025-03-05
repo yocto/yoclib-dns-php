@@ -11,14 +11,21 @@ use YOCLIB\DNS\Helpers\TypeHelper;
 use YOCLIB\DNS\Types\A;
 use YOCLIB\DNS\Types\AAAA;
 use YOCLIB\DNS\Types\AFSDB;
+use YOCLIB\DNS\Types\AVC;
+use YOCLIB\DNS\Types\CAA;
+use YOCLIB\DNS\Types\CDS;
+use YOCLIB\DNS\Types\CLA;
 use YOCLIB\DNS\Types\CNAME;
 use YOCLIB\DNS\Types\DLV;
 use YOCLIB\DNS\Types\DNAME;
+use YOCLIB\DNS\Types\DOA;
 use YOCLIB\DNS\Types\DS;
 use YOCLIB\DNS\Types\GPOS;
 use YOCLIB\DNS\Types\HINFO;
 use YOCLIB\DNS\Types\ISDN;
+use YOCLIB\DNS\Types\KEY;
 use YOCLIB\DNS\Types\KX;
+use YOCLIB\DNS\Types\LP;
 use YOCLIB\DNS\Types\MB;
 use YOCLIB\DNS\Types\MD;
 use YOCLIB\DNS\Types\MF;
@@ -26,18 +33,28 @@ use YOCLIB\DNS\Types\MG;
 use YOCLIB\DNS\Types\MINFO;
 use YOCLIB\DNS\Types\MR;
 use YOCLIB\DNS\Types\MX;
+use YOCLIB\DNS\Types\NINFO;
 use YOCLIB\DNS\Types\NS;
 use YOCLIB\DNS\Types\NSAP;
 use YOCLIB\DNS\Types\NSAP_PTR;
 use YOCLIB\DNS\Types\NULLType;
 use YOCLIB\DNS\Types\PTR;
 use YOCLIB\DNS\Types\PX;
+use YOCLIB\DNS\Types\RESINFO;
+use YOCLIB\DNS\Types\RKEY;
 use YOCLIB\DNS\Types\RP;
 use YOCLIB\DNS\Types\RT;
+use YOCLIB\DNS\Types\SINK;
+use YOCLIB\DNS\Types\SMIMEA;
 use YOCLIB\DNS\Types\SOA;
+use YOCLIB\DNS\Types\SPF;
 use YOCLIB\DNS\Types\SRV;
 use YOCLIB\DNS\Types\TA;
+use YOCLIB\DNS\Types\TALINK;
+use YOCLIB\DNS\Types\TLSA;
 use YOCLIB\DNS\Types\TXT;
+use YOCLIB\DNS\Types\URI;
+use YOCLIB\DNS\Types\WALLET;
 use YOCLIB\DNS\Types\WKS;
 use YOCLIB\DNS\Types\X25;
 
@@ -121,7 +138,8 @@ class TypeHelperTest extends TestCase{
 
         //TODO SIG
 
-        //TODO KEY
+        $this->assertInstanceOf(KEY::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('1 1 1 dGVzdA==',DNSClass::IN,DNSType::KEY));
+        $this->assertInstanceOf(KEY::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 9 0001 01 01 0474657374',DNSClass::IN,DNSType::KEY));
 
         $this->assertInstanceOf(PX::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('10 map822.example.com. mapx400.example.com.',DNSClass::IN,DNSType::PX));
         $this->assertInstanceOf(PX::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 43 000A 066D6170383232076578616D706C6503636F6D00 076D617078343030076578616D706C6503636F6D00',DNSClass::IN,DNSType::PX));
@@ -157,7 +175,8 @@ class TypeHelperTest extends TestCase{
         $this->assertInstanceOf(DNAME::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('example.com.',DNSClass::IN,DNSType::DNAME));
         $this->assertInstanceOf(DNAME::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 13 076578616D706C6503636F6D00',DNSClass::IN,DNSType::DNAME));
 
-        //TODO SINK
+        $this->assertInstanceOf(SINK::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('65 2 dGVzdA==',DNSClass::IN,DNSType::SINK));
+        $this->assertInstanceOf(SINK::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 8 0041 0002 74657374',DNSClass::IN,DNSType::SINK));
 
         //TODO OPT
 
@@ -182,19 +201,25 @@ class TypeHelperTest extends TestCase{
 
         //TODO NSEC3PARAM
 
-        //TODO TLSA
+        $this->assertInstanceOf(TLSA::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('0 0 1 d2abde240d7cd3ee6b4b28c54df034b97983a1d16e8a410e4561cb106618e971',DNSClass::IN,DNSType::TLSA));
+        $this->assertInstanceOf(TLSA::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 35 00 00 01 D2ABDE240D7CD3EE6B4B28C54DF034B97983A1D16E8A410E4561CB106618E971',DNSClass::IN,DNSType::TLSA));
 
-        //TODO SMIMEA
+        $this->assertInstanceOf(SMIMEA::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('0 0 1 d2abde240d7cd3ee6b4b28c54df034b97983a1d16e8a410e4561cb106618e971',DNSClass::IN,DNSType::SMIMEA));
+        $this->assertInstanceOf(SMIMEA::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 35 00 00 01 D2ABDE240D7CD3EE6B4B28C54DF034B97983A1D16E8A410E4561CB106618E971',DNSClass::IN,DNSType::SMIMEA));
 
         //TODO HIP
 
-        //TODO NINFO
+        $this->assertInstanceOf(NINFO::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('"Healthy"',DNSClass::IN,DNSType::NINFO));
+        $this->assertInstanceOf(NINFO::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 8 074865616C746879',DNSClass::IN,DNSType::NINFO));
 
-        //TODO RKEY
+        $this->assertInstanceOf(RKEY::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('1 1 1 dGVzdA==',DNSClass::IN,DNSType::RKEY));
+        $this->assertInstanceOf(RKEY::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 9 0001 01 01 0474657374',DNSClass::IN,DNSType::RKEY));
 
-        //TODO TALINK
+        $this->assertInstanceOf(TALINK::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('prev.example.com. next.example.com.',DNSClass::IN,DNSType::TALINK));
+        $this->assertInstanceOf(TALINK::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 36 0470726576076578616D706C6503636F6D00 046E657874076578616D706C6503636F6D00',DNSClass::IN,DNSType::TALINK));
 
-        //TODO CDS
+        $this->assertInstanceOf(CDS::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('60485 5 1 2BB183AF5F22588179A53B0A98631FAD1A292118',DNSClass::IN,DNSType::CDS));
+        $this->assertInstanceOf(CDS::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 26 EC45 0005 0001 2BB183AF5F22588179A53B0A98631FAD1A292118',DNSClass::IN,DNSType::CDS));
 
         //TODO CDNSKEY
 
@@ -210,7 +235,8 @@ class TypeHelperTest extends TestCase{
 
         //TODO DSYNC
 
-        //TODO SPF
+        $this->assertInstanceOf(SPF::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('"v=spf1 -all"',DNSClass::IN,DNSType::SPF));
+        $this->assertInstanceOf(SPF::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 12 0B763D73706631202D616C6C',DNSClass::IN,DNSType::SPF));
 
         //TODO NID
 
@@ -218,7 +244,8 @@ class TypeHelperTest extends TestCase{
 
         //TODO L64
 
-        //TODO LP
+        $this->assertInstanceOf(LP::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('10 lp.example.com.',DNSClass::IN,DNSType::LP));
+        $this->assertInstanceOf(LP::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 18 000A 026C70076578616D706C6503636F6D00',DNSClass::IN,DNSType::LP));
 
         //TODO EUI48
 
@@ -230,21 +257,28 @@ class TypeHelperTest extends TestCase{
 
         //TODO TSIG
 
-        //TODO URI
+        $this->assertInstanceOf(URI::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('10 1 "https://www.example.com/path"',DNSClass::IN,DNSType::URI));
+        $this->assertInstanceOf(URI::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 33 000A 0001 1C68747470733A2F2F7777772E6578616D706C652E636F6D2F70617468',DNSClass::IN,DNSType::URI));
 
-        //TODO CAA
+        $this->assertInstanceOf(CAA::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('0 issue "ca1.example.net"',DNSClass::IN,DNSType::CAA));
+        $this->assertInstanceOf(CAA::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 22 00 056973737565 6361312E6578616D706C652E6E6574',DNSClass::IN,DNSType::CAA));
 
-        //TODO AVC
+        $this->assertInstanceOf(AVC::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('"app-name:WOLFGANG|app-class:OAM|business=yes"',DNSClass::IN,DNSType::AVC));
+        $this->assertInstanceOf(AVC::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 45 2C6170702D6E616D653A574F4C4647414E477C6170702D636C6173733A4F414D7C627573696E6573733D796573',DNSClass::IN,DNSType::AVC));
 
-        //TODO DOA
+        $this->assertInstanceOf(DOA::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('4294967295 4294967295 255 "text/plain" dGVzdA==',DNSClass::IN,DNSType::DOA));
+        $this->assertInstanceOf(DOA::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 24 FFFFFFFF FFFFFFFF FF 0A746578742F706C61696E 74657374',DNSClass::IN,DNSType::DOA));
 
         //TODO AMTRELAY
 
-        //TODO RESINFO
+        $this->assertInstanceOf(RESINFO::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('qnamemin exterr=15-17 infourl=https://resolver.example.com/guide',DNSClass::IN,DNSType::RESINFO));
+        $this->assertInstanceOf(RESINFO::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 65 08716E616D656D696E 0C6578746572723D31352D3137 2A696E666F75726C3D68747470733A2F2F7265736F6C7665722E6578616D706C652E636F6D2F6775696465',DNSClass::IN,DNSType::RESINFO));
 
-        //TODO WALLET
+        $this->assertInstanceOf(WALLET::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('"BTC" "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh"',DNSClass::IN,DNSType::WALLET));
+        $this->assertInstanceOf(WALLET::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 47 03425443 2A626331717879326B676479676A727371747A71326E30797266323439337038336B6B666A687830776C68',DNSClass::IN,DNSType::WALLET));
 
-        //TODO CLA
+        $this->assertInstanceOf(CLA::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('"TCP-v4-v6"',DNSClass::IN,DNSType::CLA));
+        $this->assertInstanceOf(CLA::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 10 095443502D76342D7636',DNSClass::IN,DNSType::CLA));
 
         $this->assertInstanceOf(TA::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('60485 5 1 2BB183AF5F22588179A53B0A98631FAD1A292118',DNSClass::IN,DNSType::TA));
         $this->assertInstanceOf(TA::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 26 EC45 0005 0001 2BB183AF5F22588179A53B0A98631FAD1A292118',DNSClass::IN,DNSType::TA));
@@ -341,9 +375,125 @@ class TypeHelperTest extends TestCase{
 
         $this->assertInstanceOf(NSAP_PTR::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('076578616D706C6503636F6D00'),DNSClass::IN,DNSType::NSAP_PTR));
 
+        //TODO SIG
+
+        $this->assertInstanceOf(KEY::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('0001').hex2bin('01').hex2bin('01').hex2bin('0474657374'),DNSClass::IN,DNSType::KEY));
+
+        $this->assertInstanceOf(PX::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('000A').hex2bin('066D6170383232076578616D706C6503636F6D00').hex2bin('076D617078343030076578616D706C6503636F6D00'),DNSClass::IN,DNSType::PX));
+
+        $this->assertInstanceOf(GPOS::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('082D33322E36383832').hex2bin('083131362E38363532').hex2bin('0431302E30'),DNSClass::IN,DNSType::GPOS));
+
+        $this->assertInstanceOf(AAAA::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('FE800000000000000000000000000001'),DNSClass::IN,DNSType::AAAA));
+
+        //TODO LOC
+
+        //TODO NXT
+
+        //TODO EID
+
+        //TODO NIMLOC
+
+        $this->assertInstanceOf(SRV::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('0001').hex2bin('0000').hex2bin('0000').hex2bin('0773657276696365076578616D706C6503636F6D00'),DNSClass::IN,DNSType::SRV));
+
+        //TODO ATMA
+
+        //TODO NAPTR
+
+        $this->assertInstanceOf(KX::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('000A').hex2bin('026B78076578616D706C6503636F6D00'),DNSClass::IN,DNSType::KX));
+
+        //TODO CERT
+
+        //TODO A6
+
         $this->assertInstanceOf(DNAME::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('076578616D706C6503636F6D00'),DNSClass::IN,DNSType::DNAME));
 
-        //
+        $this->assertInstanceOf(SINK::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('0041').hex2bin('0002').hex2bin('74657374'),DNSClass::IN,DNSType::SINK));
+
+        //TODO OPT
+
+        //TODO APL
+
+        $this->assertInstanceOf(DS::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('EC45').hex2bin('0005').hex2bin('0001').hex2bin('2BB183AF5F22588179A53B0A98631FAD1A292118'),DNSClass::IN,DNSType::DS));
+
+        //TODO SSHFP
+
+        //TODO IPSECKEY
+
+        //TODO RRSIG
+
+        //TODO NSEC
+
+        //TODO DNSKEY
+
+        //TODO DHCID
+
+        //TODO NSEC3
+
+        //TODO NSEC3PARAM
+
+        $this->assertInstanceOf(TLSA::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('00').hex2bin('00').hex2bin('01').hex2bin('D2ABDE240D7CD3EE6B4B28C54DF034B97983A1D16E8A410E4561CB106618E971'),DNSClass::IN,DNSType::TLSA));
+
+        $this->assertInstanceOf(SMIMEA::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('00').hex2bin('00').hex2bin('01').hex2bin('D2ABDE240D7CD3EE6B4B28C54DF034B97983A1D16E8A410E4561CB106618E971'),DNSClass::IN,DNSType::SMIMEA));
+
+        //TODO HIP
+
+        $this->assertInstanceOf(NINFO::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('074865616C746879'),DNSClass::IN,DNSType::NINFO));
+
+        $this->assertInstanceOf(RKEY::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('0001').hex2bin('01').hex2bin('01').hex2bin('0474657374'),DNSClass::IN,DNSType::RKEY));
+
+        $this->assertInstanceOf(TALINK::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('0470726576076578616D706C6503636F6D00').hex2bin('046E657874076578616D706C6503636F6D00'),DNSClass::IN,DNSType::TALINK));
+
+        $this->assertInstanceOf(CDS::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('EC45').hex2bin('0005').hex2bin('0001').hex2bin('2BB183AF5F22588179A53B0A98631FAD1A292118'),DNSClass::IN,DNSType::CDS));
+
+        //TODO CDNSKEY
+
+        //TODO OPENPGPKEY
+
+        //TODO CSYNC
+
+        //TODO ZONEMD
+
+        //TODO SVCB
+
+        //TODO HTTPS
+
+        //TODO DSYNC
+
+        $this->assertInstanceOf(SPF::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('0B763D73706631202D616C6C'),DNSClass::IN,DNSType::SPF));
+
+        //TODO NID
+
+        //TODO L32
+
+        //TODO L64
+
+        $this->assertInstanceOf(LP::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('000A').hex2bin('026C70076578616D706C6503636F6D00'),DNSClass::IN,DNSType::LP));
+
+        //TODO EUI48
+
+        //TODO EUI64
+
+        //TODO NXNAME
+
+        //TODO TKEY
+
+        //TODO TSIG
+
+        $this->assertInstanceOf(URI::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('000A').hex2bin('0001').hex2bin('1C68747470733A2F2F7777772E6578616D706C652E636F6D2F70617468'),DNSClass::IN,DNSType::URI));
+
+        $this->assertInstanceOf(CAA::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('00').hex2bin('056973737565').hex2bin('6361312E6578616D706C652E6E6574'),DNSClass::IN,DNSType::CAA));
+
+        $this->assertInstanceOf(AVC::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('2C6170702D6E616D653A574F4C4647414E477C6170702D636C6173733A4F414D7C627573696E6573733D796573'),DNSClass::IN,DNSType::AVC));
+
+        $this->assertInstanceOf(DOA::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('FFFFFFFF').hex2bin('FFFFFFFF').hex2bin('FF').hex2bin('0A746578742F706C61696E').hex2bin('74657374'),DNSClass::IN,DNSType::DOA));
+
+        //TODO AMTRELAY
+
+        $this->assertInstanceOf(RESINFO::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('08716E616D656D696E').hex2bin('0C6578746572723D31352D3137').hex2bin('2A696E666F75726C3D68747470733A2F2F7265736F6C7665722E6578616D706C652E636F6D2F6775696465'),DNSClass::IN,DNSType::RESINFO));
+
+        $this->assertInstanceOf(WALLET::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('03425443').hex2bin('2A626331717879326B676479676A727371747A71326E30797266323439337038336B6B666A687830776C68'),DNSClass::IN,DNSType::WALLET));
+
+        $this->assertInstanceOf(CLA::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('095443502D76342D7636'),DNSClass::IN,DNSType::CLA));
 
         $this->assertInstanceOf(TA::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('EC45').hex2bin('0005').hex2bin('0001').hex2bin('2BB183AF5F22588179A53B0A98631FAD1A292118'),DNSClass::IN,DNSType::TA));
 

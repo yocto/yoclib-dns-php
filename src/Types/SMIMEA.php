@@ -54,7 +54,7 @@ class SMIMEA extends Type{
     public static function deserializeFromPresentationFormat(string $data): SMIMEA{
         $tokens = LineLexer::tokenizeLine($data);
         if(count($tokens)<4){
-            throw new DNSTypeException('A SMIMEA record should contain at least 4 fields.');
+            throw new DNSTypeException('SMIMEA record should contain at least 4 fields.');
         }
         $output = '';
         for($i=3;$i<count($tokens);$i++){

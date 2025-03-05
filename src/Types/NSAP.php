@@ -37,7 +37,7 @@ class NSAP extends Type{
     public static function deserializeFromPresentationFormat(string $data): NSAP{
         $tokens = LineLexer::tokenizeLine($data);
         if(count($tokens)!==1){
-            throw new DNSTypeException('A NSAP record should contain 1 field.');
+            throw new DNSTypeException('NSAP record should contain 1 field.');
         }
         if(!preg_match('/0x[A-Fa-f0-9]+(\\.[A-Fa-f0-9]+)/',$tokens[0])){
             throw new DNSTypeException('NSAP address not valid.');

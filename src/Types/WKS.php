@@ -50,7 +50,7 @@ class WKS extends Type{
     public static function deserializeFromPresentationFormat(string $data,?array $mappings=null): WKS{
         $tokens = LineLexer::tokenizeLine($data);
         if(count($tokens)<2){
-            throw new DNSTypeException('A WKS record should contain at least 2 fields.');
+            throw new DNSTypeException('WKS record should contain at least 2 fields.');
         }
         $protocol = UnsignedInteger8::deserializeFromPresentationFormat($tokens[1]);
         return new self([

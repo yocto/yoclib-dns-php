@@ -36,7 +36,7 @@ class KX extends Type{
     public static function deserializeFromPresentationFormat(string $data): KX{
         $tokens = LineLexer::tokenizeLine($data);
         if(count($tokens)!==2){
-            throw new DNSTypeException('MX record should contain 2 fields.');
+            throw new DNSTypeException('KX record should contain 2 fields.');
         }
         return new self([
             UnsignedInteger16::deserializeFromPresentationFormat($tokens[0]),

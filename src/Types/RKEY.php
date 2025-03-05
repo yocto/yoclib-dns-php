@@ -55,7 +55,7 @@ class RKEY extends Type{
     public static function deserializeFromPresentationFormat(string $data): RKEY{
         $tokens = LineLexer::tokenizeLine($data);
         if(count($tokens)<3){
-            throw new DNSTypeException('A DS record should contain at least 3 fields.');
+            throw new DNSTypeException('RKEY record should contain at least 3 fields.');
         }
         $output = '';
         for($i=3;$i<count($tokens);$i++){

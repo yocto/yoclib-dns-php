@@ -18,7 +18,7 @@ class DOA extends Type{
      */
     public function __construct(array $fields){
         parent::__construct($fields);
-        if(count($fields)!==4){
+        if(count($fields)!==5){
             throw new DNSTypeException('Only four fields allowed.');
         }
         if(!($fields[0] instanceof UnsignedInteger32)){
@@ -60,7 +60,7 @@ class DOA extends Type{
     public static function deserializeFromPresentationFormat(string $data): DOA{
         $tokens = LineLexer::tokenizeLine($data);
         if(count($tokens)<4){
-            throw new DNSTypeException('A DS record should contain at least 4 fields.');
+            throw new DNSTypeException('DOA record should contain at least 4 fields.');
         }
         $output = '';
         for($i=4;$i<count($tokens);$i++){

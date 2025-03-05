@@ -55,7 +55,7 @@ class KEY extends Type{
     public static function deserializeFromPresentationFormat(string $data): KEY{
         $tokens = LineLexer::tokenizeLine($data);
         if(count($tokens)<3){
-            throw new DNSTypeException('A DS record should contain at least 3 fields.');
+            throw new DNSTypeException('KEY record should contain at least 3 fields.');
         }
         $output = '';
         for($i=3;$i<count($tokens);$i++){

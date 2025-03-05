@@ -50,7 +50,7 @@ class SINK extends Type{
     public static function deserializeFromPresentationFormat(string $data): SINK{
         $tokens = LineLexer::tokenizeLine($data);
         if(count($tokens)<2){
-            throw new DNSTypeException('A SINK record should contain at least 2 fields.');
+            throw new DNSTypeException('SINK record should contain at least 2 fields.');
         }
         $output = '';
         for($i=2;$i<count($tokens);$i++){

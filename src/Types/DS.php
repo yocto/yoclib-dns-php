@@ -55,7 +55,7 @@ class DS extends Type{
     public static function deserializeFromPresentationFormat(string $data): DS{
         $tokens = LineLexer::tokenizeLine($data);
         if(count($tokens)<4){
-            throw new DNSTypeException('A DS record should contain at least 4 fields.');
+            throw new DNSTypeException('DS record should contain at least 4 fields.');
         }
         $output = '';
         for($i=3;$i<count($tokens);$i++){

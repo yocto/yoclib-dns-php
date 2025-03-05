@@ -32,7 +32,7 @@ class AAAA extends Type{
     public static function deserializeFromPresentationFormat(string $data): AAAA{
         $tokens = LineLexer::tokenizeLine($data);
         if(count($tokens)!==1){
-            throw new DNSTypeException('A record should contain 1 field.');
+            throw new DNSTypeException('AAAA record should contain 1 field.');
         }
         return new self([
             IPv6Address::deserializeFromPresentationFormat($tokens[0]),

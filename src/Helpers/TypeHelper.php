@@ -561,8 +561,14 @@ class TypeHelper{
         if($type===DNSType::SRV){
             return SRV::deserializeFromWireFormat($data);
         }
+        if($type===DNSType::KX){
+            return KX::deserializeFromWireFormat($data);
+        }
         if($type===DNSType::DNAME){
             return DNAME::deserializeFromWireFormat($data);
+        }
+        if($type===DNSType::SINK){
+            return SINK::deserializeFromWireFormat($data);
         }
         if($type===DNSType::DS){
             return DS::deserializeFromWireFormat($data);

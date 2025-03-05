@@ -36,7 +36,7 @@ class AFSDB extends Type{
     public static function deserializeFromPresentationFormat(string $data): AFSDB{
         $tokens = LineLexer::tokenizeLine($data);
         if(count($tokens)!==2){
-            throw new DNSTypeException('MX record should contain 2 fields.');
+            throw new DNSTypeException('AFSDB record should contain 2 fields.');
         }
         return new self([
             UnsignedInteger16::deserializeFromPresentationFormat($tokens[0]),
