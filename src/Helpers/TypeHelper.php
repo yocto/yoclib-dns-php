@@ -72,7 +72,7 @@ class TypeHelper{
      * @throws DNSFieldException
      */
     public static function compare(string $nameA,string $dataA,int $classA,int $typeA,string $nameB,string $dataB,int $classB,int $typeB): int{
-        if($dataA===$dataB && $classA===$classB && $typeA===$typeB){
+        if($nameA===$nameB && $dataA===$dataB && $classA===$classB && $typeA===$typeB){
             return 0;
         }
 

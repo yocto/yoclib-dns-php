@@ -63,6 +63,29 @@ class TypeHelperTest extends TestCase{
     /**
      * @return void
      * @throws DNSFieldException
+     */
+    public function testCompare(): void{
+        $this->assertSame(0,TypeHelper::compare('.',"\x7F\x00\x00\x01",DNSClass::IN,DNSType::A,'.',"\x7F\x00\x00\x01",DNSClass::IN,DNSType::A));
+
+        $this->assertSame(1,TypeHelper::compare('a.',"\x7F\x00\x00\x01",DNSClass::IN,DNSType::A,'.',"\x7F\x00\x00\x01",DNSClass::IN,DNSType::A));
+        $this->assertSame(-1,TypeHelper::compare('.',"\x7F\x00\x00\x01",DNSClass::IN,DNSType::A,'a.',"\x7F\x00\x00\x01",DNSClass::IN,DNSType::A));
+
+        $this->assertSame(-2,TypeHelper::compare('.',"\x7F\x00\x00\x01",DNSClass::IN,DNSType::A,'.',"\x7F\x00\x00\x01",DNSClass::CH,DNSType::A));
+        $this->assertSame(2,TypeHelper::compare('.',"\x7F\x00\x00\x01",DNSClass::CH,DNSType::A,'.',"\x7F\x00\x00\x01",DNSClass::IN,DNSType::A));
+
+        $this->assertSame(-1,TypeHelper::compare('.',"\x7F\x00\x00\x01",DNSClass::IN,DNSType::A,'.',"\x7F\x00\x00\x01",DNSClass::IN,DNSType::NS));
+        $this->assertSame(1,TypeHelper::compare('.',"\x7F\x00\x00\x01",DNSClass::IN,DNSType::NS,'.',"\x7F\x00\x00\x01",DNSClass::IN,DNSType::A));
+
+        $this->assertSame(-1,TypeHelper::compare('.',"\x7F\x00\x00\x01",DNSClass::IN,DNSType::A,'.',"\x7F\x00\x00\x02",DNSClass::IN,DNSType::A));
+        $this->assertSame(1,TypeHelper::compare('.',"\x7F\x00\x00\x02",DNSClass::IN,DNSType::A,'.',"\x7F\x00\x00\x01",DNSClass::IN,DNSType::A));
+
+        $this->assertSame(-1,TypeHelper::compare('.',"\x7F\x00\x00\x01",DNSClass::IN,DNSType::A,'.',"\x7F\x00\x00\x01\xAA",DNSClass::IN,DNSType::A));
+        $this->assertSame(1,TypeHelper::compare('.',"\x7F\x00\x00\x01\xAA",DNSClass::IN,DNSType::A,'.',"\x7F\x00\x00\x01",DNSClass::IN,DNSType::A));
+    }
+
+    /**
+     * @return void
+     * @throws DNSFieldException
      * @throws DNSTypeException
      */
     public function testDeserializeFromPresentationFormatByClassAndType(): void{
