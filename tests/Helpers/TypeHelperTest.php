@@ -26,6 +26,7 @@ use YOCLIB\DNS\Types\NSAP;
 use YOCLIB\DNS\Types\NSAP_PTR;
 use YOCLIB\DNS\Types\NULLType;
 use YOCLIB\DNS\Types\PTR;
+use YOCLIB\DNS\Types\PX;
 use YOCLIB\DNS\Types\RP;
 use YOCLIB\DNS\Types\RT;
 use YOCLIB\DNS\Types\SOA;
@@ -111,8 +112,131 @@ class TypeHelperTest extends TestCase{
         $this->assertInstanceOf(NSAP_PTR::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('example.com.',DNSClass::IN,DNSType::NSAP_PTR));
         $this->assertInstanceOf(NSAP_PTR::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 13 076578616D706C6503636F6D00',DNSClass::IN,DNSType::NSAP_PTR));
 
+        //TODO SIG
+
+        //TODO KEY
+
+        $this->assertInstanceOf(PX::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('10 map822.example.com. mapx400.example.com.',DNSClass::IN,DNSType::PX));
+        $this->assertInstanceOf(PX::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 43 000A 066D6170383232076578616D706C6503636F6D00 076D617078343030076578616D706C6503636F6D00',DNSClass::IN,DNSType::PX));
+
+        //TODO GPOS
+
+        //TODO AAAA
+
+        //TODO LOC
+
+        //TODO NXT
+
+        //TODO EID
+
+        //TODO NIMLOC
+
+        //TODO SRV
+
+        //TODO ATMA
+
+        //TODO NAPTR
+
+        //TODO KX
+
+        //TODO CERT
+
+        //TODO A6
+
         $this->assertInstanceOf(DNAME::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('example.com.',DNSClass::IN,DNSType::DNAME));
         $this->assertInstanceOf(DNAME::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 13 076578616D706C6503636F6D00',DNSClass::IN,DNSType::DNAME));
+
+        //TODO SINK
+
+        //TODO OPT
+
+        //TODO APL
+
+        //TODO DS
+
+        //TODO SSHFP
+
+        //TODO IPSECKEY
+
+        //TODO RRSIG
+
+        //TODO NSEC
+
+        //TODO DNSKEY
+
+        //TODO DHCID
+
+        //TODO NSEC3
+
+        //TODO NSEC3PARAM
+
+        //TODO TLSA
+
+        //TODO SMIMEA
+
+        //TODO HIP
+
+        //TODO NINFO
+
+        //TODO RKEY
+
+        //TODO TALINK
+
+        //TODO CDS
+
+        //TODO CDNSKEY
+
+        //TODO OPENPGPKEY
+
+        //TODO CSYNC
+
+        //TODO ZONEMD
+
+        //TODO SVCB
+
+        //TODO HTTPS
+
+        //TODO DSYNC
+
+        //TODO SPF
+
+        //TODO NID
+
+        //TODO L32
+
+        //TODO L64
+
+        //TODO LP
+
+        //TODO EUI48
+
+        //TODO EUI64
+
+        //TODO NXNAME
+
+        //TODO TKEY
+
+        //TODO TSIG
+
+        //TODO URI
+
+        //TODO CAA
+
+        //TODO AVC
+
+        //TODO DOA
+
+        //TODO AMTRELAY
+
+        //TODO RESINFO
+
+        //TODO WALLET
+
+        //TODO CLA
+
+        //TODO TA
+
+        //TODO DLV
     }
 
     /**

@@ -206,13 +206,20 @@ class FQDN implements Field{
      * @throws DNSFieldException
      */
     public static function deserializeFromWireFormat(string $data): FQDN{
+        if(strlen($data)===0){
+            throw new DNSFieldException('FQDN should at be least one byte long.');
+        }
         $labels = [];
         for($i=0;$i<strlen($data);$i++){
             $length = ord($data[$i]);
             if($length===0x40){
                 break;
             }
-            $labels[] = substr($data,$i+1,$length);
+            $label = substr($data,$i+1,$length);
+            if(strlen($label)!==$length){
+                throw new DNSFieldException('Too less data available to read label.');
+            }
+            $labels[] = $label;
             if($length===0x00){
                 break;
             }
