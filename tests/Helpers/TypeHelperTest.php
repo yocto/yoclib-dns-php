@@ -33,6 +33,7 @@ use YOCLIB\DNS\Types\MG;
 use YOCLIB\DNS\Types\MINFO;
 use YOCLIB\DNS\Types\MR;
 use YOCLIB\DNS\Types\MX;
+use YOCLIB\DNS\Types\NAPTR;
 use YOCLIB\DNS\Types\NINFO;
 use YOCLIB\DNS\Types\NS;
 use YOCLIB\DNS\Types\NSAP;
@@ -186,7 +187,8 @@ class TypeHelperTest extends TestCase{
 
         //TODO ATMA
 
-        //TODO NAPTR
+        $this->assertInstanceOf(NAPTR::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('100 50 "s" "http" "" www.example.com.',DNSClass::IN,DNSType::NAPTR));
+        $this->assertInstanceOf(NAPTR::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 29 0064 0032 0173 0468747470 00 03777777076578616D706C6503636F6D00',DNSClass::IN,DNSType::NAPTR));
 
         $this->assertInstanceOf(KX::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('10 kx.example.com.',DNSClass::IN,DNSType::KX));
         $this->assertInstanceOf(KX::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 18 000A 026B78076578616D706C6503636F6D00',DNSClass::IN,DNSType::KX));
@@ -420,7 +422,7 @@ class TypeHelperTest extends TestCase{
 
         //TODO ATMA
 
-        //TODO NAPTR
+        $this->assertInstanceOf(NAPTR::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('0064').hex2bin('0032').hex2bin('0173').hex2bin('0468747470').hex2bin('00').hex2bin('03777777076578616D706C6503636F6D00'),DNSClass::IN,DNSType::NAPTR));
 
         $this->assertInstanceOf(KX::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('000A').hex2bin('026B78076578616D706C6503636F6D00'),DNSClass::IN,DNSType::KX));
 

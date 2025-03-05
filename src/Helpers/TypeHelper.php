@@ -30,6 +30,7 @@ use YOCLIB\DNS\Types\MG;
 use YOCLIB\DNS\Types\MINFO;
 use YOCLIB\DNS\Types\MR;
 use YOCLIB\DNS\Types\MX;
+use YOCLIB\DNS\Types\NAPTR;
 use YOCLIB\DNS\Types\NINFO;
 use YOCLIB\DNS\Types\NS;
 use YOCLIB\DNS\Types\NSAP;
@@ -297,7 +298,12 @@ class TypeHelper{
                 return SRV::deserializeFromPresentationFormat($data);
             }
             //TODO ATMA
-            //TODO NAPTR
+            case DNSType::NAPTR:{
+                if(Unknown::detectUnknown($data)){
+                    return NAPTR::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+                }
+                return NAPTR::deserializeFromPresentationFormat($data);
+            }
             case DNSType::KX:{
                 if(Unknown::detectUnknown($data)){
                     return KX::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
@@ -563,6 +569,9 @@ class TypeHelper{
             }
             case DNSType::SRV:{
                 return SRV::deserializeFromWireFormat($data);
+            }
+            case DNSType::NAPTR:{
+                return NAPTR::deserializeFromWireFormat($data);
             }
             case DNSType::KX:{
                 return KX::deserializeFromWireFormat($data);
