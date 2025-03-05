@@ -9,11 +9,15 @@ use YOCLIB\DNS\Exceptions\DNSFieldException;
 use YOCLIB\DNS\Exceptions\DNSTypeException;
 use YOCLIB\DNS\Helpers\TypeHelper;
 use YOCLIB\DNS\Types\A;
+use YOCLIB\DNS\Types\AAAA;
 use YOCLIB\DNS\Types\AFSDB;
 use YOCLIB\DNS\Types\CNAME;
 use YOCLIB\DNS\Types\DNAME;
+use YOCLIB\DNS\Types\DS;
+use YOCLIB\DNS\Types\GPOS;
 use YOCLIB\DNS\Types\HINFO;
 use YOCLIB\DNS\Types\ISDN;
+use YOCLIB\DNS\Types\KX;
 use YOCLIB\DNS\Types\MB;
 use YOCLIB\DNS\Types\MD;
 use YOCLIB\DNS\Types\MF;
@@ -30,6 +34,7 @@ use YOCLIB\DNS\Types\PX;
 use YOCLIB\DNS\Types\RP;
 use YOCLIB\DNS\Types\RT;
 use YOCLIB\DNS\Types\SOA;
+use YOCLIB\DNS\Types\SRV;
 use YOCLIB\DNS\Types\TXT;
 use YOCLIB\DNS\Types\WKS;
 use YOCLIB\DNS\Types\X25;
@@ -119,9 +124,11 @@ class TypeHelperTest extends TestCase{
         $this->assertInstanceOf(PX::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('10 map822.example.com. mapx400.example.com.',DNSClass::IN,DNSType::PX));
         $this->assertInstanceOf(PX::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 43 000A 066D6170383232076578616D706C6503636F6D00 076D617078343030076578616D706C6503636F6D00',DNSClass::IN,DNSType::PX));
 
-        //TODO GPOS
+        $this->assertInstanceOf(GPOS::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('-32.6882 116.8652 10.0',DNSClass::IN,DNSType::GPOS));
+        $this->assertInstanceOf(GPOS::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 23 082D33322E36383832 083131362E38363532 0431302E30',DNSClass::IN,DNSType::GPOS));
 
-        //TODO AAAA
+        $this->assertInstanceOf(AAAA::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('fe80::1',DNSClass::IN,DNSType::AAAA));
+        $this->assertInstanceOf(AAAA::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 16 FE800000000000000000000000000001',DNSClass::IN,DNSType::AAAA));
 
         //TODO LOC
 
@@ -131,13 +138,15 @@ class TypeHelperTest extends TestCase{
 
         //TODO NIMLOC
 
-        //TODO SRV
+        $this->assertInstanceOf(SRV::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('1 0 0 service.example.com.',DNSClass::IN,DNSType::SRV));
+        $this->assertInstanceOf(SRV::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 27 0001 0000 0000 0773657276696365076578616D706C6503636F6D00',DNSClass::IN,DNSType::SRV));
 
         //TODO ATMA
 
         //TODO NAPTR
 
-        //TODO KX
+        $this->assertInstanceOf(KX::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('10 kx.example.com.',DNSClass::IN,DNSType::KX));
+        $this->assertInstanceOf(KX::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 18 000A 026B78076578616D706C6503636F6D00',DNSClass::IN,DNSType::KX));
 
         //TODO CERT
 
@@ -152,7 +161,8 @@ class TypeHelperTest extends TestCase{
 
         //TODO APL
 
-        //TODO DS
+        $this->assertInstanceOf(DS::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('60485 5 1 2BB183AF5F22588179A53B0A98631FAD1A292118',DNSClass::IN,DNSType::DS));
+        $this->assertInstanceOf(DS::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 26 EC45 0005 0001 2BB183AF5F22588179A53B0A98631FAD1A292118',DNSClass::IN,DNSType::DS));
 
         //TODO SSHFP
 
