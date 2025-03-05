@@ -40,6 +40,7 @@ use YOCLIB\DNS\Types\NS;
 use YOCLIB\DNS\Types\NSAP;
 use YOCLIB\DNS\Types\NSAP_PTR;
 use YOCLIB\DNS\Types\NULLType;
+use YOCLIB\DNS\Types\OPENPGPKEY;
 use YOCLIB\DNS\Types\PTR;
 use YOCLIB\DNS\Types\PX;
 use YOCLIB\DNS\Types\RESINFO;
@@ -250,7 +251,8 @@ class TypeHelperTest extends TestCase{
 
         //TODO CDNSKEY
 
-        //TODO OPENPGPKEY
+        $this->assertInstanceOf(OPENPGPKEY::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('dGVzdA==',DNSClass::IN,DNSType::OPENPGPKEY));
+        $this->assertInstanceOf(OPENPGPKEY::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 4 74657374',DNSClass::IN,DNSType::OPENPGPKEY));
 
         $this->assertInstanceOf(CSYNC::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('66 3 A NS AAAA',DNSClass::IN,DNSType::CSYNC));
         $this->assertInstanceOf(CSYNC::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 10 00000042 0003 06000010',DNSClass::IN,DNSType::CSYNC));
@@ -476,7 +478,7 @@ class TypeHelperTest extends TestCase{
 
         //TODO CDNSKEY
 
-        //TODO OPENPGPKEY
+        $this->assertInstanceOf(OPENPGPKEY::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('74657374'),DNSClass::IN,DNSType::OPENPGPKEY));
 
         $this->assertInstanceOf(CSYNC::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('00000042').hex2bin('0003').hex2bin('06000010'),DNSClass::IN,DNSType::CSYNC));
 

@@ -37,6 +37,7 @@ use YOCLIB\DNS\Types\NS;
 use YOCLIB\DNS\Types\NSAP;
 use YOCLIB\DNS\Types\NSAP_PTR;
 use YOCLIB\DNS\Types\NULLType;
+use YOCLIB\DNS\Types\OPENPGPKEY;
 use YOCLIB\DNS\Types\PTR;
 use YOCLIB\DNS\Types\PX;
 use YOCLIB\DNS\Types\RESINFO;
@@ -380,7 +381,12 @@ class TypeHelper{
                 return CDS::deserializeFromPresentationFormat($data);
             }
             //TODO CDNSKEY
-            //TODO OPENPGPKEY
+            case DNSType::OPENPGPKEY:{
+                if(Unknown::detectUnknown($data)){
+                    return OPENPGPKEY::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+                }
+                return OPENPGPKEY::deserializeFromPresentationFormat($data);
+            }
             case DNSType::CSYNC:{
                 if(Unknown::detectUnknown($data)){
                     return CSYNC::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
@@ -608,6 +614,9 @@ class TypeHelper{
             }
             case DNSType::CDS:{
                 return CDS::deserializeFromWireFormat($data);
+            }
+            case DNSType::OPENPGPKEY:{
+                return OPENPGPKEY::deserializeFromWireFormat($data);
             }
             case DNSType::CSYNC:{
                 return CSYNC::deserializeFromWireFormat($data);
