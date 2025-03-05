@@ -258,6 +258,42 @@ class TypeHelperTest extends TestCase{
      * @throws DNSFieldException
      * @throws DNSTypeException
      */
+    public function testDeserializeFromPresentationFormatByClassAndTypeZeroClass(): void{
+        self::expectException(DNSTypeException::class);
+        self::expectExceptionMessage('Class cannot be zero.');
+
+        TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 4 AABBCCDD',0,DNSType::A);
+    }
+
+    /**
+     * @return void
+     * @throws DNSFieldException
+     * @throws DNSTypeException
+     */
+    public function testDeserializeFromPresentationFormatByClassAndTypeZeroType(): void{
+        self::expectException(DNSTypeException::class);
+        self::expectExceptionMessage('Type cannot be zero.');
+
+        TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 4 AABBCCDD',DNSClass::IN,0);
+    }
+
+    /**
+     * @return void
+     * @throws DNSFieldException
+     * @throws DNSTypeException
+     */
+    public function testDeserializeFromPresentationFormatByClassAndTypeUnsupported(): void{
+        self::expectException(DNSTypeException::class);
+        self::expectExceptionMessage('Trying to deserialize an unsupported type from presentation format.');
+
+        TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 4 AABBCCDD',DNSClass::IN,-1);
+    }
+
+    /**
+     * @return void
+     * @throws DNSFieldException
+     * @throws DNSTypeException
+     */
     public function testDeserializeFromWireFormatByClassAndType(): void{
         $this->assertInstanceOf(A::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('7F000001'),DNSClass::IN,DNSType::A));
 
@@ -312,6 +348,42 @@ class TypeHelperTest extends TestCase{
         $this->assertInstanceOf(TA::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('EC45').hex2bin('0005').hex2bin('0001').hex2bin('2BB183AF5F22588179A53B0A98631FAD1A292118'),DNSClass::IN,DNSType::TA));
 
         $this->assertInstanceOf(DLV::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('EC45').hex2bin('0005').hex2bin('0001').hex2bin('2BB183AF5F22588179A53B0A98631FAD1A292118'),DNSClass::IN,DNSType::DLV));
+    }
+
+    /**
+     * @return void
+     * @throws DNSFieldException
+     * @throws DNSTypeException
+     */
+    public function testDeserializeFromWireFormatByClassAndTypeZeroClass(): void{
+        self::expectException(DNSTypeException::class);
+        self::expectExceptionMessage('Class cannot be zero.');
+
+        TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('AABBCCDD'),0,DNSType::A);
+    }
+
+    /**
+     * @return void
+     * @throws DNSFieldException
+     * @throws DNSTypeException
+     */
+    public function testDeserializeFromWireFormatByClassAndTypeZeroType(): void{
+        self::expectException(DNSTypeException::class);
+        self::expectExceptionMessage('Type cannot be zero.');
+
+        TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('AABBCCDD'),DNSClass::IN,0);
+    }
+
+    /**
+     * @return void
+     * @throws DNSFieldException
+     * @throws DNSTypeException
+     */
+    public function testDeserializeFromWireFormatByClassAndTypeUnsupported(): void{
+        self::expectException(DNSTypeException::class);
+        self::expectExceptionMessage('Trying to deserialize an unsupported type from wire format.');
+
+        TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('AABBCCDD'),DNSClass::IN,-1);
     }
 
 }
