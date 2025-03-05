@@ -16,6 +16,7 @@ use YOCLIB\DNS\Types\CAA;
 use YOCLIB\DNS\Types\CDS;
 use YOCLIB\DNS\Types\CLA;
 use YOCLIB\DNS\Types\CNAME;
+use YOCLIB\DNS\Types\CSYNC;
 use YOCLIB\DNS\Types\DLV;
 use YOCLIB\DNS\Types\DNAME;
 use YOCLIB\DNS\Types\DOA;
@@ -251,7 +252,8 @@ class TypeHelperTest extends TestCase{
 
         //TODO OPENPGPKEY
 
-        //TODO CSYNC
+        $this->assertInstanceOf(CSYNC::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('66 3 A NS AAAA',DNSClass::IN,DNSType::CSYNC));
+        $this->assertInstanceOf(CSYNC::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 10 00000042 0003 06000010',DNSClass::IN,DNSType::CSYNC));
 
         $this->assertInstanceOf(ZONEMD::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('2018031500 1 1 FEBE3D4CE2EC2FFA4BA99D46CD69D6D29711E55217057BEE7EB1A7B641A47BA7FED2DD5B97AE499FAFA4F22C6BD647DE',DNSClass::IN,DNSType::ZONEMD));
         $this->assertInstanceOf(ZONEMD::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 54 7848B78C 01 01 FEBE3D4CE2EC2FFA4BA99D46CD69D6D29711E55217057BEE7EB1A7B641A47BA7FED2DD5B97AE499FAFA4F22C6BD647DE',DNSClass::IN,DNSType::ZONEMD));
@@ -476,7 +478,7 @@ class TypeHelperTest extends TestCase{
 
         //TODO OPENPGPKEY
 
-        //TODO CSYNC
+        $this->assertInstanceOf(CSYNC::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('00000042').hex2bin('0003').hex2bin('06000010'),DNSClass::IN,DNSType::CSYNC));
 
         $this->assertInstanceOf(ZONEMD::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('7848B78C').hex2bin('01').hex2bin('01').hex2bin('FEBE3D4CE2EC2FFA4BA99D46CD69D6D29711E55217057BEE7EB1A7B641A47BA7FED2DD5B97AE499FAFA4F22C6BD647DE'),DNSClass::IN,DNSType::ZONEMD));
 

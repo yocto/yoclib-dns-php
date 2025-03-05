@@ -13,6 +13,7 @@ use YOCLIB\DNS\Types\CAA;
 use YOCLIB\DNS\Types\CDS;
 use YOCLIB\DNS\Types\CLA;
 use YOCLIB\DNS\Types\CNAME;
+use YOCLIB\DNS\Types\CSYNC;
 use YOCLIB\DNS\Types\DLV;
 use YOCLIB\DNS\Types\DNAME;
 use YOCLIB\DNS\Types\DOA;
@@ -380,7 +381,12 @@ class TypeHelper{
             }
             //TODO CDNSKEY
             //TODO OPENPGPKEY
-            //TODO CSYNC
+            case DNSType::CSYNC:{
+                if(Unknown::detectUnknown($data)){
+                    return CSYNC::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+                }
+                return CSYNC::deserializeFromPresentationFormat($data);
+            }
             case DNSType::ZONEMD:{
                 if(Unknown::detectUnknown($data)){
                     return ZONEMD::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
@@ -389,12 +395,6 @@ class TypeHelper{
             }
             //TODO SVCB
             //TODO HTTPS
-//        case DNSType::HTTPS){
-//            try{
-//                return HTTPS::deserializeFromPresentationFormat($data);
-//            }catch(Throwable){}
-//            return HTTPS::deserializeFromWireFormat(Unknown::deserializeFromPresentationFormat($data)->serializeToWireFormat());
-//        }
             //TODO DSYNC
             case DNSType::SPF:{
                 if(Unknown::detectUnknown($data)){
@@ -609,13 +609,13 @@ class TypeHelper{
             case DNSType::CDS:{
                 return CDS::deserializeFromWireFormat($data);
             }
+            case DNSType::CSYNC:{
+                return CSYNC::deserializeFromWireFormat($data);
+            }
             case DNSType::ZONEMD:{
                 return ZONEMD::deserializeFromWireFormat($data);
             }
             //TODO HTTPS
-//        case DNSType::HTTPS){
-//            return HTTPS::deserializeFromWireFormat($data);
-//        }
             case DNSType::SPF:{
                 return SPF::deserializeFromWireFormat($data);
             }
