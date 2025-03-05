@@ -12,6 +12,7 @@ use YOCLIB\DNS\Types\A;
 use YOCLIB\DNS\Types\AAAA;
 use YOCLIB\DNS\Types\AFSDB;
 use YOCLIB\DNS\Types\CNAME;
+use YOCLIB\DNS\Types\DLV;
 use YOCLIB\DNS\Types\DNAME;
 use YOCLIB\DNS\Types\DS;
 use YOCLIB\DNS\Types\GPOS;
@@ -35,6 +36,7 @@ use YOCLIB\DNS\Types\RP;
 use YOCLIB\DNS\Types\RT;
 use YOCLIB\DNS\Types\SOA;
 use YOCLIB\DNS\Types\SRV;
+use YOCLIB\DNS\Types\TA;
 use YOCLIB\DNS\Types\TXT;
 use YOCLIB\DNS\Types\WKS;
 use YOCLIB\DNS\Types\X25;
@@ -244,9 +246,11 @@ class TypeHelperTest extends TestCase{
 
         //TODO CLA
 
-        //TODO TA
+        $this->assertInstanceOf(TA::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('60485 5 1 2BB183AF5F22588179A53B0A98631FAD1A292118',DNSClass::IN,DNSType::TA));
+        $this->assertInstanceOf(TA::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 26 EC45 0005 0001 2BB183AF5F22588179A53B0A98631FAD1A292118',DNSClass::IN,DNSType::TA));
 
-        //TODO DLV
+        $this->assertInstanceOf(DLV::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('60485 5 1 2BB183AF5F22588179A53B0A98631FAD1A292118',DNSClass::IN,DNSType::DLV));
+        $this->assertInstanceOf(DLV::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 26 EC45 0005 0001 2BB183AF5F22588179A53B0A98631FAD1A292118',DNSClass::IN,DNSType::DLV));
     }
 
     /**
@@ -302,6 +306,12 @@ class TypeHelperTest extends TestCase{
         $this->assertInstanceOf(NSAP_PTR::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('076578616D706C6503636F6D00'),DNSClass::IN,DNSType::NSAP_PTR));
 
         $this->assertInstanceOf(DNAME::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('076578616D706C6503636F6D00'),DNSClass::IN,DNSType::DNAME));
+
+        //
+
+        $this->assertInstanceOf(TA::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('EC45').hex2bin('0005').hex2bin('0001').hex2bin('2BB183AF5F22588179A53B0A98631FAD1A292118'),DNSClass::IN,DNSType::TA));
+
+        $this->assertInstanceOf(DLV::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('EC45').hex2bin('0005').hex2bin('0001').hex2bin('2BB183AF5F22588179A53B0A98631FAD1A292118'),DNSClass::IN,DNSType::DLV));
     }
 
 }
