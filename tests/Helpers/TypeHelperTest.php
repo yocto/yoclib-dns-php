@@ -13,12 +13,14 @@ use YOCLIB\DNS\Types\AAAA;
 use YOCLIB\DNS\Types\AFSDB;
 use YOCLIB\DNS\Types\AVC;
 use YOCLIB\DNS\Types\CAA;
+use YOCLIB\DNS\Types\CDNSKEY;
 use YOCLIB\DNS\Types\CDS;
 use YOCLIB\DNS\Types\CLA;
 use YOCLIB\DNS\Types\CNAME;
 use YOCLIB\DNS\Types\CSYNC;
 use YOCLIB\DNS\Types\DLV;
 use YOCLIB\DNS\Types\DNAME;
+use YOCLIB\DNS\Types\DNSKEY;
 use YOCLIB\DNS\Types\DOA;
 use YOCLIB\DNS\Types\DS;
 use YOCLIB\DNS\Types\GPOS;
@@ -221,7 +223,8 @@ class TypeHelperTest extends TestCase{
 
         //TODO NSEC
 
-        //TODO DNSKEY
+        $this->assertInstanceOf(DNSKEY::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('1 1 1 dGVzdA==',DNSClass::IN,DNSType::DNSKEY));
+        $this->assertInstanceOf(DNSKEY::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 9 0001 01 01 0474657374',DNSClass::IN,DNSType::DNSKEY));
 
         //TODO DHCID
 
@@ -249,7 +252,8 @@ class TypeHelperTest extends TestCase{
         $this->assertInstanceOf(CDS::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('60485 5 1 2BB183AF5F22588179A53B0A98631FAD1A292118',DNSClass::IN,DNSType::CDS));
         $this->assertInstanceOf(CDS::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 26 EC45 0005 0001 2BB183AF5F22588179A53B0A98631FAD1A292118',DNSClass::IN,DNSType::CDS));
 
-        //TODO CDNSKEY
+        $this->assertInstanceOf(CDNSKEY::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('1 1 1 dGVzdA==',DNSClass::IN,DNSType::CDNSKEY));
+        $this->assertInstanceOf(CDNSKEY::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 9 0001 01 01 0474657374',DNSClass::IN,DNSType::CDNSKEY));
 
         $this->assertInstanceOf(OPENPGPKEY::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('dGVzdA==',DNSClass::IN,DNSType::OPENPGPKEY));
         $this->assertInstanceOf(OPENPGPKEY::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 4 74657374',DNSClass::IN,DNSType::OPENPGPKEY));
@@ -455,6 +459,7 @@ class TypeHelperTest extends TestCase{
         //TODO NSEC
 
         //TODO DNSKEY
+        $this->assertInstanceOf(DNSKEY::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('0001').hex2bin('01').hex2bin('01').hex2bin('0474657374'),DNSClass::IN,DNSType::DNSKEY));
 
         //TODO DHCID
 
@@ -476,7 +481,7 @@ class TypeHelperTest extends TestCase{
 
         $this->assertInstanceOf(CDS::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('EC45').hex2bin('0005').hex2bin('0001').hex2bin('2BB183AF5F22588179A53B0A98631FAD1A292118'),DNSClass::IN,DNSType::CDS));
 
-        //TODO CDNSKEY
+        $this->assertInstanceOf(CDNSKEY::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('0001').hex2bin('01').hex2bin('01').hex2bin('0474657374'),DNSClass::IN,DNSType::CDNSKEY));
 
         $this->assertInstanceOf(OPENPGPKEY::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('74657374'),DNSClass::IN,DNSType::OPENPGPKEY));
 

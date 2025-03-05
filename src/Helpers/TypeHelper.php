@@ -10,12 +10,14 @@ use YOCLIB\DNS\Types\AAAA;
 use YOCLIB\DNS\Types\AFSDB;
 use YOCLIB\DNS\Types\AVC;
 use YOCLIB\DNS\Types\CAA;
+use YOCLIB\DNS\Types\CDNSKEY;
 use YOCLIB\DNS\Types\CDS;
 use YOCLIB\DNS\Types\CLA;
 use YOCLIB\DNS\Types\CNAME;
 use YOCLIB\DNS\Types\CSYNC;
 use YOCLIB\DNS\Types\DLV;
 use YOCLIB\DNS\Types\DNAME;
+use YOCLIB\DNS\Types\DNSKEY;
 use YOCLIB\DNS\Types\DOA;
 use YOCLIB\DNS\Types\DS;
 use YOCLIB\DNS\Types\GPOS;
@@ -339,7 +341,12 @@ class TypeHelper{
             //TODO IPSECKEY
             //TODO RRSIG
             //TODO NSEC
-            //TODO DNSKEY
+            case DNSType::DNSKEY:{
+                if(Unknown::detectUnknown($data)){
+                    return DNSKEY::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+                }
+                return DNSKEY::deserializeFromPresentationFormat($data);
+            }
             //TODO DHCID
             //TODO NSEC3
             //TODO NSEC3PARAM
@@ -380,7 +387,12 @@ class TypeHelper{
                 }
                 return CDS::deserializeFromPresentationFormat($data);
             }
-            //TODO CDNSKEY
+            case DNSType::CDNSKEY:{
+                if(Unknown::detectUnknown($data)){
+                    return CDNSKEY::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+                }
+                return CDNSKEY::deserializeFromPresentationFormat($data);
+            }
             case DNSType::OPENPGPKEY:{
                 if(Unknown::detectUnknown($data)){
                     return OPENPGPKEY::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
@@ -597,6 +609,9 @@ class TypeHelper{
             case DNSType::DS:{
                 return DS::deserializeFromWireFormat($data);
             }
+            case DNSType::DNSKEY:{
+                return DNSKEY::deserializeFromWireFormat($data);
+            }
             case DNSType::TLSA:{
                 return TLSA::deserializeFromWireFormat($data);
             }
@@ -614,6 +629,9 @@ class TypeHelper{
             }
             case DNSType::CDS:{
                 return CDS::deserializeFromWireFormat($data);
+            }
+            case DNSType::CDNSKEY:{
+                return CDNSKEY::deserializeFromWireFormat($data);
             }
             case DNSType::OPENPGPKEY:{
                 return OPENPGPKEY::deserializeFromWireFormat($data);
