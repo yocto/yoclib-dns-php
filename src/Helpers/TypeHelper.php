@@ -15,6 +15,7 @@ use YOCLIB\DNS\Types\CDS;
 use YOCLIB\DNS\Types\CLA;
 use YOCLIB\DNS\Types\CNAME;
 use YOCLIB\DNS\Types\CSYNC;
+use YOCLIB\DNS\Types\DHCID;
 use YOCLIB\DNS\Types\DLV;
 use YOCLIB\DNS\Types\DNAME;
 use YOCLIB\DNS\Types\DNSKEY;
@@ -38,6 +39,7 @@ use YOCLIB\DNS\Types\NINFO;
 use YOCLIB\DNS\Types\NS;
 use YOCLIB\DNS\Types\NSAP;
 use YOCLIB\DNS\Types\NSAP_PTR;
+use YOCLIB\DNS\Types\NSEC3PARAM;
 use YOCLIB\DNS\Types\NULLType;
 use YOCLIB\DNS\Types\OPENPGPKEY;
 use YOCLIB\DNS\Types\PTR;
@@ -347,9 +349,19 @@ class TypeHelper{
                 }
                 return DNSKEY::deserializeFromPresentationFormat($data);
             }
-            //TODO DHCID
+            case DNSType::DHCID:{
+                if(Unknown::detectUnknown($data)){
+                    return DHCID::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+                }
+                return DHCID::deserializeFromPresentationFormat($data);
+            }
             //TODO NSEC3
-            //TODO NSEC3PARAM
+            case DNSType::NSEC3PARAM:{
+                if(Unknown::detectUnknown($data)){
+                    return NSEC3PARAM::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+                }
+                return NSEC3PARAM::deserializeFromPresentationFormat($data);
+            }
             case DNSType::TLSA:{
                 if(Unknown::detectUnknown($data)){
                     return TLSA::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
@@ -611,6 +623,12 @@ class TypeHelper{
             }
             case DNSType::DNSKEY:{
                 return DNSKEY::deserializeFromWireFormat($data);
+            }
+            case DNSType::DHCID:{
+                return DHCID::deserializeFromWireFormat($data);
+            }
+            case DNSType::NSEC3PARAM:{
+                return NSEC3PARAM::deserializeFromWireFormat($data);
             }
             case DNSType::TLSA:{
                 return TLSA::deserializeFromWireFormat($data);

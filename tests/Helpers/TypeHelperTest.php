@@ -18,6 +18,7 @@ use YOCLIB\DNS\Types\CDS;
 use YOCLIB\DNS\Types\CLA;
 use YOCLIB\DNS\Types\CNAME;
 use YOCLIB\DNS\Types\CSYNC;
+use YOCLIB\DNS\Types\DHCID;
 use YOCLIB\DNS\Types\DLV;
 use YOCLIB\DNS\Types\DNAME;
 use YOCLIB\DNS\Types\DNSKEY;
@@ -41,6 +42,7 @@ use YOCLIB\DNS\Types\NINFO;
 use YOCLIB\DNS\Types\NS;
 use YOCLIB\DNS\Types\NSAP;
 use YOCLIB\DNS\Types\NSAP_PTR;
+use YOCLIB\DNS\Types\NSEC3PARAM;
 use YOCLIB\DNS\Types\NULLType;
 use YOCLIB\DNS\Types\OPENPGPKEY;
 use YOCLIB\DNS\Types\PTR;
@@ -226,11 +228,13 @@ class TypeHelperTest extends TestCase{
         $this->assertInstanceOf(DNSKEY::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('1 1 1 dGVzdA==',DNSClass::IN,DNSType::DNSKEY));
         $this->assertInstanceOf(DNSKEY::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 9 0001 01 01 0474657374',DNSClass::IN,DNSType::DNSKEY));
 
-        //TODO DHCID
+        $this->assertInstanceOf(DHCID::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('AAIBY2/AuCccgoJbsaxcQc9TUapptP69lOjxfNuVAA2kjEA=',DNSClass::IN,DNSType::DHCID));
+        $this->assertInstanceOf(DHCID::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 35 000201636FC0B8271C82825BB1AC5C41CF5351AA69B4FEBD94E8F17CDB95000DA48C40',DNSClass::IN,DNSType::DHCID));
 
         //TODO NSEC3
 
-        //TODO NSEC3PARAM
+        $this->assertInstanceOf(NSEC3PARAM::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('1 0 12 aabbccdd',DNSClass::IN,DNSType::NSEC3PARAM));
+        $this->assertInstanceOf(NSEC3PARAM::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 9 01 00 000C 04AABBCCDD',DNSClass::IN,DNSType::NSEC3PARAM));
 
         $this->assertInstanceOf(TLSA::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('0 0 1 d2abde240d7cd3ee6b4b28c54df034b97983a1d16e8a410e4561cb106618e971',DNSClass::IN,DNSType::TLSA));
         $this->assertInstanceOf(TLSA::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 35 00 00 01 D2ABDE240D7CD3EE6B4B28C54DF034B97983A1D16E8A410E4561CB106618E971',DNSClass::IN,DNSType::TLSA));
@@ -458,14 +462,13 @@ class TypeHelperTest extends TestCase{
 
         //TODO NSEC
 
-        //TODO DNSKEY
         $this->assertInstanceOf(DNSKEY::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('0001').hex2bin('01').hex2bin('01').hex2bin('0474657374'),DNSClass::IN,DNSType::DNSKEY));
 
-        //TODO DHCID
+        $this->assertInstanceOf(DHCID::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('000201636FC0B8271C82825BB1AC5C41CF5351AA69B4FEBD94E8F17CDB95000DA48C40'),DNSClass::IN,DNSType::DHCID));
 
         //TODO NSEC3
 
-        //TODO NSEC3PARAM
+        $this->assertInstanceOf(NSEC3PARAM::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('01').hex2bin('00').hex2bin('000C').hex2bin('04AABBCCDD'),DNSClass::IN,DNSType::NSEC3PARAM));
 
         $this->assertInstanceOf(TLSA::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('00').hex2bin('00').hex2bin('01').hex2bin('D2ABDE240D7CD3EE6B4B28C54DF034B97983A1D16E8A410E4561CB106618E971'),DNSClass::IN,DNSType::TLSA));
 
