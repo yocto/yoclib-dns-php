@@ -33,7 +33,7 @@ class CSYNC extends Type{
     }
 
     protected static function getMapping(): array{
-        //TODO
+        //TODO Add mapping
         return [
             DNSType::A => 'A',
         ];
