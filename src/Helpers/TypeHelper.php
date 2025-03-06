@@ -6,8 +6,12 @@ use YOCLIB\DNS\Exceptions\DNSFieldException;
 use YOCLIB\DNS\Exceptions\DNSTypeException;
 use YOCLIB\DNS\Fields\FQDN;
 use YOCLIB\DNS\Types\A;
+use YOCLIB\DNS\Types\A6;
 use YOCLIB\DNS\Types\AAAA;
 use YOCLIB\DNS\Types\AFSDB;
+use YOCLIB\DNS\Types\AMTRELAY;
+use YOCLIB\DNS\Types\APL;
+use YOCLIB\DNS\Types\ATMA;
 use YOCLIB\DNS\Types\AVC;
 use YOCLIB\DNS\Types\CAA;
 use YOCLIB\DNS\Types\CDNSKEY;
@@ -22,15 +26,22 @@ use YOCLIB\DNS\Types\DNAME;
 use YOCLIB\DNS\Types\DNSKEY;
 use YOCLIB\DNS\Types\DOA;
 use YOCLIB\DNS\Types\DS;
+use YOCLIB\DNS\Types\DSYNC;
+use YOCLIB\DNS\Types\EID;
 use YOCLIB\DNS\Types\EUI48;
 use YOCLIB\DNS\Types\EUI64;
 use YOCLIB\DNS\Types\GPOS;
 use YOCLIB\DNS\Types\HINFO;
+use YOCLIB\DNS\Types\HIP;
+use YOCLIB\DNS\Types\HTTPS;
+use YOCLIB\DNS\Types\IPN;
+use YOCLIB\DNS\Types\IPSECKEY;
 use YOCLIB\DNS\Types\ISDN;
 use YOCLIB\DNS\Types\KEY;
 use YOCLIB\DNS\Types\KX;
 use YOCLIB\DNS\Types\L32;
 use YOCLIB\DNS\Types\L64;
+use YOCLIB\DNS\Types\LOC;
 use YOCLIB\DNS\Types\LP;
 use YOCLIB\DNS\Types\MB;
 use YOCLIB\DNS\Types\MD;
@@ -41,28 +52,38 @@ use YOCLIB\DNS\Types\MR;
 use YOCLIB\DNS\Types\MX;
 use YOCLIB\DNS\Types\NAPTR;
 use YOCLIB\DNS\Types\NID;
+use YOCLIB\DNS\Types\NIMLOC;
 use YOCLIB\DNS\Types\NINFO;
 use YOCLIB\DNS\Types\NS;
 use YOCLIB\DNS\Types\NSAP;
 use YOCLIB\DNS\Types\NSAP_PTR;
+use YOCLIB\DNS\Types\NSEC;
+use YOCLIB\DNS\Types\NSEC3;
 use YOCLIB\DNS\Types\NSEC3PARAM;
 use YOCLIB\DNS\Types\NULLType;
+use YOCLIB\DNS\Types\NXT;
 use YOCLIB\DNS\Types\OPENPGPKEY;
+use YOCLIB\DNS\Types\OPT;
 use YOCLIB\DNS\Types\PTR;
 use YOCLIB\DNS\Types\PX;
 use YOCLIB\DNS\Types\RESINFO;
 use YOCLIB\DNS\Types\RKEY;
 use YOCLIB\DNS\Types\RP;
+use YOCLIB\DNS\Types\RRSIG;
 use YOCLIB\DNS\Types\RT;
+use YOCLIB\DNS\Types\SIG;
 use YOCLIB\DNS\Types\SINK;
 use YOCLIB\DNS\Types\SMIMEA;
 use YOCLIB\DNS\Types\SOA;
 use YOCLIB\DNS\Types\SPF;
 use YOCLIB\DNS\Types\SRV;
 use YOCLIB\DNS\Types\SSHFP;
+use YOCLIB\DNS\Types\SVCB;
 use YOCLIB\DNS\Types\TA;
 use YOCLIB\DNS\Types\TALINK;
+use YOCLIB\DNS\Types\TKEY;
 use YOCLIB\DNS\Types\TLSA;
+use YOCLIB\DNS\Types\TSIG;
 use YOCLIB\DNS\Types\TXT;
 use YOCLIB\DNS\Types\Type;
 use YOCLIB\DNS\Types\Unknown;
@@ -276,7 +297,12 @@ class TypeHelper{
                 }
                 return NSAP_PTR::deserializeFromPresentationFormat($data);
             }
-            //TODO SIG
+            case DNSType::SIG:{
+                if(Unknown::detectUnknown($data)){
+                    return SIG::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+                }
+                return SIG::deserializeFromPresentationFormat($data);
+            }
             case DNSType::KEY:{
                 if(Unknown::detectUnknown($data)){
                     return KEY::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
@@ -301,17 +327,42 @@ class TypeHelper{
                 }
                 return AAAA::deserializeFromPresentationFormat($data);
             }
-            //TODO LOC
-            //TODO NXT
-            //TODO EID
-            //TODO NIMLOC
+            case DNSType::LOC:{
+                if(Unknown::detectUnknown($data)){
+                    return LOC::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+                }
+                return LOC::deserializeFromPresentationFormat($data);
+            }
+            case DNSType::NXT:{
+                if(Unknown::detectUnknown($data)){
+                    return NXT::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+                }
+                return NXT::deserializeFromPresentationFormat($data);
+            }
+            case DNSType::EID:{
+                if(Unknown::detectUnknown($data)){
+                    return EID::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+                }
+                return EID::deserializeFromPresentationFormat($data);
+            }
+            case DNSType::NIMLOC:{
+                if(Unknown::detectUnknown($data)){
+                    return NIMLOC::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+                }
+                return NIMLOC::deserializeFromPresentationFormat($data);
+            }
             case DNSType::SRV:{
                 if(Unknown::detectUnknown($data)){
                     return SRV::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
                 }
                 return SRV::deserializeFromPresentationFormat($data);
             }
-            //TODO ATMA
+            case DNSType::ATMA:{
+                if(Unknown::detectUnknown($data)){
+                    return ATMA::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+                }
+                return ATMA::deserializeFromPresentationFormat($data);
+            }
             case DNSType::NAPTR:{
                 if(Unknown::detectUnknown($data)){
                     return NAPTR::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
@@ -330,7 +381,12 @@ class TypeHelper{
                 }
                 return CERT::deserializeFromPresentationFormat($data);
             }
-            //TODO A6
+            case DNSType::A6:{
+                if(Unknown::detectUnknown($data)){
+                    return A6::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+                }
+                return A6::deserializeFromPresentationFormat($data);
+            }
             case DNSType::DNAME:{
                 if(Unknown::detectUnknown($data)){
                     return DNAME::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
@@ -343,8 +399,18 @@ class TypeHelper{
                 }
                 return SINK::deserializeFromPresentationFormat($data);
             }
-            //TODO OPT
-            //TODO APL
+            case DNSType::OPT:{
+                if(Unknown::detectUnknown($data)){
+                    return OPT::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+                }
+                return OPT::deserializeFromPresentationFormat($data);
+            }
+            case DNSType::APL:{
+                if(Unknown::detectUnknown($data)){
+                    return APL::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+                }
+                return APL::deserializeFromPresentationFormat($data);
+            }
             case DNSType::DS:{
                 if(Unknown::detectUnknown($data)){
                     return DS::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
@@ -357,9 +423,24 @@ class TypeHelper{
                 }
                 return SSHFP::deserializeFromPresentationFormat($data);
             }
-            //TODO IPSECKEY
-            //TODO RRSIG
-            //TODO NSEC
+            case DNSType::IPSECKEY:{
+                if(Unknown::detectUnknown($data)){
+                    return IPSECKEY::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+                }
+                return IPSECKEY::deserializeFromPresentationFormat($data);
+            }
+            case DNSType::RRSIG:{
+                if(Unknown::detectUnknown($data)){
+                    return RRSIG::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+                }
+                return RRSIG::deserializeFromPresentationFormat($data);
+            }
+            case DNSType::NSEC:{
+                if(Unknown::detectUnknown($data)){
+                    return NSEC::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+                }
+                return NSEC::deserializeFromPresentationFormat($data);
+            }
             case DNSType::DNSKEY:{
                 if(Unknown::detectUnknown($data)){
                     return DNSKEY::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
@@ -372,7 +453,12 @@ class TypeHelper{
                 }
                 return DHCID::deserializeFromPresentationFormat($data);
             }
-            //TODO NSEC3
+            case DNSType::NSEC3:{
+                if(Unknown::detectUnknown($data)){
+                    return NSEC3::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+                }
+                return NSEC3::deserializeFromPresentationFormat($data);
+            }
             case DNSType::NSEC3PARAM:{
                 if(Unknown::detectUnknown($data)){
                     return NSEC3PARAM::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
@@ -391,7 +477,12 @@ class TypeHelper{
                 }
                 return SMIMEA::deserializeFromPresentationFormat($data);
             }
-            //TODO HIP
+            case DNSType::HIP:{
+                if(Unknown::detectUnknown($data)){
+                    return HIP::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+                }
+                return HIP::deserializeFromPresentationFormat($data);
+            }
             case DNSType::NINFO:{
                 if(Unknown::detectUnknown($data)){
                     return NINFO::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
@@ -440,9 +531,24 @@ class TypeHelper{
                 }
                 return ZONEMD::deserializeFromPresentationFormat($data);
             }
-            //TODO SVCB
-            //TODO HTTPS
-            //TODO DSYNC
+            case DNSType::SVCB:{
+                if(Unknown::detectUnknown($data)){
+                    return SVCB::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+                }
+                return SVCB::deserializeFromPresentationFormat($data);
+            }
+            case DNSType::HTTPS:{
+                if(Unknown::detectUnknown($data)){
+                    return HTTPS::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+                }
+                return HTTPS::deserializeFromPresentationFormat($data);
+            }
+            case DNSType::DSYNC:{
+                if(Unknown::detectUnknown($data)){
+                    return DSYNC::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+                }
+                return DSYNC::deserializeFromPresentationFormat($data);
+            }
             case DNSType::SPF:{
                 if(Unknown::detectUnknown($data)){
                     return SPF::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
@@ -488,8 +594,18 @@ class TypeHelper{
             case DNSType::NXNAME:{
                 // Meta Type
             }
-            //TODO TKEY
-            //TODO TSIG
+            case DNSType::TKEY:{
+                if(Unknown::detectUnknown($data)){
+                    return TKEY::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+                }
+                return TKEY::deserializeFromPresentationFormat($data);
+            }
+            case DNSType::TSIG:{
+                if(Unknown::detectUnknown($data)){
+                    return TSIG::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+                }
+                return TSIG::deserializeFromPresentationFormat($data);
+            }
             case DNSType::IXFR:{
                 // QType
             }
@@ -529,7 +645,12 @@ class TypeHelper{
                 }
                 return DOA::deserializeFromPresentationFormat($data);
             }
-            //TODO AMTRELAY
+            case DNSType::AMTRELAY:{
+                if(Unknown::detectUnknown($data)){
+                    return AMTRELAY::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+                }
+                return AMTRELAY::deserializeFromPresentationFormat($data);
+            }
             case DNSType::RESINFO:{
                 if(Unknown::detectUnknown($data)){
                     return RESINFO::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
@@ -548,7 +669,12 @@ class TypeHelper{
                 }
                 return CLA::deserializeFromPresentationFormat($data);
             }
-            //TODO IPN
+            case DNSType::IPN:{
+                if(Unknown::detectUnknown($data)){
+                    return IPN::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+                }
+                return IPN::deserializeFromPresentationFormat($data);
+            }
             case DNSType::TA:{
                 if(Unknown::detectUnknown($data)){
                     return TA::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
@@ -650,6 +776,9 @@ class TypeHelper{
             case DNSType::NSAP_PTR:{
                 return NSAP_PTR::deserializeFromWireFormat($data);
             }
+            case DNSType::SIG:{
+                return SIG::deserializeFromWireFormat($data);
+            }
             case DNSType::KEY:{
                 return KEY::deserializeFromWireFormat($data);
             }
@@ -662,8 +791,23 @@ class TypeHelper{
             case DNSType::AAAA:{
                 return AAAA::deserializeFromWireFormat($data);
             }
+            case DNSType::LOC:{
+                return LOC::deserializeFromWireFormat($data);
+            }
+            case DNSType::NXT:{
+                return NXT::deserializeFromWireFormat($data);
+            }
+            case DNSType::EID:{
+                return EID::deserializeFromWireFormat($data);
+            }
+            case DNSType::NIMLOC:{
+                return NIMLOC::deserializeFromWireFormat($data);
+            }
             case DNSType::SRV:{
                 return SRV::deserializeFromWireFormat($data);
+            }
+            case DNSType::ATMA:{
+                return ATMA::deserializeFromWireFormat($data);
             }
             case DNSType::NAPTR:{
                 return NAPTR::deserializeFromWireFormat($data);
@@ -674,11 +818,20 @@ class TypeHelper{
             case DNSType::CERT:{
                 return CERT::deserializeFromWireFormat($data);
             }
+            case DNSType::A6:{
+                return A6::deserializeFromWireFormat($data);
+            }
             case DNSType::DNAME:{
                 return DNAME::deserializeFromWireFormat($data);
             }
             case DNSType::SINK:{
                 return SINK::deserializeFromWireFormat($data);
+            }
+            case DNSType::OPT:{
+                return OPT::deserializeFromWireFormat($data);
+            }
+            case DNSType::APL:{
+                return APL::deserializeFromWireFormat($data);
             }
             case DNSType::DS:{
                 return DS::deserializeFromWireFormat($data);
@@ -686,11 +839,23 @@ class TypeHelper{
             case DNSType::SSHFP:{
                 return SSHFP::deserializeFromWireFormat($data);
             }
+            case DNSType::IPSECKEY:{
+                return IPSECKEY::deserializeFromWireFormat($data);
+            }
+            case DNSType::RRSIG:{
+                return RRSIG::deserializeFromWireFormat($data);
+            }
+            case DNSType::NSEC:{
+                return NSEC::deserializeFromWireFormat($data);
+            }
             case DNSType::DNSKEY:{
                 return DNSKEY::deserializeFromWireFormat($data);
             }
             case DNSType::DHCID:{
                 return DHCID::deserializeFromWireFormat($data);
+            }
+            case DNSType::NSEC3:{
+                return NSEC3::deserializeFromWireFormat($data);
             }
             case DNSType::NSEC3PARAM:{
                 return NSEC3PARAM::deserializeFromWireFormat($data);
@@ -725,7 +890,15 @@ class TypeHelper{
             case DNSType::ZONEMD:{
                 return ZONEMD::deserializeFromWireFormat($data);
             }
-            //TODO HTTPS
+            case DNSType::SVCB:{
+                return SVCB::deserializeFromWireFormat($data);
+            }
+            case DNSType::HTTPS:{
+                return HTTPS::deserializeFromWireFormat($data);
+            }
+            case DNSType::DSYNC:{
+                return DSYNC::deserializeFromWireFormat($data);
+            }
             case DNSType::SPF:{
                 return SPF::deserializeFromWireFormat($data);
             }
@@ -750,8 +923,12 @@ class TypeHelper{
             case DNSType::NXNAME:{
                 // Meta Type
             }
-            //TODO TKEY
-            //TODO TSIG
+            case DNSType::TKEY:{
+                return TKEY::deserializeFromWireFormat($data);
+            }
+            case DNSType::TSIG:{
+                return TSIG::deserializeFromWireFormat($data);
+            }
             case DNSType::IXFR:{
                 // QType
             }
@@ -779,6 +956,9 @@ class TypeHelper{
             case DNSType::DOA:{
                 return DOA::deserializeFromWireFormat($data);
             }
+            case DNSType::AMTRELAY:{
+                return AMTRELAY::deserializeFromWireFormat($data);
+            }
             case DNSType::RESINFO:{
                 return RESINFO::deserializeFromWireFormat($data);
             }
@@ -787,6 +967,9 @@ class TypeHelper{
             }
             case DNSType::CLA:{
                 return CLA::deserializeFromWireFormat($data);
+            }
+            case DNSType::IPN:{
+                return IPN::deserializeFromWireFormat($data);
             }
             case DNSType::TA:{
                 return TA::deserializeFromWireFormat($data);
