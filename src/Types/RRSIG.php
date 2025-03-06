@@ -33,7 +33,7 @@ class RRSIG extends Type{
         if(!($fields[2] instanceof UnsignedInteger8)){
             throw new DNSTypeException('Third field should be an UInt8.');
         }
-        if(!($fields[3] instanceof UnsignedInteger32) && !($fields[3] instanceof Binary && $fields[3]->getValue()==='')){
+        if(!($fields[3] instanceof UnsignedInteger32)){
             throw new DNSTypeException('Fourth field should be an UInt32 or an empty binary.');
         }
         if(!($fields[4] instanceof UnsignedInteger32)){
