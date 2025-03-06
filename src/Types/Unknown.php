@@ -80,7 +80,7 @@ class Unknown extends Type{
      */
     public static function detectUnknown($data): bool{
         $tokens = LineLexer::tokenizeLine($data);
-        return $tokens[0]==='\#';
+        return ($tokens[0] ?? null)==='\#';
     }
 
 }

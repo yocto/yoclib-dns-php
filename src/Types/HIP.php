@@ -11,8 +11,7 @@ class HIP extends Type{
      * @throws DNSTypeException
      */
     public static function deserializeFromPresentationFormat(string $data): HIP{
-        //TODO Implement
-        return new self([]);
+        throw new \RuntimeException('Type not implemented');
     }
 
     /**
@@ -21,8 +20,7 @@ class HIP extends Type{
      * @throws DNSTypeException
      */
     public static function deserializeFromWireFormat(string $data): HIP{
-        //TODO Implement
-        return new self([]);
+        throw new \RuntimeException('Type not implemented');
     }
 
 }

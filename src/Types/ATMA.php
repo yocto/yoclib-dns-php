@@ -11,8 +11,7 @@ class ATMA extends Type{
      * @throws DNSTypeException
      */
     public static function deserializeFromPresentationFormat(string $data): ATMA{
-        //TODO Implement
-        return new self([]);
+        throw new \RuntimeException('Type not implemented');
     }
 
     /**
@@ -21,8 +20,7 @@ class ATMA extends Type{
      * @throws DNSTypeException
      */
     public static function deserializeFromWireFormat(string $data): ATMA{
-        //TODO Implement
-        return new self([]);
+        throw new \RuntimeException('Type not implemented');
     }
 
 }
