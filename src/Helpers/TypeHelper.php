@@ -28,6 +28,7 @@ use YOCLIB\DNS\Types\HINFO;
 use YOCLIB\DNS\Types\ISDN;
 use YOCLIB\DNS\Types\KEY;
 use YOCLIB\DNS\Types\KX;
+use YOCLIB\DNS\Types\L32;
 use YOCLIB\DNS\Types\LP;
 use YOCLIB\DNS\Types\MB;
 use YOCLIB\DNS\Types\MD;
@@ -435,7 +436,12 @@ class TypeHelper{
                 return SPF::deserializeFromPresentationFormat($data);
             }
             //TODO NID
-            //TODO L32
+            case DNSType::L32:{
+                if(Unknown::detectUnknown($data)){
+                    return L32::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+                }
+                return L32::deserializeFromPresentationFormat($data);
+            }
             //TODO L64
             case DNSType::LP:{
                 if(Unknown::detectUnknown($data)){
@@ -692,6 +698,9 @@ class TypeHelper{
             //TODO HTTPS
             case DNSType::SPF:{
                 return SPF::deserializeFromWireFormat($data);
+            }
+            case DNSType::L32:{
+                return L32::deserializeFromWireFormat($data);
             }
             case DNSType::LP:{
                 return LP::deserializeFromWireFormat($data);

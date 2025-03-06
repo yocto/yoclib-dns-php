@@ -31,6 +31,7 @@ use YOCLIB\DNS\Types\HINFO;
 use YOCLIB\DNS\Types\ISDN;
 use YOCLIB\DNS\Types\KEY;
 use YOCLIB\DNS\Types\KX;
+use YOCLIB\DNS\Types\L32;
 use YOCLIB\DNS\Types\LP;
 use YOCLIB\DNS\Types\MB;
 use YOCLIB\DNS\Types\MD;
@@ -281,7 +282,8 @@ class TypeHelperTest extends TestCase{
 
         //TODO NID
 
-        //TODO L32
+        $this->assertInstanceOf(L32::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('10 10.1.2.0',DNSClass::IN,DNSType::L32));
+        $this->assertInstanceOf(L32::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 6 000A 0A010200',DNSClass::IN,DNSType::L32));
 
         //TODO L64
 
@@ -294,11 +296,21 @@ class TypeHelperTest extends TestCase{
         $this->assertInstanceOf(EUI64::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('00-00-5e-ef-10-00-00-2a',DNSClass::IN,DNSType::EUI64));
         $this->assertInstanceOf(EUI64::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 8 00005EEF1000002A',DNSClass::IN,DNSType::EUI64));
 
-        //TODO NXNAME
+        // NXNAME: Meta-Type
 
         //TODO TKEY
 
         //TODO TSIG
+
+        // IXFR: QType
+
+        // AXFR: QType
+
+        // MAILB: QType
+
+        // MAILA: QType
+
+        // ANY: QType
 
         $this->assertInstanceOf(URI::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('10 1 "https://www.example.com/path"',DNSClass::IN,DNSType::URI));
         $this->assertInstanceOf(URI::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 33 000A 0001 1C68747470733A2F2F7777772E6578616D706C652E636F6D2F70617468',DNSClass::IN,DNSType::URI));
@@ -506,7 +518,7 @@ class TypeHelperTest extends TestCase{
 
         //TODO NID
 
-        //TODO L32
+        $this->assertInstanceOf(L32::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('000A').hex2bin('0A010200'),DNSClass::IN,DNSType::L32));
 
         //TODO L64
 
@@ -516,11 +528,21 @@ class TypeHelperTest extends TestCase{
 
         $this->assertInstanceOf(EUI64::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('00005EEF1000002A'),DNSClass::IN,DNSType::EUI64));
 
-        //TODO NXNAME
+        // NXNAME: Meta-Type
 
         //TODO TKEY
 
         //TODO TSIG
+
+        // IXFR: QType
+
+        // AXFR: QType
+
+        // MAILB: QType
+
+        // MAILA: QType
+
+        // ANY: QType
 
         $this->assertInstanceOf(URI::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('000A').hex2bin('0001').hex2bin('1C68747470733A2F2F7777772E6578616D706C652E636F6D2F70617468'),DNSClass::IN,DNSType::URI));
 
