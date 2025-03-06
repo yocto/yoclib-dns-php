@@ -261,8 +261,8 @@ class TypeHelperTest extends TestCase{
 //        $this->assertInstanceOf(IPSECKEY::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('',DNSClass::IN,DNSType::IPSECKEY));
 //        $this->assertInstanceOf(IPSECKEY::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 0',DNSClass::IN,DNSType::IPSECKEY));
 
-//        $this->assertInstanceOf(RRSIG::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('',DNSClass::IN,DNSType::RRSIG));
-//        $this->assertInstanceOf(RRSIG::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 0',DNSClass::IN,DNSType::RRSIG));
+        $this->assertInstanceOf(RRSIG::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('1 5 3 86400 20030322173103 20030220173103 2642 example.com. oJB1W6WNGv+ldvQ3WDG0MQkg5IEhjRip8WTrPYGv07h108dUKGMeDPKijVCHX3DDKdfb+v6oB9wfuh3DTJXUAfI/M0zmO/zz8bW0Rznl8O3tGNazPwQKkRN20XPXV6nwwfoXmJQbsLNrLfkGJ5D6fwFm8nN+6pBzeDQfsS3Ap3o=',DNSClass::IN,DNSType::RRSIG));
+        $this->assertInstanceOf(RRSIG::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 159 0001 05 03 00015180 00001234 00001234 0A52 076578616D706C6503636F6D00 A090755BA58D1AFFA576F4375831B4310920E481218D18A9F164EB3D81AFD3B875D3C75428631E0CF2A28D50875F70C329D7DBFAFEA807DC1FBA1DC34C95D401F23F334CE63BFCF3F1B5B44739E5F0EDED18D6B33F040A911376D173D757A9F0C1FA1798941BB0B36B2DF9062790FA7F0166F2737EEA907378341FB12DC0A77A',DNSClass::IN,DNSType::RRSIG));
 
 //        $this->assertInstanceOf(NSEC::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('',DNSClass::IN,DNSType::NSEC));
 //        $this->assertInstanceOf(NSEC::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 0',DNSClass::IN,DNSType::NSEC));
