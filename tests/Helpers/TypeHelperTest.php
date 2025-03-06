@@ -24,6 +24,8 @@ use YOCLIB\DNS\Types\DNAME;
 use YOCLIB\DNS\Types\DNSKEY;
 use YOCLIB\DNS\Types\DOA;
 use YOCLIB\DNS\Types\DS;
+use YOCLIB\DNS\Types\EUI48;
+use YOCLIB\DNS\Types\EUI64;
 use YOCLIB\DNS\Types\GPOS;
 use YOCLIB\DNS\Types\HINFO;
 use YOCLIB\DNS\Types\ISDN;
@@ -286,9 +288,11 @@ class TypeHelperTest extends TestCase{
         $this->assertInstanceOf(LP::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('10 lp.example.com.',DNSClass::IN,DNSType::LP));
         $this->assertInstanceOf(LP::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 18 000A 026C70076578616D706C6503636F6D00',DNSClass::IN,DNSType::LP));
 
-        //TODO EUI48
+        $this->assertInstanceOf(EUI48::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('00-00-5e-00-53-2a',DNSClass::IN,DNSType::EUI48));
+        $this->assertInstanceOf(EUI48::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 6 00005E00532A',DNSClass::IN,DNSType::EUI48));
 
-        //TODO EUI64
+        $this->assertInstanceOf(EUI64::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('00-00-5e-ef-10-00-00-2a',DNSClass::IN,DNSType::EUI64));
+        $this->assertInstanceOf(EUI64::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 8 00005EEF1000002A',DNSClass::IN,DNSType::EUI64));
 
         //TODO NXNAME
 
@@ -508,9 +512,9 @@ class TypeHelperTest extends TestCase{
 
         $this->assertInstanceOf(LP::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('000A').hex2bin('026C70076578616D706C6503636F6D00'),DNSClass::IN,DNSType::LP));
 
-        //TODO EUI48
+        $this->assertInstanceOf(EUI48::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('00005E00532A'),DNSClass::IN,DNSType::EUI48));
 
-        //TODO EUI64
+        $this->assertInstanceOf(EUI64::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('00005EEF1000002A'),DNSClass::IN,DNSType::EUI64));
 
         //TODO NXNAME
 

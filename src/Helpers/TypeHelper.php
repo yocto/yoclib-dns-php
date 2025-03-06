@@ -21,6 +21,8 @@ use YOCLIB\DNS\Types\DNAME;
 use YOCLIB\DNS\Types\DNSKEY;
 use YOCLIB\DNS\Types\DOA;
 use YOCLIB\DNS\Types\DS;
+use YOCLIB\DNS\Types\EUI48;
+use YOCLIB\DNS\Types\EUI64;
 use YOCLIB\DNS\Types\GPOS;
 use YOCLIB\DNS\Types\HINFO;
 use YOCLIB\DNS\Types\ISDN;
@@ -441,11 +443,38 @@ class TypeHelper{
                 }
                 return LP::deserializeFromPresentationFormat($data);
             }
-            //TODO EUI48
-            //TODO EUI64
-            //TODO NXNAME
+            case DNSType::EUI48:{
+                if(Unknown::detectUnknown($data)){
+                    return EUI48::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+                }
+                return EUI48::deserializeFromPresentationFormat($data);
+            }
+            case DNSType::EUI64:{
+                if(Unknown::detectUnknown($data)){
+                    return EUI64::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+                }
+                return EUI64::deserializeFromPresentationFormat($data);
+            }
+            case DNSType::NXNAME:{
+                // Meta Type
+            }
             //TODO TKEY
             //TODO TSIG
+            case DNSType::IXFR:{
+                // QType
+            }
+            case DNSType::AXFR:{
+                // QType
+            }
+            case DNSType::MAILB:{
+                // QType
+            }
+            case DNSType::MAILA:{
+                // QType
+            }
+            case DNSType::ANY:{
+                // QType
+            }
             case DNSType::URI:{
                 if(Unknown::detectUnknown($data)){
                     return URI::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
@@ -666,6 +695,32 @@ class TypeHelper{
             }
             case DNSType::LP:{
                 return LP::deserializeFromWireFormat($data);
+            }
+            case DNSType::EUI48:{
+                return EUI48::deserializeFromWireFormat($data);
+            }
+            case DNSType::EUI64:{
+                return EUI64::deserializeFromWireFormat($data);
+            }
+            case DNSType::NXNAME:{
+                // Meta Type
+            }
+            //TODO TKEY
+            //TODO TSIG
+            case DNSType::IXFR:{
+                // QType
+            }
+            case DNSType::AXFR:{
+                // QType
+            }
+            case DNSType::MAILB:{
+                // QType
+            }
+            case DNSType::MAILA:{
+                // QType
+            }
+            case DNSType::ANY:{
+                // QType
             }
             case DNSType::URI:{
                 return URI::deserializeFromWireFormat($data);
