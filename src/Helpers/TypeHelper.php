@@ -12,6 +12,7 @@ use YOCLIB\DNS\Types\AVC;
 use YOCLIB\DNS\Types\CAA;
 use YOCLIB\DNS\Types\CDNSKEY;
 use YOCLIB\DNS\Types\CDS;
+use YOCLIB\DNS\Types\CERT;
 use YOCLIB\DNS\Types\CLA;
 use YOCLIB\DNS\Types\CNAME;
 use YOCLIB\DNS\Types\CSYNC;
@@ -58,6 +59,7 @@ use YOCLIB\DNS\Types\SMIMEA;
 use YOCLIB\DNS\Types\SOA;
 use YOCLIB\DNS\Types\SPF;
 use YOCLIB\DNS\Types\SRV;
+use YOCLIB\DNS\Types\SSHFP;
 use YOCLIB\DNS\Types\TA;
 use YOCLIB\DNS\Types\TALINK;
 use YOCLIB\DNS\Types\TLSA;
@@ -322,7 +324,12 @@ class TypeHelper{
                 }
                 return KX::deserializeFromPresentationFormat($data);
             }
-            //TODO CERT
+            case DNSType::CERT:{
+                if(Unknown::detectUnknown($data)){
+                    return CERT::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+                }
+                return CERT::deserializeFromPresentationFormat($data);
+            }
             //TODO A6
             case DNSType::DNAME:{
                 if(Unknown::detectUnknown($data)){
@@ -344,7 +351,12 @@ class TypeHelper{
                 }
                 return DS::deserializeFromPresentationFormat($data);
             }
-            //TODO SSHFP
+            case DNSType::SSHFP:{
+                if(Unknown::detectUnknown($data)){
+                    return SSHFP::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+                }
+                return SSHFP::deserializeFromPresentationFormat($data);
+            }
             //TODO IPSECKEY
             //TODO RRSIG
             //TODO NSEC
@@ -659,6 +671,9 @@ class TypeHelper{
             case DNSType::KX:{
                 return KX::deserializeFromWireFormat($data);
             }
+            case DNSType::CERT:{
+                return CERT::deserializeFromWireFormat($data);
+            }
             case DNSType::DNAME:{
                 return DNAME::deserializeFromWireFormat($data);
             }
@@ -667,6 +682,9 @@ class TypeHelper{
             }
             case DNSType::DS:{
                 return DS::deserializeFromWireFormat($data);
+            }
+            case DNSType::SSHFP:{
+                return SSHFP::deserializeFromWireFormat($data);
             }
             case DNSType::DNSKEY:{
                 return DNSKEY::deserializeFromWireFormat($data);

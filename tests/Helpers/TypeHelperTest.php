@@ -15,6 +15,7 @@ use YOCLIB\DNS\Types\AVC;
 use YOCLIB\DNS\Types\CAA;
 use YOCLIB\DNS\Types\CDNSKEY;
 use YOCLIB\DNS\Types\CDS;
+use YOCLIB\DNS\Types\CERT;
 use YOCLIB\DNS\Types\CLA;
 use YOCLIB\DNS\Types\CNAME;
 use YOCLIB\DNS\Types\CSYNC;
@@ -61,6 +62,7 @@ use YOCLIB\DNS\Types\SMIMEA;
 use YOCLIB\DNS\Types\SOA;
 use YOCLIB\DNS\Types\SPF;
 use YOCLIB\DNS\Types\SRV;
+use YOCLIB\DNS\Types\SSHFP;
 use YOCLIB\DNS\Types\TA;
 use YOCLIB\DNS\Types\TALINK;
 use YOCLIB\DNS\Types\TLSA;
@@ -205,7 +207,8 @@ class TypeHelperTest extends TestCase{
         $this->assertInstanceOf(KX::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('10 kx.example.com.',DNSClass::IN,DNSType::KX));
         $this->assertInstanceOf(KX::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 18 000A 026B78076578616D706C6503636F6D00',DNSClass::IN,DNSType::KX));
 
-        //TODO CERT
+        $this->assertInstanceOf(CERT::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('3 0 0 AABBCCDD',DNSClass::IN,DNSType::CERT));
+        $this->assertInstanceOf(CERT::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 10 0003 0000 0000 AABBCCDD',DNSClass::IN,DNSType::CERT));
 
         //TODO A6
 
@@ -222,7 +225,8 @@ class TypeHelperTest extends TestCase{
         $this->assertInstanceOf(DS::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('60485 5 1 2BB183AF5F22588179A53B0A98631FAD1A292118',DNSClass::IN,DNSType::DS));
         $this->assertInstanceOf(DS::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 26 EC45 0005 0001 2BB183AF5F22588179A53B0A98631FAD1A292118',DNSClass::IN,DNSType::DS));
 
-        //TODO SSHFP
+        $this->assertInstanceOf(SSHFP::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('2 1 123456789abcdef67890123456789abcdef67890',DNSClass::IN,DNSType::SSHFP));
+        $this->assertInstanceOf(SSHFP::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 22 02 01 123456789ABCDEF67890123456789ABCDEF67890',DNSClass::IN,DNSType::SSHFP));
 
         //TODO IPSECKEY
 
@@ -460,7 +464,7 @@ class TypeHelperTest extends TestCase{
 
         $this->assertInstanceOf(KX::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('000A').hex2bin('026B78076578616D706C6503636F6D00'),DNSClass::IN,DNSType::KX));
 
-        //TODO CERT
+        $this->assertInstanceOf(CERT::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('0003').hex2bin('0000').hex2bin('0000').hex2bin('AABBCCDD'),DNSClass::IN,DNSType::CERT));
 
         //TODO A6
 
@@ -474,7 +478,7 @@ class TypeHelperTest extends TestCase{
 
         $this->assertInstanceOf(DS::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('EC45').hex2bin('0005').hex2bin('0001').hex2bin('2BB183AF5F22588179A53B0A98631FAD1A292118'),DNSClass::IN,DNSType::DS));
 
-        //TODO SSHFP
+        $this->assertInstanceOf(SSHFP::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('02').hex2bin('01').hex2bin('123456789ABCDEF67890123456789ABCDEF67890'),DNSClass::IN,DNSType::SSHFP));
 
         //TODO IPSECKEY
 
