@@ -29,6 +29,7 @@ use YOCLIB\DNS\Types\ISDN;
 use YOCLIB\DNS\Types\KEY;
 use YOCLIB\DNS\Types\KX;
 use YOCLIB\DNS\Types\L32;
+use YOCLIB\DNS\Types\L64;
 use YOCLIB\DNS\Types\LP;
 use YOCLIB\DNS\Types\MB;
 use YOCLIB\DNS\Types\MD;
@@ -38,6 +39,7 @@ use YOCLIB\DNS\Types\MINFO;
 use YOCLIB\DNS\Types\MR;
 use YOCLIB\DNS\Types\MX;
 use YOCLIB\DNS\Types\NAPTR;
+use YOCLIB\DNS\Types\NID;
 use YOCLIB\DNS\Types\NINFO;
 use YOCLIB\DNS\Types\NS;
 use YOCLIB\DNS\Types\NSAP;
@@ -435,14 +437,24 @@ class TypeHelper{
                 }
                 return SPF::deserializeFromPresentationFormat($data);
             }
-            //TODO NID
+            case DNSType::NID:{
+                if(Unknown::detectUnknown($data)){
+                    return NID::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+                }
+                return NID::deserializeFromPresentationFormat($data);
+            }
             case DNSType::L32:{
                 if(Unknown::detectUnknown($data)){
                     return L32::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
                 }
                 return L32::deserializeFromPresentationFormat($data);
             }
-            //TODO L64
+            case DNSType::L64:{
+                if(Unknown::detectUnknown($data)){
+                    return L64::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
+                }
+                return L64::deserializeFromPresentationFormat($data);
+            }
             case DNSType::LP:{
                 if(Unknown::detectUnknown($data)){
                     return LP::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
@@ -699,8 +711,14 @@ class TypeHelper{
             case DNSType::SPF:{
                 return SPF::deserializeFromWireFormat($data);
             }
+            case DNSType::NID:{
+                return NID::deserializeFromWireFormat($data);
+            }
             case DNSType::L32:{
                 return L32::deserializeFromWireFormat($data);
+            }
+            case DNSType::L64:{
+                return L64::deserializeFromWireFormat($data);
             }
             case DNSType::LP:{
                 return LP::deserializeFromWireFormat($data);

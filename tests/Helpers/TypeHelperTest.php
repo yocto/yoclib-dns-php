@@ -32,6 +32,7 @@ use YOCLIB\DNS\Types\ISDN;
 use YOCLIB\DNS\Types\KEY;
 use YOCLIB\DNS\Types\KX;
 use YOCLIB\DNS\Types\L32;
+use YOCLIB\DNS\Types\L64;
 use YOCLIB\DNS\Types\LP;
 use YOCLIB\DNS\Types\MB;
 use YOCLIB\DNS\Types\MD;
@@ -41,6 +42,7 @@ use YOCLIB\DNS\Types\MINFO;
 use YOCLIB\DNS\Types\MR;
 use YOCLIB\DNS\Types\MX;
 use YOCLIB\DNS\Types\NAPTR;
+use YOCLIB\DNS\Types\NID;
 use YOCLIB\DNS\Types\NINFO;
 use YOCLIB\DNS\Types\NS;
 use YOCLIB\DNS\Types\NSAP;
@@ -280,12 +282,14 @@ class TypeHelperTest extends TestCase{
         $this->assertInstanceOf(SPF::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('"v=spf1 -all"',DNSClass::IN,DNSType::SPF));
         $this->assertInstanceOf(SPF::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 12 0B763D73706631202D616C6C',DNSClass::IN,DNSType::SPF));
 
-        //TODO NID
+        $this->assertInstanceOf(NID::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('10 0014:4fff:ff20:ee64',DNSClass::IN,DNSType::NID));
+        $this->assertInstanceOf(NID::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 10 000A 00144FFFFF20EE64',DNSClass::IN,DNSType::NID));
 
         $this->assertInstanceOf(L32::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('10 10.1.2.0',DNSClass::IN,DNSType::L32));
         $this->assertInstanceOf(L32::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 6 000A 0A010200',DNSClass::IN,DNSType::L32));
 
-        //TODO L64
+        $this->assertInstanceOf(L64::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('10 2001:0DB8:1140:1000',DNSClass::IN,DNSType::L64));
+        $this->assertInstanceOf(L64::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 10 000A 20010DB811401000',DNSClass::IN,DNSType::L64));
 
         $this->assertInstanceOf(LP::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('10 lp.example.com.',DNSClass::IN,DNSType::LP));
         $this->assertInstanceOf(LP::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 18 000A 026C70076578616D706C6503636F6D00',DNSClass::IN,DNSType::LP));
@@ -516,11 +520,11 @@ class TypeHelperTest extends TestCase{
 
         $this->assertInstanceOf(SPF::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('0B763D73706631202D616C6C'),DNSClass::IN,DNSType::SPF));
 
-        //TODO NID
+        $this->assertInstanceOf(NID::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('000A').hex2bin('00144FFFFF20EE64'),DNSClass::IN,DNSType::NID));
 
         $this->assertInstanceOf(L32::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('000A').hex2bin('0A010200'),DNSClass::IN,DNSType::L32));
 
-        //TODO L64
+        $this->assertInstanceOf(L64::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('000A').hex2bin('20010DB811401000'),DNSClass::IN,DNSType::L64));
 
         $this->assertInstanceOf(LP::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('000A').hex2bin('026C70076578616D706C6503636F6D00'),DNSClass::IN,DNSType::LP));
 
