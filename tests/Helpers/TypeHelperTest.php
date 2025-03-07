@@ -216,11 +216,11 @@ class TypeHelperTest extends TestCase{
 //        $this->assertInstanceOf(NXT::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('',DNSClass::IN,DNSType::NXT));
 //        $this->assertInstanceOf(NXT::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 0',DNSClass::IN,DNSType::NXT));
 
-//        $this->assertInstanceOf(EID::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('',DNSClass::IN,DNSType::EID));
-//        $this->assertInstanceOf(EID::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 0',DNSClass::IN,DNSType::EID));
+        $this->assertInstanceOf(EID::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('E32C 6F78 163A 9348',DNSClass::IN,DNSType::EID));
+        $this->assertInstanceOf(EID::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 8 E32C6F78163A9348',DNSClass::IN,DNSType::EID));
 
-//        $this->assertInstanceOf(NIMLOC::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('',DNSClass::IN,DNSType::NIMLOC));
-//        $this->assertInstanceOf(NIMLOC::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 0',DNSClass::IN,DNSType::NIMLOC));
+        $this->assertInstanceOf(NIMLOC::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('752341 59EAC4 5780 0920',DNSClass::IN,DNSType::NIMLOC));
+        $this->assertInstanceOf(NIMLOC::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 10 75234159EAC457800920',DNSClass::IN,DNSType::NIMLOC));
 
         $this->assertInstanceOf(SRV::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('1 0 0 service.example.com.',DNSClass::IN,DNSType::SRV));
         $this->assertInstanceOf(SRV::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 27 0001 0000 0000 0773657276696365076578616D706C6503636F6D00',DNSClass::IN,DNSType::SRV));
@@ -497,9 +497,9 @@ class TypeHelperTest extends TestCase{
 
 //        $this->assertInstanceOf(NXT::class,TypeHelper::deserializeFromWireFormatByClassAndType('',DNSClass::IN,DNSType::NXT));
 
-//        $this->assertInstanceOf(EID::class,TypeHelper::deserializeFromWireFormatByClassAndType('',DNSClass::IN,DNSType::EID));
+        $this->assertInstanceOf(EID::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('E32C6F78163A9348'),DNSClass::IN,DNSType::EID));
 
-//        $this->assertInstanceOf(NIMLOC::class,TypeHelper::deserializeFromWireFormatByClassAndType('',DNSClass::IN,DNSType::NIMLOC));
+        $this->assertInstanceOf(NIMLOC::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('75234159EAC457800920'),DNSClass::IN,DNSType::NIMLOC));
 
         $this->assertInstanceOf(SRV::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('0001').hex2bin('0000').hex2bin('0000').hex2bin('0773657276696365076578616D706C6503636F6D00'),DNSClass::IN,DNSType::SRV));
 
