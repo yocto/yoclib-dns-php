@@ -384,8 +384,9 @@ class TypeHelperTest extends TestCase{
         $this->assertInstanceOf(CLA::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('"TCP-v4-v6"',DNSClass::IN,DNSType::CLA));
         $this->assertInstanceOf(CLA::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 10 095443502D76342D7636',DNSClass::IN,DNSType::CLA));
 
-//        $this->assertInstanceOf(IPN::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('',DNSClass::IN,DNSType::IPN));
-//        $this->assertInstanceOf(IPN::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 0',DNSClass::IN,DNSType::IPN));
+        $this->assertInstanceOf(IPN::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('18446744073709551615',DNSClass::IN,DNSType::IPN));
+        $this->assertInstanceOf(IPN::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('4294967295.4294967295',DNSClass::IN,DNSType::IPN));
+        $this->assertInstanceOf(IPN::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 8 FFFFFFFFFFFFFFFF',DNSClass::IN,DNSType::IPN));
 
         $this->assertInstanceOf(TA::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('60485 5 1 2BB183AF5F22588179A53B0A98631FAD1A292118',DNSClass::IN,DNSType::TA));
         $this->assertInstanceOf(TA::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 26 EC45 0005 0001 2BB183AF5F22588179A53B0A98631FAD1A292118',DNSClass::IN,DNSType::TA));
@@ -612,7 +613,7 @@ class TypeHelperTest extends TestCase{
 
         $this->assertInstanceOf(CLA::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('095443502D76342D7636'),DNSClass::IN,DNSType::CLA));
 
-//        $this->assertInstanceOf(IPN::class,TypeHelper::deserializeFromWireFormatByClassAndType('',DNSClass::IN,DNSType::IPN));
+        $this->assertInstanceOf(IPN::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('FFFFFFFFFFFFFFFF'),DNSClass::IN,DNSType::IPN));
 
         $this->assertInstanceOf(TA::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('EC45').hex2bin('0005').hex2bin('0001').hex2bin('2BB183AF5F22588179A53B0A98631FAD1A292118'),DNSClass::IN,DNSType::TA));
 
