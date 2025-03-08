@@ -21,7 +21,7 @@ class WKS extends Type{
             throw new DNSTypeException('Only three fields allowed.');
         }
         if(!($fields[0] instanceof IPv4Address)){
-            throw new DNSTypeException('First field should be a IPv4 address.');
+            throw new DNSTypeException('First field should be an IPv4 address.');
         }
         if(!($fields[1] instanceof UnsignedInteger8)){
             throw new DNSTypeException('Second field should be an UInt8.');
