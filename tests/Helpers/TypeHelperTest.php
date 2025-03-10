@@ -8,7 +8,6 @@ use YOCLIB\DNS\DNSType;
 use YOCLIB\DNS\Exceptions\DNSFieldException;
 use YOCLIB\DNS\Exceptions\DNSTypeException;
 
-use YOCLIB\DNS\Fields\WindowBlockBitmap;
 use YOCLIB\DNS\Helpers\TypeHelper;
 use YOCLIB\DNS\Types\A;
 use YOCLIB\DNS\Types\A6;
@@ -212,8 +211,8 @@ class TypeHelperTest extends TestCase{
         $this->assertInstanceOf(AAAA::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('fe80::1',DNSClass::IN,DNSType::AAAA));
         $this->assertInstanceOf(AAAA::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 16 FE800000000000000000000000000001',DNSClass::IN,DNSType::AAAA));
 
-//        $this->assertInstanceOf(LOC::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('',DNSClass::IN,DNSType::LOC));
-//        $this->assertInstanceOf(LOC::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 0',DNSClass::IN,DNSType::LOC));
+        $this->assertInstanceOf(LOC::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('42 21 43.952 N 71 5 6.344 W -24m 1m 200m',DNSClass::IN,DNSType::LOC));
+        $this->assertInstanceOf(LOC::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 16 00 00 00 00 01020304 01020304 01020304',DNSClass::IN,DNSType::LOC));
 
         $this->assertInstanceOf(NXT::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('medium.foo.nil. A MX SIG NXT',DNSClass::IN,DNSType::NXT));
         $this->assertInstanceOf(NXT::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 20 066D656469756D03666F6F036E696C00 02800041',DNSClass::IN,DNSType::NXT));
@@ -495,7 +494,7 @@ class TypeHelperTest extends TestCase{
 
         $this->assertInstanceOf(AAAA::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('FE800000000000000000000000000001'),DNSClass::IN,DNSType::AAAA));
 
-//        $this->assertInstanceOf(LOC::class,TypeHelper::deserializeFromWireFormatByClassAndType('',DNSClass::IN,DNSType::LOC));
+        $this->assertInstanceOf(LOC::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('00').hex2bin('00').hex2bin('00').hex2bin('00').hex2bin('01020304').hex2bin('01020304').hex2bin('01020304'),DNSClass::IN,DNSType::LOC));
 
         $this->assertInstanceOf(NXT::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('066D656469756D03666F6F036E696C00').hex2bin('02800041'),DNSClass::IN,DNSType::NXT));
 
