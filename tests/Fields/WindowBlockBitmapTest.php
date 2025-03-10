@@ -85,8 +85,8 @@ class WindowBlockBitmapTest extends TestCase{
      * @throws DNSFieldException
      */
     public function testSerializeToWireFormat(): void{
-        self::assertSame("\x00\x01\x1E",(new WindowBlockBitmap([1,2,3,4]))->serializeToWireFormat());
-        self::assertSame("\x00\x01\x3E",(new WindowBlockBitmap([1,2,3,4,5]))->serializeToWireFormat());
+        self::assertSame("\x00\x01\x78",(new WindowBlockBitmap([1,2,3,4]))->serializeToWireFormat());
+        self::assertSame("\x00\x01\x7C",(new WindowBlockBitmap([1,2,3,4,5]))->serializeToWireFormat());
         self::assertSame("\x00\x01\x7E",(new WindowBlockBitmap([1,2,3,4,5,6]))->serializeToWireFormat());
     }
 
@@ -126,8 +126,8 @@ class WindowBlockBitmapTest extends TestCase{
      * @throws DNSFieldException
      */
     public function testDeserializeFromWireFormat(): void{
-        self::assertSame([1,2,3,4],WindowBlockBitmap::deserializeFromWireFormat("\x00\x01\x1E")->getValue());
-        self::assertSame([1,2,3,4,5],WindowBlockBitmap::deserializeFromWireFormat("\x00\x01\x3E")->getValue());
+        self::assertSame([1,2,3,4],WindowBlockBitmap::deserializeFromWireFormat("\x00\x01\x78")->getValue());
+        self::assertSame([1,2,3,4,5],WindowBlockBitmap::deserializeFromWireFormat("\x00\x01\x7C")->getValue());
         self::assertSame([1,2,3,4,5,6],WindowBlockBitmap::deserializeFromWireFormat("\x00\x01\x7E")->getValue());
     }
 

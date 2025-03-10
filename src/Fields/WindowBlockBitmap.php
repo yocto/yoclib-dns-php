@@ -59,7 +59,7 @@ class WindowBlockBitmap implements Field{
             if(!array_key_exists($byte,$windowBlockBytes[$windowBlock] ?? [])){
                 $windowBlockBytes[$windowBlock][$byte] = 0x00;
             }
-            $windowBlockBytes[$windowBlock][$byte] |= 1<<($bit%8);
+            $windowBlockBytes[$windowBlock][$byte] |= 0x80>>($bit%8);
         }
         $bitmap = '';
         foreach($windowBlockBytes AS $windowBlock=>$bytes){
@@ -127,7 +127,7 @@ class WindowBlockBitmap implements Field{
                 for($k=0;$k<8;$k++){
                     $bit = ($octet>>$k) & 0b1;
                     if($bit){
-                        $bits[] = $windowBlock*256 + $j*8 + $k;
+                        $bits[] = $windowBlock*256 + $j*8 + (7-$k);
                     }
                 }
             }
