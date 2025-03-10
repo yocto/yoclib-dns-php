@@ -275,8 +275,8 @@ class TypeHelperTest extends TestCase{
         $this->assertInstanceOf(DHCID::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('AAIBY2/AuCccgoJbsaxcQc9TUapptP69lOjxfNuVAA2kjEA=',DNSClass::IN,DNSType::DHCID));
         $this->assertInstanceOf(DHCID::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 35 000201636FC0B8271C82825BB1AC5C41CF5351AA69B4FEBD94E8F17CDB95000DA48C40',DNSClass::IN,DNSType::DHCID));
 
-//        $this->assertInstanceOf(NSEC3::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('',DNSClass::IN,DNSType::NSEC3));
-//        $this->assertInstanceOf(NSEC3::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 0',DNSClass::IN,DNSType::NSEC3));
+        $this->assertInstanceOf(NSEC3::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('1 1 12 aabbccdd 2vptu5timamqttgl4luu9kg21e0aor3s A RRSIG',DNSClass::IN,DNSType::NSEC3));
+        $this->assertInstanceOf(NSEC3::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 54 01 01 000C 086161626263636464 2032767074753574696D616D717474676C346C7575396B6732316530616F723373 0006400000000002',DNSClass::IN,DNSType::NSEC3));
 
         $this->assertInstanceOf(NSEC3PARAM::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('1 0 12 aabbccdd',DNSClass::IN,DNSType::NSEC3PARAM));
         $this->assertInstanceOf(NSEC3PARAM::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 9 01 00 000C 04AABBCCDD',DNSClass::IN,DNSType::NSEC3PARAM));
@@ -537,7 +537,7 @@ class TypeHelperTest extends TestCase{
 
         $this->assertInstanceOf(DHCID::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('000201636FC0B8271C82825BB1AC5C41CF5351AA69B4FEBD94E8F17CDB95000DA48C40'),DNSClass::IN,DNSType::DHCID));
 
-//        $this->assertInstanceOf(NSEC3::class,TypeHelper::deserializeFromWireFormatByClassAndType('',DNSClass::IN,DNSType::NSEC3));
+        $this->assertInstanceOf(NSEC3::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('01').hex2bin('01').hex2bin('000C').hex2bin('086161626263636464').hex2bin('2032767074753574696D616D717474676C346C7575396B6732316530616F723373').hex2bin('0006400000000002'),DNSClass::IN,DNSType::NSEC3));
 
         $this->assertInstanceOf(NSEC3PARAM::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('01').hex2bin('00').hex2bin('000C').hex2bin('04AABBCCDD'),DNSClass::IN,DNSType::NSEC3PARAM));
 
