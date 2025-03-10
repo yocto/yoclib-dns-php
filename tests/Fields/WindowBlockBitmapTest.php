@@ -131,4 +131,22 @@ class WindowBlockBitmapTest extends TestCase{
         self::assertSame([1,2,3,4,5,6],WindowBlockBitmap::deserializeFromWireFormat("\x00\x01\x7E")->getValue());
     }
 
+    /**
+     * @return void
+     * @throws DNSFieldException
+     */
+    public function testDeserializeFromWireFormatNoLength(): void{
+        self::expectException(DNSFieldException::class);
+        self::expectExceptionMessage('Too less data to read window block length.');
+
+        WindowBlockBitmap::deserializeFromWireFormat("\x00");
+    }
+
+    public function testDeserializeFromWireFormatTooLessData(): void{
+        self::expectException(DNSFieldException::class);
+        self::expectExceptionMessage('Too less data to read window block bytes.');
+
+        WindowBlockBitmap::deserializeFromWireFormat("\x00\x01");
+    }
+
 }
