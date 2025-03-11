@@ -7,7 +7,6 @@ use YOCLIB\DNS\Fields\Binary;
 use YOCLIB\DNS\Fields\Field;
 use YOCLIB\DNS\Fields\FQDN;
 use YOCLIB\DNS\Fields\UnsignedInteger16;
-use YOCLIB\DNS\Fields\UnsignedInteger32;
 use YOCLIB\DNS\Fields\UnsignedInteger48;
 
 class TSIG extends Type{

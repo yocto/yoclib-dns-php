@@ -226,8 +226,8 @@ class TypeHelperTest extends TestCase{
         $this->assertInstanceOf(SRV::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('1 0 0 service.example.com.',DNSClass::IN,DNSType::SRV));
         $this->assertInstanceOf(SRV::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 27 0001 0000 0000 0773657276696365076578616D706C6503636F6D00',DNSClass::IN,DNSType::SRV));
 
-//        $this->assertInstanceOf(ATMA::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('',DNSClass::IN,DNSType::ATMA));
-//        $this->assertInstanceOf(ATMA::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 0',DNSClass::IN,DNSType::ATMA));
+        $this->assertInstanceOf(ATMA::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('39.246f.000e7c9c031200010001.000012345678.00',DNSClass::IN,DNSType::ATMA));
+        $this->assertInstanceOf(ATMA::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 45 01 33392E323436662E30303065376339633033313230303031303030312E3030303031323334353637382E3030',DNSClass::IN,DNSType::ATMA));
 
         $this->assertInstanceOf(NAPTR::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('100 50 "s" "http" "" www.example.com.',DNSClass::IN,DNSType::NAPTR));
         $this->assertInstanceOf(NAPTR::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 29 0064 0032 0173 0468747470 00 03777777076578616D706C6503636F6D00',DNSClass::IN,DNSType::NAPTR));
@@ -502,7 +502,7 @@ class TypeHelperTest extends TestCase{
 
         $this->assertInstanceOf(SRV::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('0001').hex2bin('0000').hex2bin('0000').hex2bin('0773657276696365076578616D706C6503636F6D00'),DNSClass::IN,DNSType::SRV));
 
-//        $this->assertInstanceOf(ATMA::class,TypeHelper::deserializeFromWireFormatByClassAndType('',DNSClass::IN,DNSType::ATMA));
+        $this->assertInstanceOf(ATMA::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('01').hex2bin('33392E323436662E30303065376339633033313230303031303030312E3030303031323334353637382E3030'),DNSClass::IN,DNSType::ATMA));
 
         $this->assertInstanceOf(NAPTR::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('0064').hex2bin('0032').hex2bin('0173').hex2bin('0468747470').hex2bin('00').hex2bin('03777777076578616D706C6503636F6D00'),DNSClass::IN,DNSType::NAPTR));
 
