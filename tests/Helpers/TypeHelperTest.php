@@ -238,8 +238,8 @@ class TypeHelperTest extends TestCase{
         $this->assertInstanceOf(CERT::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('3 0 0 AABBCCDD',DNSClass::IN,DNSType::CERT));
         $this->assertInstanceOf(CERT::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 10 0003 0000 0000 AABBCCDD',DNSClass::IN,DNSType::CERT));
 
-//        $this->assertInstanceOf(A6::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('',DNSClass::IN,DNSType::A6));
-//        $this->assertInstanceOf(A6::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 0',DNSClass::IN,DNSType::A6));
+        $this->assertInstanceOf(A6::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('40 0:0:0011:: A.NET.IP6.C.NET.',DNSClass::IN,DNSType::A6));
+        $this->assertInstanceOf(A6::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 30 28 000102030405060708090A 0469707636076578616D706C6503636F6D00',DNSClass::IN,DNSType::A6));
 
         $this->assertInstanceOf(DNAME::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('example.com.',DNSClass::IN,DNSType::DNAME));
         $this->assertInstanceOf(DNAME::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 13 076578616D706C6503636F6D00',DNSClass::IN,DNSType::DNAME));
