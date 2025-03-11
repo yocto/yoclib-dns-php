@@ -345,8 +345,7 @@ class TypeHelperTest extends TestCase{
 
         // NXNAME: Meta-Type
 
-//        $this->assertInstanceOf(TKEY::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('',DNSClass::IN,DNSType::TKEY));
-//        $this->assertInstanceOf(TKEY::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 0',DNSClass::IN,DNSType::TKEY));
+        $this->assertInstanceOf(TKEY::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 37 076578616D706C6503636F6D00 00000000 00000000 0000 0000 0004 01020304 0004 01020304',DNSClass::IN,DNSType::TKEY));
 
 //        $this->assertInstanceOf(TSIG::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('',DNSClass::IN,DNSType::TSIG));
 //        $this->assertInstanceOf(TSIG::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 0',DNSClass::IN,DNSType::TSIG));
@@ -584,7 +583,7 @@ class TypeHelperTest extends TestCase{
 
         // NXNAME: Meta-Type
 
-//        $this->assertInstanceOf(TKEY::class,TypeHelper::deserializeFromWireFormatByClassAndType('',DNSClass::IN,DNSType::TKEY));
+        $this->assertInstanceOf(TKEY::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('076578616D706C6503636F6D00').hex2bin('00000000').hex2bin('00000000').hex2bin('0000').hex2bin('0000').hex2bin('0004').hex2bin('01020304').hex2bin('0004').hex2bin('01020304'),DNSClass::IN,DNSType::TKEY));
 
 //        $this->assertInstanceOf(TSIG::class,TypeHelper::deserializeFromWireFormatByClassAndType('',DNSClass::IN,DNSType::TSIG));
 
