@@ -286,8 +286,8 @@ class TypeHelperTest extends TestCase{
         $this->assertInstanceOf(SMIMEA::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('0 0 1 d2abde240d7cd3ee6b4b28c54df034b97983a1d16e8a410e4561cb106618e971',DNSClass::IN,DNSType::SMIMEA));
         $this->assertInstanceOf(SMIMEA::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 35 00 00 01 D2ABDE240D7CD3EE6B4B28C54DF034B97983A1D16E8A410E4561CB106618E971',DNSClass::IN,DNSType::SMIMEA));
 
-//        $this->assertInstanceOf(HIP::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('',DNSClass::IN,DNSType::HIP));
-//        $this->assertInstanceOf(HIP::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 0',DNSClass::IN,DNSType::HIP));
+        $this->assertInstanceOf(HIP::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('2 200100107B1A74DF365639CC39F1D578 AwEAAbdxyhNuSutc5EMzxTs9LBPCIkOFH8cIvM4p9+LrV4e19WzK00+CI6zBCQTdtWsuxKbWIy87UOoJTwkUs7lBu+Upr1gsNrut79ryra+bSRGQb1slImA8YVJyuIDsj7kwzG7jnERNqnWxZ48AWkskmdHaVDP4BcelrTI3rMXdXF5D rvs1.example.com. rvs2.example.com.',DNSClass::IN,DNSType::HIP));
+        $this->assertInstanceOf(HIP::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 188 10 02 0084 200100107B1A74DF365639CC39F1D578 03010001B771CA136E4AEB5CE44333C53B3D2C13C22243851FC708BCCE29F7E2EB5787B5F56CCAD34F8223ACC10904DDB56B2EC4A6D6232F3B50EA094F0914B3B941BBE529AF582C36BBADEFDAF2ADAF9B4911906F5B2522603C615272B880EC8FB930CC6EE39C444DAA75B1678F005A4B2499D1DA5433F805C7A5AD3237ACC5DD5C5E43 0472767331076578616D706C6503636F6D00 0472767332076578616D706C6503636F6D00',DNSClass::IN,DNSType::HIP));
 
         $this->assertInstanceOf(NINFO::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('"Healthy"',DNSClass::IN,DNSType::NINFO));
         $this->assertInstanceOf(NINFO::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 8 074865616C746879',DNSClass::IN,DNSType::NINFO));
@@ -544,7 +544,7 @@ class TypeHelperTest extends TestCase{
 
         $this->assertInstanceOf(SMIMEA::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('00').hex2bin('00').hex2bin('01').hex2bin('D2ABDE240D7CD3EE6B4B28C54DF034B97983A1D16E8A410E4561CB106618E971'),DNSClass::IN,DNSType::SMIMEA));
 
-//        $this->assertInstanceOf(HIP::class,TypeHelper::deserializeFromWireFormatByClassAndType('',DNSClass::IN,DNSType::HIP));
+        $this->assertInstanceOf(HIP::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('10').hex2bin('02').hex2bin('0084').hex2bin('200100107B1A74DF365639CC39F1D578').hex2bin('03010001B771CA136E4AEB5CE44333C53B3D2C13C22243851FC708BCCE29F7E2EB5787B5F56CCAD34F8223ACC10904DDB56B2EC4A6D6232F3B50EA094F0914B3B941BBE529AF582C36BBADEFDAF2ADAF9B4911906F5B2522603C615272B880EC8FB930CC6EE39C444DAA75B1678F005A4B2499D1DA5433F805C7A5AD3237ACC5DD5C5E43').hex2bin('0472767331076578616D706C6503636F6D00').hex2bin('0472767332076578616D706C6503636F6D00'),DNSClass::IN,DNSType::HIP));
 
         $this->assertInstanceOf(NINFO::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('074865616C746879'),DNSClass::IN,DNSType::NINFO));
 

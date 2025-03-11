@@ -866,6 +866,9 @@ class TypeHelper{
             case DNSType::SMIMEA:{
                 return SMIMEA::deserializeFromWireFormat($data);
             }
+            case DNSType::HIP:{
+                return HIP::deserializeFromWireFormat($data);
+            }
             case DNSType::NINFO:{
                 return NINFO::deserializeFromWireFormat($data);
             }
