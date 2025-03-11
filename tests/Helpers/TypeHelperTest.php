@@ -319,8 +319,8 @@ class TypeHelperTest extends TestCase{
 //        $this->assertInstanceOf(HTTPS::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('',DNSClass::IN,DNSType::HTTPS));
 //        $this->assertInstanceOf(HTTPS::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 0',DNSClass::IN,DNSType::HTTPS));
 
-//        $this->assertInstanceOf(DSYNC::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('',DNSClass::IN,DNSType::DSYNC));
-//        $this->assertInstanceOf(DSYNC::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 0',DNSClass::IN,DNSType::DSYNC));
+        $this->assertInstanceOf(DSYNC::class,TypeHelper::deserializeFromPresentationFormatByClassAndType(DNSType::CDS.' 1 5300 rr-endpoint.example.',DNSClass::IN,DNSType::DSYNC));
+        $this->assertInstanceOf(DSYNC::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 26 003B 01 14B4 0B72722D656E64706F696E74076578616D706C6500',DNSClass::IN,DNSType::DSYNC));
 
         $this->assertInstanceOf(SPF::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('"v=spf1 -all"',DNSClass::IN,DNSType::SPF));
         $this->assertInstanceOf(SPF::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 12 0B763D73706631202D616C6C',DNSClass::IN,DNSType::SPF));
@@ -564,7 +564,7 @@ class TypeHelperTest extends TestCase{
 
 //        $this->assertInstanceOf(HTTPS::class,TypeHelper::deserializeFromWireFormatByClassAndType('',DNSClass::IN,DNSType::HTTPS));
 
-//        $this->assertInstanceOf(DSYNC::class,TypeHelper::deserializeFromWireFormatByClassAndType('',DNSClass::IN,DNSType::DSYNC));
+        $this->assertInstanceOf(DSYNC::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('003B').hex2bin('01').hex2bin('14B4').hex2bin('0B72722D656E64706F696E74076578616D706C6500'),DNSClass::IN,DNSType::DSYNC));
 
         $this->assertInstanceOf(SPF::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('0B763D73706631202D616C6C'),DNSClass::IN,DNSType::SPF));
 
