@@ -1,23 +1,32 @@
 <?php
 namespace YOCLIB\DNS\Fields;
 
+use GMP;
+
 use YOCLIB\DNS\Exceptions\DNSFieldException;
 
 class UnsignedInteger64 implements Field{
 
-    private int $value;
+    private GMP $value;
 
     /**
-     * @param int $value
+     * @param int|GMP $value
+     * @throws DNSFieldException
      */
-    public function __construct(int $value){
+    public function __construct(int|GMP $value){
+        if(gmp_cmp($value,0)<0 || gmp_cmp($value,'18446744073709551615')>0){
+            throw new DNSFieldException('Human readable UInt64 should be in the range of 0 and 18446744073709551615.');
+        }
+        if(is_int($value)){
+            $value = new GMP($value);
+        }
         $this->value = $value;
     }
 
     /**
-     * @return int
+     * @return GMP
      */
-    public function getValue(): int{
+    public function getValue(): GMP{
         return $this->value;
     }
 
@@ -25,14 +34,17 @@ class UnsignedInteger64 implements Field{
      * @return string
      */
     public function serializeToPresentationFormat(): string{
-        return strval($this->value);
+        return gmp_strval($this->value);
     }
 
     /**
      * @return string
      */
     public function serializeToWireFormat(): string{
-        return pack('J',$this->value);
+        if(gmp_cmp($this->value,0)===0){
+            return "\x00\x00\x00\x00\x00\x00\x00\x00";
+        }
+        return gmp_export($this->value,8,GMP_BIG_ENDIAN);
     }
 
     /**
@@ -52,7 +64,7 @@ class UnsignedInteger64 implements Field{
         if(!preg_match('/\d+/',$data)){
             throw new DNSFieldException('Human readable UInt64 should only contain digits.');
         }
-        return new self(intval($data));
+        return new self(new GMP($data));
     }
 
     /**
@@ -64,7 +76,7 @@ class UnsignedInteger64 implements Field{
         if(strlen($data)!==8){
             throw new DNSFieldException('Binary UInt64 should be 8 octets.');
         }
-        return new self(unpack('J',$data)[1]);
+        return new self(gmp_import($data,8,GMP_BIG_ENDIAN));
     }
 
 }
