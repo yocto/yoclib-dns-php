@@ -66,7 +66,7 @@ class Option implements Field{
      * @throws DNSFieldException
      */
     public static function deserializeFromWireFormat(string $data): Option{
-        if(strlen($data)<=4){
+        if(strlen($data)<4){
             throw new DNSFieldException('Option should be at least 4 octets.');
         }
 

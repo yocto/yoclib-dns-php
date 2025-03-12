@@ -81,7 +81,7 @@ class ServiceParameter implements Field{
             throw new DNSFieldException('Invalid service parameter key.');
         }
         $key = self::KEYS[$key] ?? intval(substr($key,3));
-        $value = $parts[1] ?: null;
+        $value = $parts[1] ?? null;
         if($value!==null){
             $value = CharacterString::deserializeFromPresentationFormat($value)->getValue();
             return new self($key,$value);
@@ -95,7 +95,7 @@ class ServiceParameter implements Field{
      * @throws DNSFieldException
      */
     public static function deserializeFromWireFormat(string $data): ServiceParameter{
-        if(strlen($data)<=4){
+        if(strlen($data)<4){
             throw new DNSFieldException('Service parameter should be at least 4 octets.');
         }
 
@@ -106,8 +106,10 @@ class ServiceParameter implements Field{
         if(strlen($value)!==$length){
             throw new DNSFieldException('Too less data available to read service parameter.');
         }
-
-        return new self($key,$value);
+        if($length>0){
+            return new self($key,$value);
+        }
+        return new self($key);
     }
 
 }

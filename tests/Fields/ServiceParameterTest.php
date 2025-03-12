@@ -14,6 +14,7 @@ class ServiceParameterTest extends TestCase{
      */
     public function testConstructor(): void{
         self::assertInstanceOf(ServiceParameter::class,new ServiceParameter(0,"ipv4hint,ipv6hint"));
+        self::assertInstanceOf(ServiceParameter::class,new ServiceParameter(3));
         self::assertInstanceOf(ServiceParameter::class,new ServiceParameter(65280,"some value"));
     }
 
@@ -33,6 +34,7 @@ class ServiceParameterTest extends TestCase{
      */
     public function testGetValue(): void{
         self::assertSame([0,"ipv4hint,ipv6hint"],(new ServiceParameter(0,"ipv4hint,ipv6hint"))->getValue());
+        self::assertSame([3,null],(new ServiceParameter(3))->getValue());
         self::assertSame([65280,"some value"],(new ServiceParameter(65280,"some value"))->getValue());
     }
 
@@ -42,6 +44,7 @@ class ServiceParameterTest extends TestCase{
      */
     public function testSerializeToPresentationFormat(): void{
         self::assertSame('mandatory="ipv4hint,ipv6hint"',(new ServiceParameter(0,"ipv4hint,ipv6hint"))->serializeToPresentationFormat());
+        self::assertSame('port',(new ServiceParameter(3))->serializeToPresentationFormat());
         self::assertSame('key65280="some value"',(new ServiceParameter(65280,"some value"))->serializeToPresentationFormat());
     }
 
@@ -50,15 +53,21 @@ class ServiceParameterTest extends TestCase{
      * @throws DNSFieldException
      */
     public function testSerializeToWireFormat(): void{
-        self::assertSame("\x00\x13\x00\x06\x02\x00\x78\x95\xA4\xE9",(new ServiceParameter(19,"\x02\x00\x78\x95\xA4\xE9"))->serializeToWireFormat());
+        self::assertSame("\x00\x00\x00\x11ipv4hint,ipv6hint",(new ServiceParameter(0,"ipv4hint,ipv6hint"))->serializeToWireFormat());
+        self::assertSame("\x00\x03\x00\x00",(new ServiceParameter(3))->serializeToWireFormat());
+        self::assertSame("\xFF\x00\x00\x0Asome value",(new ServiceParameter(65280,"some value"))->serializeToWireFormat());
     }
 
     /**
      * @return void
      */
     public function testCalculateLength(): void{
-        self::assertSame(10,ServiceParameter::calculateLength("\x00\x13\x00\x06\x02\x00\x78\x95\xA4\xE9"));
-        self::assertSame(10,ServiceParameter::calculateLength("\x00\x13\x00\x06\x02\x00\x78\x95\xA4\xE9trailingBytes"));
+        self::assertSame(21,ServiceParameter::calculateLength("\x00\x00\x00\x11ipv4hint,ipv6hint"));
+        self::assertSame(21,ServiceParameter::calculateLength("\x00\x00\x00\x11ipv4hint,ipv6hinttrailingBytes"));
+        self::assertSame(4,ServiceParameter::calculateLength("\x00\x03\x00\x00"));
+        self::assertSame(4,ServiceParameter::calculateLength("\x00\x03\x00\x00trailingBytes"));
+        self::assertSame(14,ServiceParameter::calculateLength("\xFF\x00\x00\x0Asome value"));
+        self::assertSame(14,ServiceParameter::calculateLength("\xFF\x00\x00\x0Asome valuetrailingBytes"));
     }
 
     /**
@@ -67,6 +76,7 @@ class ServiceParameterTest extends TestCase{
      */
     public function testDeserializeFromPresentationFormat(): void{
         self::assertSame([0,'ipv4hint,ipv6hint'],ServiceParameter::deserializeFromPresentationFormat('mandatory="ipv4hint,ipv6hint"')->getValue());
+        self::assertSame([3,null],ServiceParameter::deserializeFromPresentationFormat('port')->getValue());
         self::assertSame([65280,'some value'],ServiceParameter::deserializeFromPresentationFormat('key65280="some value"')->getValue());
     }
 
@@ -74,8 +84,21 @@ class ServiceParameterTest extends TestCase{
      * @return void
      * @throws DNSFieldException
      */
+    public function testDeserializeFromPresentationFormatInvalidKey(): void{
+        self::expectException(DNSFieldException::class);
+        self::expectExceptionMessage('Invalid service parameter key.');
+
+        ServiceParameter::deserializeFromPresentationFormat('non-existent="some value"');
+    }
+
+    /**
+     * @return void
+     * @throws DNSFieldException
+     */
     public function testDeserializeFromWireFormat(): void{
-        self::assertSame([19,"\x02\x00\x78\x95\xA4\xE9"],ServiceParameter::deserializeFromWireFormat("\x00\x13\x00\x06\x02\x00\x78\x95\xA4\xE9")->getValue());
+        self::assertSame([0,"ipv4hint,ipv6hint"],ServiceParameter::deserializeFromWireFormat("\x00\x00\x00\x11ipv4hint,ipv6hint")->getValue());
+        self::assertSame([3,null],ServiceParameter::deserializeFromWireFormat("\x00\x03\x00\x00")->getValue());
+        self::assertSame([65280,"some value"],ServiceParameter::deserializeFromWireFormat("\xFF\x00\x00\x0Asome value")->getValue());
     }
 
     /**
