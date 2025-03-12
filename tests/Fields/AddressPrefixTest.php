@@ -30,6 +30,16 @@ class AddressPrefixTest extends TestCase{
     /**
      * @return void
      */
+    public function testConstructorInvalidAddressFamily(): void{
+        self::expectException(DNSFieldException::class);
+        self::expectExceptionMessage('Only IPv4 and IPv6 address families are supported.');
+
+        new AddressPrefix('3','21',false,'example.com.');
+    }
+
+    /**
+     * @return void
+     */
     public function testConstructorNegativePrefix(): void{
         self::expectException(DNSFieldException::class);
         self::expectExceptionMessage('Prefix should be positive.');
