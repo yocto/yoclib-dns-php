@@ -3,7 +3,6 @@ namespace YOCLIB\DNS\Types;
 
 use YOCLIB\DNS\Exceptions\DNSFieldException;
 use YOCLIB\DNS\Exceptions\DNSTypeException;
-use YOCLIB\DNS\Fields\Binary;
 use YOCLIB\DNS\Fields\CharacterString;
 use YOCLIB\DNS\Fields\Field;
 use YOCLIB\DNS\Fields\UnsignedInteger16;

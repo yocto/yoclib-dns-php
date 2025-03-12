@@ -13,4 +13,28 @@ This yocLibrary enables your project to do DNS-specific operations.
 
 ## Usage
 
-TODO
+### Deserializing
+
+```php
+use YOCLIB\DNS\Helpers\TypeHelper;
+
+// Deserialize from presentation format
+$aRecord = TypeHelper::deserializeFromPresentationFormatByClassAndType('127.0.0.1',DNSClass::IN,DNSType::A);
+
+// Deserialize from wire format
+$aRecord = TypeHelper::deserializeFromWireFormatByClassAndType("\x7F\x00\x00\x01",DNSClass::IN,DNSType::A);
+```
+
+### Serializing
+
+```php
+use YOCLIB\DNS\Types\A;
+
+$aRecord = new A('127.0.0.1');
+
+// Serialize to presentation format
+$aRecord->serializeToPresentationFormat();
+
+// Serialize to wire format
+$aRecord->serializeToWireFormat();
+```
