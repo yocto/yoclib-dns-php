@@ -22,7 +22,7 @@ class BitmapTest extends TestCase{
      * @return void
      * @throws DNSFieldException
      */
-    public function testDuplicateBits(): void{
+    public function testConstructorDuplicateBits(): void{
         self::expectException(DNSFieldException::class);
         self::expectExceptionMessage('No duplicate bits allowed.');
 
@@ -33,7 +33,7 @@ class BitmapTest extends TestCase{
      * @return void
      * @throws DNSFieldException
      */
-    public function testNonIntegerBits(): void{
+    public function testConstructorNonIntegerBits(): void{
         self::expectException(DNSFieldException::class);
         self::expectExceptionMessage('Only integers allowed.');
 
@@ -44,7 +44,7 @@ class BitmapTest extends TestCase{
      * @return void
      * @throws DNSFieldException
      */
-    public function testNegativeIntegers(): void{
+    public function testConstructorNegativeIntegers(): void{
         self::expectException(DNSFieldException::class);
         self::expectExceptionMessage('Only positive integers allowed.');
 

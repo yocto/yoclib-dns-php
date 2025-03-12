@@ -23,7 +23,7 @@ class UnsignedInteger16Test extends TestCase{
      * @return void
      * @throws DNSFieldException
      */
-    public function testTooLow(): void{
+    public function testConstructorTooLow(): void{
         self::expectException(DNSFieldException::class);
         self::expectExceptionMessage('Human readable UInt16 should be in the range of 0 and 65535.');
 
@@ -34,7 +34,7 @@ class UnsignedInteger16Test extends TestCase{
      * @return void
      * @throws DNSFieldException
      */
-    public function testTooHigh(): void{
+    public function testConstructorTooHigh(): void{
         self::expectException(DNSFieldException::class);
         self::expectExceptionMessage('Human readable UInt16 should be in the range of 0 and 65535.');
 

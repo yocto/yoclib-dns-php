@@ -21,7 +21,7 @@ class IPv4AddressTest extends TestCase{
     /**
      * @return void
      */
-    public function testNotIPv4(): void{
+    public function testConstructorNotIPv4(): void{
         self::expectException(DNSFieldException::class);
         self::expectExceptionMessage('Human readable IPv4 address should have 4 unsigned integers ranging from 0 to 255, all seperated by dot.');
 

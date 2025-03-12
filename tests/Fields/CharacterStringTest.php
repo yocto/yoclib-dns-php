@@ -21,7 +21,7 @@ class CharacterStringTest extends TestCase{
     /**
      * @return void
      */
-    public function testTooLong(): void{
+    public function testConstructorTooLong(): void{
         self::expectException(DNSFieldException::class);
         self::expectExceptionMessage('Character string can have 255 characters at most.');
 

@@ -26,7 +26,7 @@ class FQDNTest extends TestCase{
     /**
      * @return void
      */
-    public function testTooLongLabel(): void{
+    public function testConstructorTooLongLabel(): void{
         self::expectException(DNSFieldException::class);
         self::expectExceptionMessage('Label too long.');
 
@@ -36,7 +36,7 @@ class FQDNTest extends TestCase{
     /**
      * @return void
      */
-    public function testTooLongDomainName(): void{
+    public function testConstructorTooLongDomainName(): void{
         self::expectException(DNSFieldException::class);
         self::expectExceptionMessage('Domain name too long.');
 

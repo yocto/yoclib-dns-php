@@ -21,7 +21,7 @@ class IPv6AddressTest extends TestCase{
     /**
      * @return void
      */
-    public function testNotIPv4(): void{
+    public function testConstructorNotIPv4(): void{
         self::expectException(DNSFieldException::class);
         self::expectExceptionMessage('Human readable IPv6 address isn\'t valid.');
 

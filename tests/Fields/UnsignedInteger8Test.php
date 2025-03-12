@@ -23,7 +23,7 @@ class UnsignedInteger8Test extends TestCase{
      * @return void
      * @throws DNSFieldException
      */
-    public function testTooLow(): void{
+    public function testConstructorTooLow(): void{
         self::expectException(DNSFieldException::class);
         self::expectExceptionMessage('Human readable UInt8 should be in the range of 0 and 255.');
 
@@ -34,7 +34,7 @@ class UnsignedInteger8Test extends TestCase{
      * @return void
      * @throws DNSFieldException
      */
-    public function testTooHigh(): void{
+    public function testConstructorTooHigh(): void{
         self::expectException(DNSFieldException::class);
         self::expectExceptionMessage('Human readable UInt8 should be in the range of 0 and 255.');
 

@@ -20,6 +20,16 @@ class AddressPrefixTest extends TestCase{
     /**
      * @return void
      */
+    public function testConstructorNegativeIntegers(): void{
+        self::expectException(DNSFieldException::class);
+        self::expectExceptionMessage('The value should have 4 elements.');
+
+        new AddressPrefix('a','b','c');
+    }
+
+    /**
+     * @return void
+     */
     public function testGetValue(): void{
         self::assertSame(['1','21',false,'192.168.32.0'],(new AddressPrefix('1','21',false,'192.168.32.0'))->getValue());
         self::assertSame(['1','28',true,'192.168.38.0'],(new AddressPrefix('1','28',true,'192.168.38.0'))->getValue());
@@ -70,10 +80,32 @@ class AddressPrefixTest extends TestCase{
      * @return void
      * @throws DNSFieldException
      */
+    public function testDeserializeFromPresentationFormatAtSign(): void{
+        self::expectException(DNSFieldException::class);
+        self::expectExceptionMessage('Invalid address prefix format.');
+
+        AddressPrefix::deserializeFromPresentationFormat('!!1:192.168.32.0/21');
+    }
+
+    /**
+     * @return void
+     * @throws DNSFieldException
+     */
     public function testDeserializeFromWireFormat(): void{
         self::assertSame(['1','21',false,'192.168.32.0'],AddressPrefix::deserializeFromWireFormat("\x00\x01\x15\x03\xC0\xA8\x20")->getValue());
         self::assertSame(['1','28',true,'192.168.38.0'],AddressPrefix::deserializeFromWireFormat("\x00\x01\x1C\x83\xC0\xA8\x26")->getValue());
         self::assertSame(['2','8',false,'ff00::'],AddressPrefix::deserializeFromWireFormat("\x00\x02\x08\x01\xFF")->getValue());
+    }
+
+    /**
+     * @return void
+     * @throws DNSFieldException
+     */
+    public function testDeserializeFromWireFormatTooLessData(): void{
+        self::expectException(DNSFieldException::class);
+        self::expectExceptionMessage('Address Prefix should be at least 4 octets.');
+
+        AddressPrefix::deserializeFromWireFormat("\xAA\xBB\xCC");
     }
 
 }

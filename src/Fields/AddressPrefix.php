@@ -80,7 +80,7 @@ class AddressPrefix implements Field{
      * @throws DNSFieldException
      */
     public static function deserializeFromPresentationFormat(string $data): AddressPrefix{
-        if(!preg_match('/(!?)(\d+):([A-Za-z0-9.:]+)\/(\d+)/',$data,$matches)){
+        if(!preg_match('/^(!?)(\d+):([A-Za-z0-9.:]+)\/(\d+)$/',$data,$matches)){
             throw new DNSFieldException('Invalid address prefix format.');
         }
         return new self($matches[2],$matches[4],$matches[1],$matches[3]);

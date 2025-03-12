@@ -23,7 +23,7 @@ class UnsignedInteger48Test extends TestCase{
      * @return void
      * @throws DNSFieldException
      */
-    public function testTooLow(): void{
+    public function testConstructorTooLow(): void{
         self::expectException(DNSFieldException::class);
         self::expectExceptionMessage('Human readable UInt48 should be in the range of 0 and 281474976710655.');
 
@@ -34,7 +34,7 @@ class UnsignedInteger48Test extends TestCase{
      * @return void
      * @throws DNSFieldException
      */
-    public function testTooHigh(): void{
+    public function testConstructorTooHigh(): void{
         self::expectException(DNSFieldException::class);
         self::expectExceptionMessage('Human readable UInt48 should be in the range of 0 and 281474976710655.');
 
