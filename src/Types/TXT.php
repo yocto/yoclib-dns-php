@@ -54,7 +54,7 @@ class TXT extends Type{
      */
     public static function deserializeFromWireFormat(string $data): TXT{
         if(strlen($data)===0){
-            throw new DNSTypeException('APL record should have at least some data.');
+            throw new DNSTypeException('TXT record should have at least some data.');
         }
         $offset = 0;
 

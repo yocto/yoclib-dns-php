@@ -312,11 +312,11 @@ class TypeHelperTest extends TestCase{
         $this->assertInstanceOf(ZONEMD::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('2018031500 1 1 FEBE3D4CE2EC2FFA4BA99D46CD69D6D29711E55217057BEE7EB1A7B641A47BA7FED2DD5B97AE499FAFA4F22C6BD647DE',DNSClass::IN,DNSType::ZONEMD));
         $this->assertInstanceOf(ZONEMD::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 54 7848B78C 01 01 FEBE3D4CE2EC2FFA4BA99D46CD69D6D29711E55217057BEE7EB1A7B641A47BA7FED2DD5B97AE499FAFA4F22C6BD647DE',DNSClass::IN,DNSType::ZONEMD));
 
-//        $this->assertInstanceOf(SVCB::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('',DNSClass::IN,DNSType::SVCB));
-//        $this->assertInstanceOf(SVCB::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 0',DNSClass::IN,DNSType::SVCB));
+        $this->assertInstanceOf(SVCB::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('3 svc4.example.net. alpn="bar" port="8004"',DNSClass::IN,DNSType::SVCB));
+        $this->assertInstanceOf(SVCB::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 35 0003 0473766334076578616D706C65036E657400 00010003626172 0003000438303034',DNSClass::IN,DNSType::SVCB));
 
-//        $this->assertInstanceOf(HTTPS::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('',DNSClass::IN,DNSType::HTTPS));
-//        $this->assertInstanceOf(HTTPS::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 0',DNSClass::IN,DNSType::HTTPS));
+        $this->assertInstanceOf(HTTPS::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('1 alt3.example. port=9443 alpn=h2,h3',DNSClass::IN,DNSType::HTTPS));
+        $this->assertInstanceOf(HTTPS::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 33 0001 04616C7433076578616D706C6500 0003000439343433 0001000568322C6833',DNSClass::IN,DNSType::HTTPS));
 
         $this->assertInstanceOf(DSYNC::class,TypeHelper::deserializeFromPresentationFormatByClassAndType(DNSType::CDS.' 1 5300 rr-endpoint.example.',DNSClass::IN,DNSType::DSYNC));
         $this->assertInstanceOf(DSYNC::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 26 003B 01 14B4 0B72722D656E64706F696E74076578616D706C6500',DNSClass::IN,DNSType::DSYNC));
@@ -559,9 +559,9 @@ class TypeHelperTest extends TestCase{
 
         $this->assertInstanceOf(ZONEMD::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('7848B78C').hex2bin('01').hex2bin('01').hex2bin('FEBE3D4CE2EC2FFA4BA99D46CD69D6D29711E55217057BEE7EB1A7B641A47BA7FED2DD5B97AE499FAFA4F22C6BD647DE'),DNSClass::IN,DNSType::ZONEMD));
 
-//        $this->assertInstanceOf(SVCB::class,TypeHelper::deserializeFromWireFormatByClassAndType('',DNSClass::IN,DNSType::SVCB));
+        $this->assertInstanceOf(SVCB::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('0003').hex2bin('0473766334076578616D706C65036E657400').hex2bin('00010003626172').hex2bin('0003000438303034'),DNSClass::IN,DNSType::SVCB));
 
-//        $this->assertInstanceOf(HTTPS::class,TypeHelper::deserializeFromWireFormatByClassAndType('',DNSClass::IN,DNSType::HTTPS));
+        $this->assertInstanceOf(HTTPS::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('0001').hex2bin('04616C7433076578616D706C6500').hex2bin('0003000439343433').hex2bin('0001000568322C6833'),DNSClass::IN,DNSType::HTTPS));
 
         $this->assertInstanceOf(DSYNC::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('003B').hex2bin('01').hex2bin('14B4').hex2bin('0B72722D656E64706F696E74076578616D706C6500'),DNSClass::IN,DNSType::DSYNC));
 
