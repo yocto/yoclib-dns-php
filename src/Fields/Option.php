@@ -75,7 +75,7 @@ class Option implements Field{
 
         $data = substr($data,4,$length);
         if(strlen($data)!==$length){
-            throw new DNSFieldException('Too less data available to option.');
+            throw new DNSFieldException('Too less data available to read option.');
         }
 
         return new self($code,$data);

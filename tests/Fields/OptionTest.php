@@ -97,7 +97,7 @@ class OptionTest extends TestCase{
      */
     public function testDeserializeFromWireFormatTooLessOptionData(): void{
         self::expectException(DNSFieldException::class);
-        self::expectExceptionMessage('Too less data available to option.');
+        self::expectExceptionMessage('Too less data available to read option.');
 
         Option::deserializeFromWireFormat("\x00\x13\x00\x04\xAA\xBB");
     }
