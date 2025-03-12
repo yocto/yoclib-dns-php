@@ -40,7 +40,7 @@ class IPN extends Type{
             $msb = UnsignedInteger32::deserializeFromPresentationFormat($parts[0])->getValue() & 0xFFFFFFFF;
             $lsb = UnsignedInteger32::deserializeFromPresentationFormat($parts[1])->getValue() & 0xFFFFFFFF;
             return new self([
-                new UnsignedInteger64($msb<<32 | $lsb<<0),
+                new UnsignedInteger64(gmp_or(gmp_mul($msb,gmp_pow(2,32)),$lsb<<0)),
             ]);
         }
         return new self([
