@@ -15,7 +15,7 @@ class Locator64 implements Field{
         if(!preg_match('/[A-Fa-f0-9]{1,4}:[A-Fa-f0-9]{1,4}:[A-Fa-f0-9]{1,4}:[A-Fa-f0-9]{1,4}/',$value)){
             throw new DNSFieldException('A Locator64 should be 4 groups of hexadecimal digits, separated by colons.');
         }
-        $this->value = $value;
+        $this->value = strtoupper($value);
     }
 
     /**
