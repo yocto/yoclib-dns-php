@@ -509,7 +509,7 @@ class TypeHelperTest extends TestCase{
 
         $this->assertInstanceOf(CERT::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('0003').hex2bin('0000').hex2bin('0000').hex2bin('AABBCCDD'),DNSClass::IN,DNSType::CERT));
 
-//        $this->assertInstanceOf(A6::class,TypeHelper::deserializeFromWireFormatByClassAndType('',DNSClass::IN,DNSType::A6));
+        $this->assertInstanceOf(A6::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('28').hex2bin('000102030405060708090A').hex2bin('0469707636076578616D706C6503636F6D00'),DNSClass::IN,DNSType::A6));
 
         $this->assertInstanceOf(DNAME::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('076578616D706C6503636F6D00'),DNSClass::IN,DNSType::DNAME));
 
