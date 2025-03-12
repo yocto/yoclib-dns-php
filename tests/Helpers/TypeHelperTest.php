@@ -7,7 +7,6 @@ use YOCLIB\DNS\DNSClass;
 use YOCLIB\DNS\DNSType;
 use YOCLIB\DNS\Exceptions\DNSFieldException;
 use YOCLIB\DNS\Exceptions\DNSTypeException;
-
 use YOCLIB\DNS\Helpers\TypeHelper;
 use YOCLIB\DNS\Types\A;
 use YOCLIB\DNS\Types\A6;

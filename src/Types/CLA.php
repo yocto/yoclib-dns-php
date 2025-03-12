@@ -39,7 +39,7 @@ class CLA extends Type{
     public static function deserializeFromPresentationFormat(string $data): CLA{
         $tokens = LineLexer::tokenizeLine($data);
         if(count($tokens)<1){
-            throw new DNSTypeException('A CLA record should have at least one character string.');
+            throw new DNSTypeException('CLA record should have at least one character string.');
         }
         return new self(array_map(static function(string $token){
             return CharacterString::deserializeFromPresentationFormat($token);
@@ -54,7 +54,7 @@ class CLA extends Type{
      */
     public static function deserializeFromWireFormat(string $data): CLA{
         if(strlen($data)===0){
-            throw new DNSTypeException('APL record should have at least some data.');
+            throw new DNSTypeException('CLA record should have at least some data.');
         }
         $offset = 0;
 

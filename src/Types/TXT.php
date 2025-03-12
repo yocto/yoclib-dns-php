@@ -39,7 +39,7 @@ class TXT extends Type{
     public static function deserializeFromPresentationFormat(string $data): TXT{
         $tokens = LineLexer::tokenizeLine($data);
         if(count($tokens)<1){
-            throw new DNSTypeException('A TXT record should have at least one character string.');
+            throw new DNSTypeException('TXT record should have at least one character string.');
         }
         return new self(array_map(static function(string $token){
             return CharacterString::deserializeFromPresentationFormat($token);
