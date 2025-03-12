@@ -53,6 +53,9 @@ class CLA extends Type{
      * @throws DNSTypeException
      */
     public static function deserializeFromWireFormat(string $data): CLA{
+        if(strlen($data)===0){
+            throw new DNSTypeException('APL record should have at least some data.');
+        }
         $offset = 0;
 
         $strings = [];

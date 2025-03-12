@@ -250,8 +250,8 @@ class TypeHelperTest extends TestCase{
 //        $this->assertInstanceOf(OPT::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('',DNSClass::IN,DNSType::OPT));
 //        $this->assertInstanceOf(OPT::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 0',DNSClass::IN,DNSType::OPT));
 
-//        $this->assertInstanceOf(APL::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('',DNSClass::IN,DNSType::APL));
-//        $this->assertInstanceOf(APL::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 0',DNSClass::IN,DNSType::APL));
+        $this->assertInstanceOf(APL::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('1:192.168.32.0/21 !1:192.168.38.0/28 2:FF00:0:0:0:0:0:0:0/8',DNSClass::IN,DNSType::APL));
+        $this->assertInstanceOf(APL::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 19 00011503C0A820 00011C83C0A826 00020801FF',DNSClass::IN,DNSType::APL));
 
         $this->assertInstanceOf(DS::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('60485 5 1 2BB183AF5F22588179A53B0A98631FAD1A292118',DNSClass::IN,DNSType::DS));
         $this->assertInstanceOf(DS::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 26 EC45 0005 0001 2BB183AF5F22588179A53B0A98631FAD1A292118',DNSClass::IN,DNSType::DS));
@@ -518,7 +518,7 @@ class TypeHelperTest extends TestCase{
 
 //        $this->assertInstanceOf(OPT::class,TypeHelper::deserializeFromWireFormatByClassAndType('',DNSClass::IN,DNSType::OPT));
 
-//        $this->assertInstanceOf(APL::class,TypeHelper::deserializeFromWireFormatByClassAndType('',DNSClass::IN,DNSType::APL));
+        $this->assertInstanceOf(APL::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('00011503C0A820').hex2bin('00011C83C0A826').hex2bin('00020801FF'),DNSClass::IN,DNSType::APL));
 
         $this->assertInstanceOf(DS::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('EC45').hex2bin('0005').hex2bin('0001').hex2bin('2BB183AF5F22588179A53B0A98631FAD1A292118'),DNSClass::IN,DNSType::DS));
 
