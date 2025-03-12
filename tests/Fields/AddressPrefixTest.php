@@ -20,11 +20,61 @@ class AddressPrefixTest extends TestCase{
     /**
      * @return void
      */
-    public function testConstructorNegativeIntegers(): void{
+    public function testConstructorTooLessArguments(): void{
         self::expectException(DNSFieldException::class);
         self::expectExceptionMessage('The value should have 4 elements.');
 
-        new AddressPrefix('a','b','c');
+        new AddressPrefix('1','21',false);
+    }
+
+    /**
+     * @return void
+     */
+    public function testConstructorNegativePrefix(): void{
+        self::expectException(DNSFieldException::class);
+        self::expectExceptionMessage('Prefix should be positive.');
+
+        new AddressPrefix('1','-5',false,'192.168.32.0');
+    }
+
+    /**
+     * @return void
+     */
+    public function testConstructorTooLargePrefixIPv4(): void{
+        self::expectException(DNSFieldException::class);
+        self::expectExceptionMessage('Prefix cannot be larger than 32 for IPv4 addresses.');
+
+        new AddressPrefix('1','40',false,'192.168.32.0');
+    }
+
+    /**
+     * @return void
+     */
+    public function testConstructorTooLargePrefixIPv6(): void{
+        self::expectException(DNSFieldException::class);
+        self::expectExceptionMessage('Prefix cannot be larger than 128 for IPv6 addresses.');
+
+        new AddressPrefix('2','150',false,'FF00:0:0:0:0:0:0:0');
+    }
+
+    /**
+     * @return void
+     */
+    public function testConstructorInvalidIPv4(): void{
+        self::expectException(DNSFieldException::class);
+        self::expectExceptionMessage('Human readable IPv4 address should have 4 unsigned integers ranging from 0 to 255, all seperated by dot.');
+
+        new AddressPrefix('1','21',false,'192_168.32.0');
+    }
+
+    /**
+     * @return void
+     */
+    public function testConstructorInvalidIPv6(): void{
+        self::expectException(DNSFieldException::class);
+        self::expectExceptionMessage('Human readable IPv6 address isn\'t valid.');
+
+        new AddressPrefix('2','8',false,'FF00_0:0:0:0:0:0:0');
     }
 
     /**
