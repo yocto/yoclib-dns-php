@@ -371,8 +371,8 @@ class TypeHelperTest extends TestCase{
         $this->assertInstanceOf(DOA::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('4294967295 4294967295 255 "text/plain" dGVzdA==',DNSClass::IN,DNSType::DOA));
         $this->assertInstanceOf(DOA::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 24 FFFFFFFF FFFFFFFF FF 0A746578742F706C61696E 74657374',DNSClass::IN,DNSType::DOA));
 
-//        $this->assertInstanceOf(AMTRELAY::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('',DNSClass::IN,DNSType::AMTRELAY));
-//        $this->assertInstanceOf(AMTRELAY::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 0',DNSClass::IN,DNSType::AMTRELAY));
+        $this->assertInstanceOf(AMTRELAY::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('128 1 3 amtrelays.example.com.',DNSClass::IN,DNSType::AMTRELAY));
+        $this->assertInstanceOf(AMTRELAY::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 25 80 83 09616D7472656C617973076578616D706C6503636F6D00',DNSClass::IN,DNSType::AMTRELAY));
 
         $this->assertInstanceOf(RESINFO::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('qnamemin exterr=15-17 infourl=https://resolver.example.com/guide',DNSClass::IN,DNSType::RESINFO));
         $this->assertInstanceOf(RESINFO::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 65 08716E616D656D696E 0C6578746572723D31352D3137 2A696E666F75726C3D68747470733A2F2F7265736F6C7665722E6578616D706C652E636F6D2F6775696465',DNSClass::IN,DNSType::RESINFO));
@@ -604,7 +604,7 @@ class TypeHelperTest extends TestCase{
 
         $this->assertInstanceOf(DOA::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('FFFFFFFF').hex2bin('FFFFFFFF').hex2bin('FF').hex2bin('0A746578742F706C61696E').hex2bin('74657374'),DNSClass::IN,DNSType::DOA));
 
-//        $this->assertInstanceOf(AMTRELAY::class,TypeHelper::deserializeFromWireFormatByClassAndType('',DNSClass::IN,DNSType::AMTRELAY));
+        $this->assertInstanceOf(AMTRELAY::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('80').hex2bin('83').hex2bin('09616D7472656C617973076578616D706C6503636F6D00'),DNSClass::IN,DNSType::AMTRELAY));
 
         $this->assertInstanceOf(RESINFO::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('08716E616D656D696E').hex2bin('0C6578746572723D31352D3137').hex2bin('2A696E666F75726C3D68747470733A2F2F7265736F6C7665722E6578616D706C652E636F6D2F6775696465'),DNSClass::IN,DNSType::RESINFO));
 
