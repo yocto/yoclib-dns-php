@@ -400,10 +400,7 @@ class TypeHelper{
                 return SINK::deserializeFromPresentationFormat($data);
             }
             case DNSType::OPT:{
-                if(Unknown::detectUnknown($data)){
-                    return OPT::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
-                }
-                return OPT::deserializeFromPresentationFormat($data);
+                return OPT::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
             }
             case DNSType::APL:{
                 if(Unknown::detectUnknown($data)){
@@ -595,16 +592,10 @@ class TypeHelper{
                 // Meta Type
             }
             case DNSType::TKEY:{
-                if(Unknown::detectUnknown($data)){
-                    return TKEY::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
-                }
-                return TKEY::deserializeFromPresentationFormat($data);
+                return TKEY::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
             }
             case DNSType::TSIG:{
-                if(Unknown::detectUnknown($data)){
-                    return TSIG::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
-                }
-                return TSIG::deserializeFromPresentationFormat($data);
+                return TSIG::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
             }
             case DNSType::IXFR:{
                 // QType

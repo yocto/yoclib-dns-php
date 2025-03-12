@@ -5,7 +5,6 @@ use YOCLIB\DNS\Exceptions\DNSFieldException;
 use YOCLIB\DNS\Exceptions\DNSTypeException;
 use YOCLIB\DNS\Fields\Field;
 use YOCLIB\DNS\Fields\Option;
-use YOCLIB\DNS\LineLexer;
 
 class OPT extends Type{
 
