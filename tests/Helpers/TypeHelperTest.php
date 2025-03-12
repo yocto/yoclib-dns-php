@@ -247,8 +247,7 @@ class TypeHelperTest extends TestCase{
         $this->assertInstanceOf(SINK::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('65 2 dGVzdA==',DNSClass::IN,DNSType::SINK));
         $this->assertInstanceOf(SINK::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 8 0041 0002 74657374',DNSClass::IN,DNSType::SINK));
 
-//        $this->assertInstanceOf(OPT::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('',DNSClass::IN,DNSType::OPT));
-//        $this->assertInstanceOf(OPT::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 0',DNSClass::IN,DNSType::OPT));
+        $this->assertInstanceOf(OPT::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 10 0013000602007895A4E9',DNSClass::IN,DNSType::OPT));
 
         $this->assertInstanceOf(APL::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('1:192.168.32.0/21 !1:192.168.38.0/28 2:FF00:0:0:0:0:0:0:0/8',DNSClass::IN,DNSType::APL));
         $this->assertInstanceOf(APL::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 19 00011503C0A820 00011C83C0A826 00020801FF',DNSClass::IN,DNSType::APL));
@@ -516,7 +515,7 @@ class TypeHelperTest extends TestCase{
 
         $this->assertInstanceOf(SINK::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('0041').hex2bin('0002').hex2bin('74657374'),DNSClass::IN,DNSType::SINK));
 
-//        $this->assertInstanceOf(OPT::class,TypeHelper::deserializeFromWireFormatByClassAndType('',DNSClass::IN,DNSType::OPT));
+        $this->assertInstanceOf(OPT::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('0013000602007895A4E9'),DNSClass::IN,DNSType::OPT));
 
         $this->assertInstanceOf(APL::class,TypeHelper::deserializeFromWireFormatByClassAndType(hex2bin('00011503C0A820').hex2bin('00011C83C0A826').hex2bin('00020801FF'),DNSClass::IN,DNSType::APL));
 
