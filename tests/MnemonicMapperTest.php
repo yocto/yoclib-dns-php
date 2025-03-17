@@ -13,8 +13,20 @@ class MnemonicMapperTest extends TestCase{
      * @throws DNSMnemonicException
      */
     public function testConstructor(): void{
+        $fallbackDeserializer = static function($value){
+            if(preg_match('/^TYPE\d{1,5}$/',$value)){
+                return intval(substr($value,4));
+            }
+            return null;
+        };
+        $fallbackSerializer = static function($key){
+            return 'TYPE'.$key;
+        };
+
         self::assertInstanceOf(MnemonicMapper::class,new MnemonicMapper([]));
         self::assertInstanceOf(MnemonicMapper::class,new MnemonicMapper([],false));
+        self::assertInstanceOf(MnemonicMapper::class,new MnemonicMapper([],false,$fallbackDeserializer));
+        self::assertInstanceOf(MnemonicMapper::class,new MnemonicMapper([],false,$fallbackDeserializer,$fallbackSerializer));
 
         self::assertInstanceOf(MnemonicMapper::class,new MnemonicMapper([
             'abc' => 123,
@@ -22,6 +34,12 @@ class MnemonicMapperTest extends TestCase{
         self::assertInstanceOf(MnemonicMapper::class,new MnemonicMapper([
             'abc' => 123,
         ],false));
+        self::assertInstanceOf(MnemonicMapper::class,new MnemonicMapper([
+            'abc' => 123,
+        ],false,$fallbackDeserializer));
+        self::assertInstanceOf(MnemonicMapper::class,new MnemonicMapper([
+            'abc' => 123,
+        ],false,$fallbackDeserializer,$fallbackSerializer));
     }
 
     /**
@@ -63,10 +81,22 @@ class MnemonicMapperTest extends TestCase{
             'abc' => 123,
         ],false);
 
+        $fallbackDeserializer = static function($value){
+            if(preg_match('/^TYPE\d{1,5}$/',$value)){
+                return intval(substr($value,4));
+            }
+            return null;
+        };
+        $mapperNoIntegerWithFallback = new MnemonicMapper([
+            'abc' => 123,
+        ],false,$fallbackDeserializer);
+
         self::assertSame(123,$mapper->deserializeMnemonic('abc'));
         self::assertSame(123,$mapperNoInteger->deserializeMnemonic('abc'));
+        self::assertSame(123,$mapperNoIntegerWithFallback->deserializeMnemonic('abc'));
 
         self::assertSame(456,$mapper->deserializeMnemonic('456'));
+        self::assertSame(456,$mapperNoIntegerWithFallback->deserializeMnemonic('TYPE456'));
     }
 
     public function testDeserializeMnemonicUnknownKey(): void{
@@ -93,10 +123,19 @@ class MnemonicMapperTest extends TestCase{
             'abc' => 123,
         ],false);
 
+        $fallbackSerializer = static function($key){
+            return 'TYPE'.$key;
+        };
+        $mapperNoIntegerWithFallback = new MnemonicMapper([
+            'abc' => 123,
+        ],false,null,$fallbackSerializer);
+
         self::assertSame('abc',$mapper->serializeMnemonic(123));
         self::assertSame('abc',$mapperNoInteger->serializeMnemonic(123));
+        self::assertSame('abc',$mapperNoIntegerWithFallback->serializeMnemonic(123));
 
         self::assertSame('456',$mapper->serializeMnemonic(456));
+        self::assertSame('TYPE456',$mapperNoIntegerWithFallback->serializeMnemonic(456));
     }
 
     /**
