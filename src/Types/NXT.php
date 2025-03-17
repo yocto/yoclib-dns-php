@@ -30,6 +30,13 @@ class NXT extends Type{
     }
 
     /**
+     * @return MnemonicMapper
+     */
+    protected static function getMapper(): MnemonicMapper{
+        return new MnemonicMapper(MnemonicMapper::MAPPING_DNS_TYPES);
+    }
+
+    /**
      * @param string $data
      * @return NXT
      * @throws DNSFieldException
@@ -38,12 +45,12 @@ class NXT extends Type{
      */
     public static function deserializeFromPresentationFormat(string $data): NXT{
         $tokens = LineLexer::tokenizeLine($data);
-        if(count($tokens)<2){
-            throw new DNSTypeException('NXT record should contain at least 2 fields.');
+        if(count($tokens)<1){
+            throw new DNSTypeException('NXT record should contain at least 1 field.');
         }
         return new self([
             FQDN::deserializeFromPresentationFormat($tokens[0]),
-            Bitmap::deserializeFromPresentationFormat(array_slice($tokens,1),new MnemonicMapper(MnemonicMapper::MAPPING_DNS_TYPES)),
+            Bitmap::deserializeFromPresentationFormat(array_slice($tokens,1),self::getMapper()),
         ]);
     }
 

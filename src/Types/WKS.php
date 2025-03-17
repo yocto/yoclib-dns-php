@@ -34,11 +34,12 @@ class WKS extends Type{
     }
 
     /**
+     * @param array|Field[] $fields
      * @return MnemonicMapper
      * @throws DNSMnemonicException
      */
-    protected function getMapper(): MnemonicMapper{
-        return new MnemonicMapper(MnemonicMapper::MAPPING_PORTS[$this->getFields()[1]->getValue()] ?? []);
+    protected static function getMapper(array $fields): MnemonicMapper{
+        return new MnemonicMapper(MnemonicMapper::MAPPING_PORTS[$fields[1]->getValue()] ?? []);
     }
 
     /**
@@ -55,11 +56,10 @@ class WKS extends Type{
         }
         $protocolMapper = new MnemonicMapper(MnemonicMapper::MAPPING_PROTOCOLS);
         $protocol = $protocolMapper->deserializeMnemonic($tokens[1]);
-        $portMapper = new MnemonicMapper(MnemonicMapper::MAPPING_PORTS[$protocol] ?? []);
         return new self([
             IPv4Address::deserializeFromPresentationFormat($tokens[0]),
             new UnsignedInteger8($protocol),
-            Bitmap::deserializeFromPresentationFormat(array_slice($tokens,2),$portMapper),
+            Bitmap::deserializeFromPresentationFormat(array_slice($tokens,2),self::getMapper([null,new UnsignedInteger8($protocol)])),
         ]);
     }
 

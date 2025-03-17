@@ -77,7 +77,7 @@ abstract class Type{
             if($field instanceof Bitmap || $field instanceof WindowBlockBitmap){
                 $mapper = null;
                 if(method_exists($this,'getMapper')){
-                    $mapper = $this->getMapper();
+                    $mapper = $this->getMapper($this->fields);
                 }
                 $output[] = $field->serializeToPresentationFormat($mapper);
                 continue;

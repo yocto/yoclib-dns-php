@@ -4,10 +4,10 @@ namespace YOCLIB\DNS\Types;
 use YOCLIB\DNS\Exceptions\DNSFieldException;
 use YOCLIB\DNS\Exceptions\DNSMnemonicException;
 use YOCLIB\DNS\Exceptions\DNSTypeException;
-use YOCLIB\DNS\Fields\Bitmap;
 use YOCLIB\DNS\Fields\Field;
 use YOCLIB\DNS\Fields\UnsignedInteger16;
 use YOCLIB\DNS\Fields\UnsignedInteger32;
+use YOCLIB\DNS\Fields\WindowBlockBitmap;
 use YOCLIB\DNS\LineLexer;
 use YOCLIB\DNS\MnemonicMapper;
 
@@ -28,9 +28,24 @@ class CSYNC extends Type{
         if(!($fields[1] instanceof UnsignedInteger16)){
             throw new DNSTypeException('Second field should be an UInt16.');
         }
-        if(!($fields[2] instanceof Bitmap)){
-            throw new DNSTypeException('Third field should be a bitmap.');
+        if(!($fields[2] instanceof WindowBlockBitmap)){
+            throw new DNSTypeException('Third field should be a window block bitmap.');
         }
+    }
+
+    /**
+     * @return MnemonicMapper
+     * @throws DNSMnemonicException
+     */
+    protected static function getMapper(): MnemonicMapper{
+        return new MnemonicMapper(MnemonicMapper::MAPPING_DNS_TYPES,false,static function($value){
+            if(preg_match('/^TYPE\d{1,5}$/',$value)){
+                return intval(substr($value,4));
+            }
+            return null;
+        },static function($key){
+            return 'TYPE'.$key;
+        });
     }
 
     /**
@@ -48,7 +63,7 @@ class CSYNC extends Type{
         return new self([
             UnsignedInteger32::deserializeFromPresentationFormat($tokens[0]),
             UnsignedInteger16::deserializeFromPresentationFormat($tokens[1]),
-            Bitmap::deserializeFromPresentationFormat(array_slice($tokens,2),new MnemonicMapper(MnemonicMapper::MAPPING_DNS_TYPES)),
+            WindowBlockBitmap::deserializeFromPresentationFormat(array_slice($tokens,2),new MnemonicMapper(MnemonicMapper::MAPPING_DNS_TYPES)),
         ]);
     }
 
@@ -72,7 +87,7 @@ class CSYNC extends Type{
         return new self([
             UnsignedInteger32::deserializeFromWireFormat($soaSerial),
             UnsignedInteger16::deserializeFromWireFormat($flags),
-            Bitmap::deserializeFromWireFormat($bitmap),
+            WindowBlockBitmap::deserializeFromWireFormat($bitmap),
         ]);
     }
 

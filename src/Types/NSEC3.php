@@ -44,6 +44,21 @@ class NSEC3 extends Type{
     }
 
     /**
+     * @return MnemonicMapper
+     * @throws DNSMnemonicException
+     */
+    protected static function getMapper(): MnemonicMapper{
+        return new MnemonicMapper(MnemonicMapper::MAPPING_DNS_TYPES,false,static function($value){
+            if(preg_match('/^TYPE\d{1,5}$/',$value)){
+                return intval(substr($value,4));
+            }
+            return null;
+        },static function($key){
+            return 'TYPE'.$key;
+        });
+    }
+
+    /**
      * @param string $data
      * @return NSEC3
      * @throws DNSFieldException
@@ -61,7 +76,7 @@ class NSEC3 extends Type{
             UnsignedInteger16::deserializeFromPresentationFormat($tokens[2]),
             CharacterString::deserializeFromPresentationFormat($tokens[3]),
             CharacterString::deserializeFromPresentationFormat($tokens[4]),
-            WindowBlockBitmap::deserializeFromPresentationFormat(array_slice($tokens,5),new MnemonicMapper(MnemonicMapper::MAPPING_DNS_TYPES)),
+            WindowBlockBitmap::deserializeFromPresentationFormat(array_slice($tokens,5),self::getMapper()),
         ]);
     }
 

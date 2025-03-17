@@ -53,8 +53,8 @@ class NSEC extends Type{
      */
     public static function deserializeFromPresentationFormat(string $data): NSEC{
         $tokens = LineLexer::tokenizeLine($data);
-        if(count($tokens)<2){
-            throw new DNSTypeException('NSEC record should contain at least 2 fields.');
+        if(count($tokens)<1){
+            throw new DNSTypeException('NSEC record should contain at least 1 field.');
         }
         return new self([
             FQDN::deserializeFromPresentationFormat($tokens[0]),
