@@ -65,7 +65,7 @@ class MnemonicMapper{
         if(isset($this->mapping[$value])){
             return $this->mapping[$value];
         }
-        throw new DNSMnemonicException('Unknown mnemonic.');
+        throw new DNSMnemonicException('Invalid mnemonic key during deserialization.');
     }
 
     /**
@@ -81,7 +81,7 @@ class MnemonicMapper{
         if($this->allowInteger){
             return strval($value);
         }
-        throw new DNSMnemonicException('Unknown mnemonic value.');
+        throw new DNSMnemonicException('Invalid mnemonic value during serialization.');
     }
 
 }

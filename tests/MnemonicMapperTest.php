@@ -37,6 +37,10 @@ class MnemonicMapperTest extends TestCase{
         ]);
     }
 
+    /**
+     * @return void
+     * @throws DNSMnemonicException
+     */
     public function testConstructorInvalidValue(): void{
         self::expectException(DNSMnemonicException::class);
         self::expectExceptionMessage('All mapping values should be integers.');
@@ -44,6 +48,70 @@ class MnemonicMapperTest extends TestCase{
         new MnemonicMapper([
             'abc' => 'def',
         ]);
+    }
+
+    /**
+     * @return void
+     * @throws DNSMnemonicException
+     */
+    public function testDeserializeMnemonic(): void{
+        $mapper = new MnemonicMapper([
+            'abc' => 123,
+        ]);
+
+        $mapperNoInteger = new MnemonicMapper([
+            'abc' => 123,
+        ],false);
+
+        self::assertSame(123,$mapper->deserializeMnemonic('abc'));
+        self::assertSame(123,$mapperNoInteger->deserializeMnemonic('abc'));
+
+        self::assertSame(456,$mapper->deserializeMnemonic('456'));
+    }
+
+    public function testDeserializeMnemonicUnknownKey(): void{
+        self::expectException(DNSMnemonicException::class);
+        self::expectExceptionMessage('Invalid mnemonic key during deserialization.');
+
+        $mapperNoInteger = new MnemonicMapper([
+            'abc' => 123,
+        ],false);
+
+        $mapperNoInteger->deserializeMnemonic('456');
+    }
+
+    /**
+     * @return void
+     * @throws DNSMnemonicException
+     */
+    public function testSerializeMnemonic(): void{
+        $mapper = new MnemonicMapper([
+            'abc' => 123,
+        ]);
+
+        $mapperNoInteger = new MnemonicMapper([
+            'abc' => 123,
+        ],false);
+
+        self::assertSame('abc',$mapper->serializeMnemonic(123));
+        self::assertSame('abc',$mapperNoInteger->serializeMnemonic(123));
+
+        self::assertSame('456',$mapper->serializeMnemonic(456));
+    }
+
+    /**
+     * @return void
+     * @throws DNSMnemonicException
+     */
+    public function testSerializeMnemonicUnknownValue(): void{
+        self::expectException(DNSMnemonicException::class);
+        self::expectExceptionMessage('Invalid mnemonic value during serialization.');
+
+        $mapperNoInteger = new MnemonicMapper([
+            'abc' => 123,
+        ],false);
+
+        $mapperNoInteger->serializeMnemonic(456);
     }
 
 }
