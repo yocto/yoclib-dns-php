@@ -205,7 +205,7 @@ class WKSTest extends TestCase{
      */
     public function testDeserializeFromPresentationFormatUnknownProtocol(): void{
         self::expectException(DNSMnemonicException::class);
-        self::expectExceptionMessage('Unknown mnemonic.');
+        self::expectExceptionMessage('Invalid mnemonic key during deserialization.');
 
         WKS::deserializeFromPresentationFormat('127.0.0.1 NON-EXISTING');
     }
