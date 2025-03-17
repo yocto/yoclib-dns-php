@@ -63,7 +63,7 @@ class CSYNC extends Type{
         return new self([
             UnsignedInteger32::deserializeFromPresentationFormat($tokens[0]),
             UnsignedInteger16::deserializeFromPresentationFormat($tokens[1]),
-            WindowBlockBitmap::deserializeFromPresentationFormat(array_slice($tokens,2),new MnemonicMapper(MnemonicMapper::MAPPING_DNS_TYPES)),
+            WindowBlockBitmap::deserializeFromPresentationFormat(array_slice($tokens,2),self::getMapper()),
         ]);
     }
 

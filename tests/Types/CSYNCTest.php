@@ -105,15 +105,16 @@ class CSYNCTest extends TestCase{
             new WindowBlockBitmap([]),
         ]))->serializeToPresentationFormat());
 
-//        self::assertSame('66 3 1 2 28',(new CSYNC([
-//            new UnsignedInteger32(66),
-//            new UnsignedInteger16(3),
-//            new WindowBlockBitmap([DNSType::A,DNSType::NS,DNSType::AAAA]),
-//        ]))->serializeToPresentationFormat());
         self::assertSame('66 3 A NS AAAA',(new CSYNC([
             new UnsignedInteger32(66),
             new UnsignedInteger16(3),
             new WindowBlockBitmap([DNSType::A,DNSType::NS,DNSType::AAAA]),
+        ]))->serializeToPresentationFormat());
+
+        self::assertSame('66 3 TYPE1234',(new CSYNC([
+            new UnsignedInteger32(66),
+            new UnsignedInteger16(3),
+            new WindowBlockBitmap([1234]),
         ]))->serializeToPresentationFormat());
     }
 
@@ -126,8 +127,9 @@ class CSYNCTest extends TestCase{
     public function testDeserializeFromPresentationFormat(): void{
         self::assertSame([],CSYNC::deserializeFromPresentationFormat('66 3')->getFields()[2]->getValue());
 
-        self::assertSame([DNSType::A,DNSType::NS,DNSType::AAAA],CSYNC::deserializeFromPresentationFormat('66 3 1 2 28')->getFields()[2]->getValue());
         self::assertSame([DNSType::A,DNSType::NS,DNSType::AAAA],CSYNC::deserializeFromPresentationFormat('66 3 A NS AAAA')->getFields()[2]->getValue());
+
+        self::assertSame([1234],CSYNC::deserializeFromPresentationFormat('66 3 TYPE1234')->getFields()[2]->getValue());
     }
 
     /**

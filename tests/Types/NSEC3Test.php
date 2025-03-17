@@ -180,14 +180,6 @@ class NSEC3Test extends TestCase{
             new WindowBlockBitmap([]),
         ]))->serializeToPresentationFormat());
 
-//        self::assertSame('1 1 12 aabbccdd 2vptu5timamqttgl4luu9kg21e0aor3s 1 46',(new NSEC3([
-//            new UnsignedInteger8(1),
-//            new UnsignedInteger8(1),
-//            new UnsignedInteger16(12),
-//            new CharacterString('aabbccdd'),
-//            new CharacterString('2vptu5timamqttgl4luu9kg21e0aor3s'),
-//            new WindowBlockBitmap([DNSType::A,DNSType::RRSIG]),
-//        ]))->serializeToPresentationFormat());
         self::assertSame('1 1 12 aabbccdd 2vptu5timamqttgl4luu9kg21e0aor3s A RRSIG',(new NSEC3([
             new UnsignedInteger8(1),
             new UnsignedInteger8(1),
@@ -195,6 +187,15 @@ class NSEC3Test extends TestCase{
             new CharacterString('aabbccdd'),
             new CharacterString('2vptu5timamqttgl4luu9kg21e0aor3s'),
             new WindowBlockBitmap([DNSType::A,DNSType::RRSIG]),
+        ]))->serializeToPresentationFormat());
+
+        self::assertSame('1 1 12 aabbccdd 2vptu5timamqttgl4luu9kg21e0aor3s TYPE1234',(new NSEC3([
+            new UnsignedInteger8(1),
+            new UnsignedInteger8(1),
+            new UnsignedInteger16(12),
+            new CharacterString('aabbccdd'),
+            new CharacterString('2vptu5timamqttgl4luu9kg21e0aor3s'),
+            new WindowBlockBitmap([1234]),
         ]))->serializeToPresentationFormat());
     }
 
@@ -208,6 +209,8 @@ class NSEC3Test extends TestCase{
         self::assertSame([],NSEC3::deserializeFromPresentationFormat('1 1 12 aabbccdd 2vptu5timamqttgl4luu9kg21e0aor3s')->getFields()[5]->getValue());
 
         self::assertSame([DNSType::A,DNSType::RRSIG],NSEC3::deserializeFromPresentationFormat('1 1 12 aabbccdd 2vptu5timamqttgl4luu9kg21e0aor3s A RRSIG')->getFields()[5]->getValue());
+
+        self::assertSame([1234],NSEC3::deserializeFromPresentationFormat('1 1 12 aabbccdd 2vptu5timamqttgl4luu9kg21e0aor3s TYPE1234')->getFields()[5]->getValue());
     }
 
     /**

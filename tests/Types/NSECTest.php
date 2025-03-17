@@ -81,11 +81,12 @@ class NSECTest extends TestCase{
             new WindowBlockBitmap([]),
         ]))->serializeToPresentationFormat());
 
-//        self::assertSame('host.example.com. 1 15 46 47 1234',(new NSEC([
-//            new FQDN('host','example','com',''),
-//            new WindowBlockBitmap([DNSType::A,DNSType::MX,DNSType::RRSIG,DNSType::NSEC,1234]),
-//        ]))->serializeToPresentationFormat());
         self::assertSame('host.example.com. A MX RRSIG NSEC TYPE1234',(new NSEC([
+            new FQDN('host','example','com',''),
+            new WindowBlockBitmap([DNSType::A,DNSType::MX,DNSType::RRSIG,DNSType::NSEC,1234]),
+        ]))->serializeToPresentationFormat());
+
+        self::assertSame('host.example.com. TYPE1234',(new NSEC([
             new FQDN('host','example','com',''),
             new WindowBlockBitmap([DNSType::A,DNSType::MX,DNSType::RRSIG,DNSType::NSEC,1234]),
         ]))->serializeToPresentationFormat());
@@ -100,7 +101,6 @@ class NSECTest extends TestCase{
     public function testDeserializeFromPresentationFormat(): void{
         self::assertSame([],NSEC::deserializeFromPresentationFormat('host.example.com.')->getFields()[1]->getValue());
 
-//        self::assertSame([DNSType::A,DNSType::MX,DNSType::RRSIG,DNSType::NSEC,1234],NSEC::deserializeFromPresentationFormat('host.example.com. 1 15 46 47 1234')->getFields()[1]->getValue());
         self::assertSame([DNSType::A,DNSType::MX,DNSType::RRSIG,DNSType::NSEC,1234],NSEC::deserializeFromPresentationFormat('host.example.com. A MX RRSIG NSEC TYPE1234')->getFields()[1]->getValue());
     }
 
