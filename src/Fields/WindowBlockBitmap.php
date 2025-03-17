@@ -2,6 +2,9 @@
 namespace YOCLIB\DNS\Fields;
 
 use YOCLIB\DNS\Exceptions\DNSFieldException;
+use YOCLIB\DNS\Exceptions\DNSMnemonicException;
+use YOCLIB\DNS\LineLexer;
+use YOCLIB\DNS\MnemonicMapper;
 
 class WindowBlockBitmap implements Field{
 
@@ -37,13 +40,15 @@ class WindowBlockBitmap implements Field{
     }
 
     /**
-     * @param ?array|string[]|null $mapping
+     * @param ?MnemonicMapper|null $mapper
      * @return string
+     * @throws DNSMnemonicException
      */
-    public function serializeToPresentationFormat(?array $mapping=null): string{
+    public function serializeToPresentationFormat(?MnemonicMapper $mapper=null): string{
+        $mapper = $mapper ?? new MnemonicMapper([]);
         $items = [];
         foreach($this->value AS $bit){
-            $items[] = $mapping[$bit] ?? strval($bit);
+            $items[] = $mapper->serializeMnemonic($bit);
         }
         return implode(' ',$items);
     }
@@ -83,20 +88,28 @@ class WindowBlockBitmap implements Field{
     }
 
     /**
-     * @param string $data
-     * @param ?array|string[]|null $mapping
+     * @param string|array|string[] $data
+     * @param ?MnemonicMapper|null $mapper
      * @return WindowBlockBitmap
      * @throws DNSFieldException
+     * @throws DNSMnemonicException
      */
-    public static function deserializeFromPresentationFormat(string $data,?array $mapping=null): WindowBlockBitmap{
-        $bits = [];
-        foreach(explode(' ',$data) AS $item){
-            foreach($mapping AS $bit=>$map){
-                if($map===$item){
-                    $bits[] = $bit;
-                    break;
-                }
+    public static function deserializeFromPresentationFormat(string|array $data,?MnemonicMapper $mapper=null): WindowBlockBitmap{
+        if(is_string($data)){
+            $data = LineLexer::tokenizeLine($data);
+        }
+        if(!is_array($data)){
+            throw new DNSFieldException('Bitmap only accepts string or array.');
+        }
+        foreach($data AS $token){
+            if(!is_string($token)){
+                throw new DNSFieldException('Bitmap only supports string elements.');
             }
+        }
+        $mapper = $mapper ?? new MnemonicMapper([]);
+        $bits = [];
+        foreach($data AS $item){
+            $bits[] = $mapper->deserializeMnemonic($item);
         }
         return new self($bits);
     }

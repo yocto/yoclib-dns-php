@@ -2,10 +2,13 @@
 namespace YOCLIB\DNS\Types;
 
 use YOCLIB\DNS\Exceptions\DNSFieldException;
+use YOCLIB\DNS\Exceptions\DNSMnemonicException;
 use YOCLIB\DNS\Exceptions\DNSTypeException;
 use YOCLIB\DNS\Fields\Bitmap;
 use YOCLIB\DNS\Fields\Field;
 use YOCLIB\DNS\Fields\FQDN;
+use YOCLIB\DNS\Fields\WindowBlockBitmap;
+use YOCLIB\DNS\MnemonicMapper;
 
 abstract class Type{
 
@@ -67,16 +70,17 @@ abstract class Type{
 
     /**
      * @return string
+     * @throws DNSMnemonicException
      */
     public function serializeToPresentationFormat(): string{
         $output = [];
         foreach($this->fields as $field){
-            if($field instanceof Bitmap){
-                $mapping = null;
-                if(method_exists($this,'getMapping')){
-                    $mapping = $this->getMapping();
+            if($field instanceof Bitmap || $field instanceof WindowBlockBitmap){
+                $mapper = null;
+                if(method_exists($this,'getMapper')){
+                    $mapper = $this->getMapper();
                 }
-                $output[] = $field->serializeToPresentationFormat($mapping);
+                $output[] = $field->serializeToPresentationFormat($mapper);
                 continue;
             }
             $output[] = $field->serializeToPresentationFormat();

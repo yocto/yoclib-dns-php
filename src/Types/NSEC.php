@@ -3,11 +3,13 @@ namespace YOCLIB\DNS\Types;
 
 use YOCLIB\DNS\DNSType;
 use YOCLIB\DNS\Exceptions\DNSFieldException;
+use YOCLIB\DNS\Exceptions\DNSMnemonicException;
 use YOCLIB\DNS\Exceptions\DNSTypeException;
 use YOCLIB\DNS\Fields\Field;
 use YOCLIB\DNS\Fields\FQDN;
 use YOCLIB\DNS\Fields\WindowBlockBitmap;
 use YOCLIB\DNS\LineLexer;
+use YOCLIB\DNS\MnemonicMapper;
 
 class NSEC extends Type{
 
@@ -28,17 +30,11 @@ class NSEC extends Type{
         }
     }
 
-    protected static function getMapping(): array{
-        //TODO Add mapping
-        return [
-            DNSType::A => 'A',
-        ];
-    }
-
     /**
      * @param string $data
      * @return NSEC
      * @throws DNSFieldException
+     * @throws DNSMnemonicException
      * @throws DNSTypeException
      */
     public static function deserializeFromPresentationFormat(string $data): NSEC{
@@ -48,7 +44,7 @@ class NSEC extends Type{
         }
         return new self([
             FQDN::deserializeFromPresentationFormat($tokens[0]),
-            WindowBlockBitmap::deserializeFromPresentationFormat(implode(' ',array_slice($tokens,1)),self::getMapping()),
+            WindowBlockBitmap::deserializeFromPresentationFormat(array_slice($tokens,1),new MnemonicMapper(MnemonicMapper::MAPPING_DNS_TYPES)),
         ]);
     }
 

@@ -3,6 +3,7 @@ namespace YOCLIB\DNS\Helpers;
 
 use YOCLIB\DNS\DNSType;
 use YOCLIB\DNS\Exceptions\DNSFieldException;
+use YOCLIB\DNS\Exceptions\DNSMnemonicException;
 use YOCLIB\DNS\Exceptions\DNSTypeException;
 use YOCLIB\DNS\Fields\FQDN;
 use YOCLIB\DNS\Types\A;
@@ -152,6 +153,7 @@ class TypeHelper{
      * @param int $type
      * @return Type
      * @throws DNSFieldException
+     * @throws DNSMnemonicException
      * @throws DNSTypeException
      */
     public static function deserializeFromPresentationFormatByClassAndType(string $data,int $class,int $type): Type{
@@ -223,7 +225,7 @@ class TypeHelper{
                 if(Unknown::detectUnknown($data)){
                     return WKS::deserializeFromWireFormat(TypeHelper::convertFromUnknown($data));
                 }
-                return WKS::deserializeFromPresentationFormat($data,[/*TODO Improve mapping*/]);
+                return WKS::deserializeFromPresentationFormat($data);
             }
             case DNSType::PTR:{
                 if(Unknown::detectUnknown($data)){

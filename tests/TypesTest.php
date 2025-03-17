@@ -4,6 +4,7 @@ namespace YOCLIB\DNS\Tests;
 use PHPUnit\Framework\TestCase;
 
 use YOCLIB\DNS\Exceptions\DNSFieldException;
+use YOCLIB\DNS\Exceptions\DNSMnemonicException;
 use YOCLIB\DNS\Exceptions\DNSTypeException;
 use YOCLIB\DNS\Fields\Bitmap;
 use YOCLIB\DNS\Fields\CharacterString;
@@ -31,7 +32,9 @@ class TypesTest extends TestCase{
 
     /**
      * @return void
-     * @throws DNSFieldException|DNSTypeException
+     * @throws DNSFieldException
+     * @throws DNSMnemonicException
+     * @throws DNSTypeException
      */
     public function testTypes(){
         $aRecord = new A([

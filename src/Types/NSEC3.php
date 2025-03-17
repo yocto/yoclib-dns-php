@@ -3,6 +3,7 @@ namespace YOCLIB\DNS\Types;
 
 use YOCLIB\DNS\DNSType;
 use YOCLIB\DNS\Exceptions\DNSFieldException;
+use YOCLIB\DNS\Exceptions\DNSMnemonicException;
 use YOCLIB\DNS\Exceptions\DNSTypeException;
 use YOCLIB\DNS\Fields\CharacterString;
 use YOCLIB\DNS\Fields\Field;
@@ -10,6 +11,7 @@ use YOCLIB\DNS\Fields\UnsignedInteger16;
 use YOCLIB\DNS\Fields\UnsignedInteger8;
 use YOCLIB\DNS\Fields\WindowBlockBitmap;
 use YOCLIB\DNS\LineLexer;
+use YOCLIB\DNS\MnemonicMapper;
 
 class NSEC3 extends Type{
 
@@ -42,17 +44,11 @@ class NSEC3 extends Type{
         }
     }
 
-    protected static function getMapping(): array{
-        //TODO Add mapping
-        return [
-            DNSType::A => 'A',
-        ];
-    }
-
     /**
      * @param string $data
      * @return NSEC3
      * @throws DNSFieldException
+     * @throws DNSMnemonicException
      * @throws DNSTypeException
      */
     public static function deserializeFromPresentationFormat(string $data): NSEC3{
@@ -66,7 +62,7 @@ class NSEC3 extends Type{
             UnsignedInteger16::deserializeFromPresentationFormat($tokens[2]),
             CharacterString::deserializeFromPresentationFormat($tokens[3]),
             CharacterString::deserializeFromPresentationFormat($tokens[4]),
-            WindowBlockBitmap::deserializeFromPresentationFormat(implode(' ',array_slice($tokens,5)),self::getMapping()),
+            WindowBlockBitmap::deserializeFromPresentationFormat(array_slice($tokens,5),new MnemonicMapper(MnemonicMapper::MAPPING_DNS_TYPES)),
         ]);
     }
 

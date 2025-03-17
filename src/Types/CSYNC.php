@@ -3,12 +3,14 @@ namespace YOCLIB\DNS\Types;
 
 use YOCLIB\DNS\DNSType;
 use YOCLIB\DNS\Exceptions\DNSFieldException;
+use YOCLIB\DNS\Exceptions\DNSMnemonicException;
 use YOCLIB\DNS\Exceptions\DNSTypeException;
 use YOCLIB\DNS\Fields\Bitmap;
 use YOCLIB\DNS\Fields\Field;
 use YOCLIB\DNS\Fields\UnsignedInteger16;
 use YOCLIB\DNS\Fields\UnsignedInteger32;
 use YOCLIB\DNS\LineLexer;
+use YOCLIB\DNS\MnemonicMapper;
 
 class CSYNC extends Type{
 
@@ -32,17 +34,11 @@ class CSYNC extends Type{
         }
     }
 
-    protected static function getMapping(): array{
-        //TODO Add mapping
-        return [
-            DNSType::A => 'A',
-        ];
-    }
-
     /**
      * @param string $data
      * @return CSYNC
      * @throws DNSFieldException
+     * @throws DNSMnemonicException
      * @throws DNSTypeException
      */
     public static function deserializeFromPresentationFormat(string $data): CSYNC{
@@ -53,7 +49,7 @@ class CSYNC extends Type{
         return new self([
             UnsignedInteger32::deserializeFromPresentationFormat($tokens[0]),
             UnsignedInteger16::deserializeFromPresentationFormat($tokens[1]),
-            Bitmap::deserializeFromPresentationFormat(implode(' ',array_slice($tokens,2)),self::getMapping()),
+            Bitmap::deserializeFromPresentationFormat(array_slice($tokens,2),new MnemonicMapper(MnemonicMapper::MAPPING_DNS_TYPES)),
         ]);
     }
 

@@ -8,6 +8,7 @@ use YOCLIB\DNS\Fields\Bitmap;
 use YOCLIB\DNS\Fields\Field;
 use YOCLIB\DNS\Fields\FQDN;
 use YOCLIB\DNS\LineLexer;
+use YOCLIB\DNS\MnemonicMapper;
 
 class NXT extends Type{
 
@@ -28,13 +29,6 @@ class NXT extends Type{
         }
     }
 
-    protected static function getMapping(): array{
-        //TODO Add mapping
-        return [
-            DNSType::A => 'A',
-        ];
-    }
-
     /**
      * @param string $data
      * @return NXT
@@ -48,7 +42,7 @@ class NXT extends Type{
         }
         return new self([
             FQDN::deserializeFromPresentationFormat($tokens[0]),
-            Bitmap::deserializeFromPresentationFormat(implode(' ',array_slice($tokens,1)),self::getMapping()),
+            Bitmap::deserializeFromPresentationFormat(array_slice($tokens,1),new MnemonicMapper(MnemonicMapper::MAPPING_DNS_TYPES)),
         ]);
     }
 

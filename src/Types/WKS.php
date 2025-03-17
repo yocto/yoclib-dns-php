@@ -2,12 +2,14 @@
 namespace YOCLIB\DNS\Types;
 
 use YOCLIB\DNS\Exceptions\DNSFieldException;
+use YOCLIB\DNS\Exceptions\DNSMnemonicException;
 use YOCLIB\DNS\Exceptions\DNSTypeException;
 use YOCLIB\DNS\Fields\Bitmap;
 use YOCLIB\DNS\Fields\Field;
 use YOCLIB\DNS\Fields\IPv4Address;
 use YOCLIB\DNS\Fields\UnsignedInteger8;
 use YOCLIB\DNS\LineLexer;
+use YOCLIB\DNS\MnemonicMapper;
 
 class WKS extends Type{
 
@@ -31,49 +33,29 @@ class WKS extends Type{
         }
     }
 
-    protected function getMapping(): array{
-        if($this->getFields()[1]->getValue()===6){
-            return [
-                25 => 'SMTP',
-            ];
-        }
-        return [];
+    protected function getMapper(): MnemonicMapper{
+        return new MnemonicMapper(MnemonicMapper::MAPPING_PORTS[$this->getFields()[1]->getValue()] ?? []);
     }
 
     /**
      * @param string $data
-     * @param array|string[][]|null $mappings
      * @return WKS
      * @throws DNSFieldException
+     * @throws DNSMnemonicException
      * @throws DNSTypeException
      */
-    public static function deserializeFromPresentationFormat(string $data,?array $mappings=null): WKS{
+    public static function deserializeFromPresentationFormat(string $data): WKS{
         $tokens = LineLexer::tokenizeLine($data);
         if(count($tokens)<2){
             throw new DNSTypeException('WKS record should contain at least 2 fields.');
         }
-        if(preg_match('/\d+/',$tokens[1])){
-            $protocol = UnsignedInteger8::deserializeFromPresentationFormat($tokens[1]);
-        }else{
-            switch($tokens[1]){
-                case 'TCP':{
-                    $protocol = new UnsignedInteger8(6);
-                    break;
-                }
-                case 'UDP':{
-                    $protocol = new UnsignedInteger8(17);
-                    break;
-                }
-                default:{
-                    throw new DNSTypeException('Unknown protocol mnemonic.');
-                }
-            }
-        }
-        $protocolValue = $protocol->getValue();
+        $protocolMapper = new MnemonicMapper(MnemonicMapper::MAPPING_PROTOCOLS);
+        $protocol = $protocolMapper->deserializeMnemonic($tokens[1]);
+        $portMapper = new MnemonicMapper(MnemonicMapper::MAPPING_PORTS[$protocol] ?? []);
         return new self([
             IPv4Address::deserializeFromPresentationFormat($tokens[0]),
-            $protocol,
-            Bitmap::deserializeFromPresentationFormat(implode(' ',array_slice($tokens,2)),$mappings[$protocolValue] ?? null),
+            new UnsignedInteger8($protocol),
+            Bitmap::deserializeFromPresentationFormat(array_slice($tokens,2),$portMapper),
         ]);
     }
 

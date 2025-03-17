@@ -4,7 +4,9 @@ namespace YOCLIB\DNS\Tests\Fields;
 use PHPUnit\Framework\TestCase;
 
 use YOCLIB\DNS\Exceptions\DNSFieldException;
+use YOCLIB\DNS\Exceptions\DNSMnemonicException;
 use YOCLIB\DNS\Fields\Bitmap;
+use YOCLIB\DNS\MnemonicMapper;
 
 class BitmapTest extends TestCase{
 
@@ -64,20 +66,21 @@ class BitmapTest extends TestCase{
     /**
      * @return void
      * @throws DNSFieldException
+     * @throws DNSMnemonicException
      */
     public function testSerializeToPresentationFormat(): void{
-        $mapping = [
-            1 => 'ONE',
-            2 => 'TWO',
-            3 => 'THREE',
-            4 => 'FOUR',
-            5 => 'FIVE',
-            6 => 'SIX',
-        ];
+        $mapper = new MnemonicMapper([
+            'ONE' => 1,
+            'TWO' => 2,
+            'THREE' => 3,
+            'FOUR' => 4,
+            'FIVE' => 5,
+            'SIX' => 6,
+        ]);
 
-        self::assertSame('ONE TWO THREE FOUR',(new Bitmap([1,2,3,4]))->serializeToPresentationFormat($mapping));
-        self::assertSame('ONE TWO THREE FOUR FIVE',(new Bitmap([1,2,3,4,5]))->serializeToPresentationFormat($mapping));
-        self::assertSame('ONE TWO THREE FOUR FIVE SIX',(new Bitmap([1,2,3,4,5,6]))->serializeToPresentationFormat($mapping));
+        self::assertSame('ONE TWO THREE FOUR',(new Bitmap([1,2,3,4]))->serializeToPresentationFormat($mapper));
+        self::assertSame('ONE TWO THREE FOUR FIVE',(new Bitmap([1,2,3,4,5]))->serializeToPresentationFormat($mapper));
+        self::assertSame('ONE TWO THREE FOUR FIVE SIX',(new Bitmap([1,2,3,4,5,6]))->serializeToPresentationFormat($mapper));
     }
 
     /**
@@ -105,20 +108,21 @@ class BitmapTest extends TestCase{
     /**
      * @return void
      * @throws DNSFieldException
+     * @throws DNSMnemonicException
      */
     public function testDeserializeFromPresentationFormat(): void{
-        $mapping = [
-            1 => 'ONE',
-            2 => 'TWO',
-            3 => 'THREE',
-            4 => 'FOUR',
-            5 => 'FIVE',
-            6 => 'SIX',
-        ];
+        $mapper = new MnemonicMapper([
+            'ONE' => 1,
+            'TWO' => 2,
+            'THREE' => 3,
+            'FOUR' => 4,
+            'FIVE' => 5,
+            'SIX' => 6,
+        ]);
 
-        self::assertSame([1,2,3,4],Bitmap::deserializeFromPresentationFormat('ONE TWO THREE FOUR',$mapping)->getValue());
-        self::assertSame([1,2,3,4,5],Bitmap::deserializeFromPresentationFormat('ONE TWO THREE FOUR FIVE',$mapping)->getValue());
-        self::assertSame([1,2,3,4,5,6],Bitmap::deserializeFromPresentationFormat('ONE TWO THREE FOUR FIVE SIX',$mapping)->getValue());
+        self::assertSame([1,2,3,4],Bitmap::deserializeFromPresentationFormat('ONE TWO THREE FOUR',$mapper)->getValue());
+        self::assertSame([1,2,3,4,5],Bitmap::deserializeFromPresentationFormat('ONE TWO THREE FOUR FIVE',$mapper)->getValue());
+        self::assertSame([1,2,3,4,5,6],Bitmap::deserializeFromPresentationFormat('ONE TWO THREE FOUR FIVE SIX',$mapper)->getValue());
     }
 
     /**
