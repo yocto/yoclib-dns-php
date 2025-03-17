@@ -85,7 +85,7 @@ abstract class Type{
             }
             $output[] = $field->serializeToPresentationFormat();
         }
-        return implode(' ',$output);
+        return trim(implode(' ',$output),' ');
     }
 
     /**

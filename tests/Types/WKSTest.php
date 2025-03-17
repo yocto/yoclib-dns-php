@@ -34,7 +34,7 @@ class WKSTest extends TestCase{
      * @throws DNSFieldException
      * @throws DNSTypeException
      */
-    public function testConstructorTooLessFields(){
+    public function testConstructorTooLessFields(): void{
         self::expectException(DNSTypeException::class);
         self::expectExceptionMessage('Only three fields allowed.');
 
@@ -98,7 +98,70 @@ class WKSTest extends TestCase{
      * @throws DNSMnemonicException
      * @throws DNSTypeException
      */
-    public function testDeserializeFromPresentationFormat(){
+    public function testSerializeToPresentationFormat(): void{
+        self::assertSame('127.0.0.1 6',(new WKS([
+            new IPv4Address('127.0.0.1'),
+            new UnsignedInteger8(6),
+            new Bitmap([]),
+        ]))->serializeToPresentationFormat());
+//        self::assertSame('127.0.0.1 TCP',(new WKS([
+//            new IPv4Address('127.0.0.1'),
+//            new UnsignedInteger8(6),
+//            new Bitmap([]),
+//        ]))->serializeToPresentationFormat());
+
+        self::assertSame('127.0.0.1 17',(new WKS([
+            new IPv4Address('127.0.0.1'),
+            new UnsignedInteger8(17),
+            new Bitmap([]),
+        ]))->serializeToPresentationFormat());
+//        self::assertSame('127.0.0.1 UDP',(new WKS([
+//            new IPv4Address('127.0.0.1'),
+//            new UnsignedInteger8(17),
+//            new Bitmap([]),
+//        ]))->serializeToPresentationFormat());
+
+        self::assertSame('127.0.0.1 6 1 2 3 4',(new WKS([
+            new IPv4Address('127.0.0.1'),
+            new UnsignedInteger8(6),
+            new Bitmap([1,2,3,4]),
+        ]))->serializeToPresentationFormat());
+//        self::assertSame('127.0.0.1 TCP 1 2 3 4',(new WKS([
+//            new IPv4Address('127.0.0.1'),
+//            new UnsignedInteger8(6),
+//            new Bitmap([1,2,3,4]),
+//        ]))->serializeToPresentationFormat());
+
+        self::assertSame('127.0.0.1 17 1 2 3 4',(new WKS([
+            new IPv4Address('127.0.0.1'),
+            new UnsignedInteger8(17),
+            new Bitmap([1,2,3,4]),
+        ]))->serializeToPresentationFormat());
+//        self::assertSame('127.0.0.1 UDP 1 2 3 4',(new WKS([
+//            new IPv4Address('127.0.0.1'),
+//            new UnsignedInteger8(17),
+//            new Bitmap([1,2,3,4]),
+//        ]))->serializeToPresentationFormat());
+
+        self::assertSame('127.0.0.1 6 SMTP',(new WKS([
+            new IPv4Address('127.0.0.1'),
+            new UnsignedInteger8(6),
+            new Bitmap([25]),
+        ]))->serializeToPresentationFormat());
+//        self::assertSame('127.0.0.1 TCP SMTP',(new WKS([
+//            new IPv4Address('127.0.0.1'),
+//            new UnsignedInteger8(6),
+//            new Bitmap([25]),
+//        ]))->serializeToPresentationFormat());
+    }
+
+    /**
+     * @return void
+     * @throws DNSFieldException
+     * @throws DNSMnemonicException
+     * @throws DNSTypeException
+     */
+    public function testDeserializeFromPresentationFormat(): void{
         self::assertSame(6,WKS::deserializeFromPresentationFormat('127.0.0.1 6')->getFields()[1]->getValue());
         self::assertSame(6,WKS::deserializeFromPresentationFormat('127.0.0.1 TCP')->getFields()[1]->getValue());
 
@@ -127,7 +190,7 @@ class WKSTest extends TestCase{
      * @throws DNSMnemonicException
      * @throws DNSTypeException
      */
-    public function testDeserializeFromPresentationFormatTooLessFields(){
+    public function testDeserializeFromPresentationFormatTooLessFields(): void{
         self::expectException(DNSTypeException::class);
         self::expectExceptionMessage('WKS record should contain at least 2 fields.');
 
@@ -140,7 +203,7 @@ class WKSTest extends TestCase{
      * @throws DNSMnemonicException
      * @throws DNSTypeException
      */
-    public function testDeserializeFromPresentationFormatUnknownProtocol(){
+    public function testDeserializeFromPresentationFormatUnknownProtocol(): void{
         self::expectException(DNSMnemonicException::class);
         self::expectExceptionMessage('Unknown mnemonic.');
 

@@ -35,7 +35,20 @@ class MnemonicMapper{
 
     private bool $allowInteger;
 
+    /**
+     * @param array|string[] $mapping
+     * @param ?bool|null $allowInteger
+     * @throws DNSMnemonicException
+     */
     public function __construct(array $mapping,?bool $allowInteger=true){
+        foreach($mapping as $mnemonic=>$value){
+            if(!is_string($mnemonic)){
+                throw new DNSMnemonicException("All mapping keys should be strings.");
+            }
+            if(!is_int($value)){
+                throw new DNSMnemonicException("All mapping values should be integers.");
+            }
+        }
         $this->mapping = $mapping;
         $this->allowInteger = $allowInteger;
     }
