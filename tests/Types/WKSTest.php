@@ -6,9 +6,91 @@ use PHPUnit\Framework\TestCase;
 use YOCLIB\DNS\Exceptions\DNSFieldException;
 use YOCLIB\DNS\Exceptions\DNSMnemonicException;
 use YOCLIB\DNS\Exceptions\DNSTypeException;
+use YOCLIB\DNS\Fields\Binary;
+use YOCLIB\DNS\Fields\Bitmap;
+use YOCLIB\DNS\Fields\IPv4Address;
+use YOCLIB\DNS\Fields\IPv6Address;
+use YOCLIB\DNS\Fields\UnsignedInteger16;
+use YOCLIB\DNS\Fields\UnsignedInteger8;
 use YOCLIB\DNS\Types\WKS;
 
 class WKSTest extends TestCase{
+
+    /**
+     * @return void
+     * @throws DNSFieldException
+     * @throws DNSTypeException
+     */
+    public function testConstructor(): void{
+        self::assertInstanceOf(WKS::class,new WKS([
+            new IPv4Address('127.0.0.1'),
+            new UnsignedInteger8(6),
+            new Bitmap([25]),
+        ]));
+    }
+
+    /**
+     * @return void
+     * @throws DNSFieldException
+     * @throws DNSTypeException
+     */
+    public function testConstructorTooLessFields(){
+        self::expectException(DNSTypeException::class);
+        self::expectExceptionMessage('Only three fields allowed.');
+
+        new WKS([
+            new IPv4Address('127.0.0.1'),
+            new UnsignedInteger8(6),
+        ]);
+    }
+
+    /**
+     * @return void
+     * @throws DNSFieldException
+     * @throws DNSTypeException
+     */
+    public function testConstructorInvalidFirstField(): void{
+        self::expectException(DNSTypeException::class);
+        self::expectExceptionMessage('First field should be an IPv4 address.');
+
+        new WKS([
+            new IPv6Address('::'),
+            new UnsignedInteger8(6),
+            new Bitmap([25]),
+        ]);
+    }
+
+    /**
+     * @return void
+     * @throws DNSFieldException
+     * @throws DNSTypeException
+     */
+    public function testConstructorInvalidSecondField(): void{
+        self::expectException(DNSTypeException::class);
+        self::expectExceptionMessage('Second field should be an UInt8.');
+
+        new WKS([
+            new IPv4Address('127.0.0.1'),
+            new UnsignedInteger16(6),
+            new Bitmap([25]),
+        ]);
+    }
+
+    /**
+     * @return void
+     * @throws DNSFieldException
+     * @throws DNSTypeException
+     */
+    public function testConstructorInvalidThirdField(): void{
+        self::expectException(DNSTypeException::class);
+        self::expectExceptionMessage('Third field should be a bitmap.');
+
+        new WKS([
+            new IPv4Address('127.0.0.1'),
+            new UnsignedInteger8(6),
+            new Binary(''),
+        ]);
+    }
 
     /**
      * @return void
@@ -37,6 +119,19 @@ class WKSTest extends TestCase{
         self::assertSame([25],WKS::deserializeFromPresentationFormat('127.0.0.1 6 SMTP')->getFields()[2]->getValue());
         self::assertSame(6,WKS::deserializeFromPresentationFormat('127.0.0.1 TCP SMTP')->getFields()[1]->getValue());
         self::assertSame([25],WKS::deserializeFromPresentationFormat('127.0.0.1 TCP SMTP')->getFields()[2]->getValue());
+    }
+
+    /**
+     * @return void
+     * @throws DNSFieldException
+     * @throws DNSMnemonicException
+     * @throws DNSTypeException
+     */
+    public function testDeserializeFromPresentationFormatTooLessFields(){
+        self::expectException(DNSTypeException::class);
+        self::expectExceptionMessage('WKS record should contain at least 2 fields.');
+
+        WKS::deserializeFromPresentationFormat('127.0.0.1');
     }
 
     /**
