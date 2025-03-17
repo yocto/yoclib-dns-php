@@ -87,7 +87,7 @@ class Bitmap implements Field{
     public static function deserializeFromPresentationFormat(string $data,?array $mapping=null): Bitmap{
         $bits = [];
         foreach(explode(' ',$data) AS $item){
-            foreach($mapping AS $bit=>$map){
+            foreach($mapping ?? [] AS $bit=>$map){
                 if($map===$item){
                     $bits[] = $bit;
                     break;

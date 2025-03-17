@@ -52,11 +52,28 @@ class WKS extends Type{
         if(count($tokens)<2){
             throw new DNSTypeException('WKS record should contain at least 2 fields.');
         }
-        $protocol = UnsignedInteger8::deserializeFromPresentationFormat($tokens[1]);
+        if(preg_match('/\d+/',$tokens[1])){
+            $protocol = UnsignedInteger8::deserializeFromPresentationFormat($tokens[1]);
+        }else{
+            switch($tokens[1]){
+                case 'TCP':{
+                    $protocol = new UnsignedInteger8(6);
+                    break;
+                }
+                case 'UDP':{
+                    $protocol = new UnsignedInteger8(17);
+                    break;
+                }
+                default:{
+                    throw new DNSTypeException('Unknown protocol mnemonic.');
+                }
+            }
+        }
+        $protocolValue = $protocol->getValue();
         return new self([
             IPv4Address::deserializeFromPresentationFormat($tokens[0]),
             $protocol,
-            Bitmap::deserializeFromPresentationFormat(implode(' ',array_slice($tokens,2)),$mappings[$protocol->getValue()] ?? null),
+            Bitmap::deserializeFromPresentationFormat(implode(' ',array_slice($tokens,2)),$mappings[$protocolValue] ?? null),
         ]);
     }
 
