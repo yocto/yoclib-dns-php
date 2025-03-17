@@ -108,6 +108,7 @@ class WindowBlockBitmapTest extends TestCase{
     /**
      * @return void
      * @throws DNSFieldException
+     * @throws DNSMnemonicException
      */
     public function testDeserializeFromPresentationFormat(): void{
         $mapper = new MnemonicMapper([

@@ -2,6 +2,7 @@
 namespace YOCLIB\DNS\Types;
 
 use YOCLIB\DNS\Exceptions\DNSFieldException;
+use YOCLIB\DNS\Exceptions\DNSMnemonicException;
 use YOCLIB\DNS\Exceptions\DNSTypeException;
 use YOCLIB\DNS\Fields\Field;
 use YOCLIB\DNS\Fields\FQDN;
@@ -33,6 +34,7 @@ class A6 extends Type{
 
     /**
      * @return string
+     * @throws DNSMnemonicException
      */
     public function serializeToPresentationFormat(): string{
         if($this->getFields()[0]->getValue()===0){

@@ -43,7 +43,7 @@ class Unknown extends Type{
         if($tokens[0]!=='\#'){
             throw new DNSTypeException('Binary should start with \# characters.');
         }
-        if(!preg_match('/\d+/',$tokens[1] ?? '')){
+        if(!preg_match('/^\d+$/',$tokens[1] ?? '')){
             throw new DNSTypeException('Length should only contain digits.');
         }
         $length = intval($tokens[1]) ?? -1;

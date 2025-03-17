@@ -33,6 +33,10 @@ class WKS extends Type{
         }
     }
 
+    /**
+     * @return MnemonicMapper
+     * @throws DNSMnemonicException
+     */
     protected function getMapper(): MnemonicMapper{
         return new MnemonicMapper(MnemonicMapper::MAPPING_PORTS[$this->getFields()[1]->getValue()] ?? []);
     }

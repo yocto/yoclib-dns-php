@@ -1,8 +1,8 @@
 <?php
 namespace YOCLIB\DNS\Types;
 
-use YOCLIB\DNS\DNSType;
 use YOCLIB\DNS\Exceptions\DNSFieldException;
+use YOCLIB\DNS\Exceptions\DNSMnemonicException;
 use YOCLIB\DNS\Exceptions\DNSTypeException;
 use YOCLIB\DNS\Fields\Bitmap;
 use YOCLIB\DNS\Fields\Field;
@@ -33,6 +33,7 @@ class NXT extends Type{
      * @param string $data
      * @return NXT
      * @throws DNSFieldException
+     * @throws DNSMnemonicException
      * @throws DNSTypeException
      */
     public static function deserializeFromPresentationFormat(string $data): NXT{

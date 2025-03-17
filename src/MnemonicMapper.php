@@ -1,6 +1,8 @@
 <?php
 namespace YOCLIB\DNS;
 
+use Closure;
+
 use YOCLIB\DNS\Exceptions\DNSMnemonicException;
 
 class MnemonicMapper{
@@ -14,8 +16,6 @@ class MnemonicMapper{
         'NXT' => DNSType::NXT,
         'RRSIG' => DNSType::RRSIG,
         'NSEC' => DNSType::NSEC,
-
-        'TYPE1234' => 1234, //TODO Implement fallback
     ];
 
     public const MAPPING_PORTS = [
@@ -33,14 +33,19 @@ class MnemonicMapper{
 
     private array $mapping;
 
-    private bool $allowInteger;
+    private ?bool $allowInteger;
+
+    private ?Closure $fallbackDeserializer;
+    private ?Closure $fallbackSerializer;
 
     /**
      * @param array|string[] $mapping
      * @param ?bool|null $allowInteger
+     * @param ?Closure|null $fallbackDeserializer
+     * @param ?Closure|null $fallbackSerializer
      * @throws DNSMnemonicException
      */
-    public function __construct(array $mapping,?bool $allowInteger=true){
+    public function __construct(array $mapping,?bool $allowInteger=true,?Closure $fallbackDeserializer=null,?Closure $fallbackSerializer=null){
         foreach($mapping as $mnemonic=>$value){
             if(!is_string($mnemonic)){
                 throw new DNSMnemonicException("All mapping keys should be strings.");
@@ -51,19 +56,27 @@ class MnemonicMapper{
         }
         $this->mapping = $mapping;
         $this->allowInteger = $allowInteger;
+        $this->fallbackDeserializer = $fallbackDeserializer;
+        $this->fallbackSerializer = $fallbackSerializer;
     }
 
     /**
-     * @param string $value
+     * @param string $key
      * @return int
      * @throws DNSMnemonicException
      */
-    public function deserializeMnemonic(string $value): int{
-        if($this->allowInteger && preg_match('/\d+/',$value)){
-            return intval($value);
+    public function deserializeMnemonic(string $key): int{
+        if($this->allowInteger && preg_match('/^\d+$/',$key)){
+            return intval($key);
         }
-        if(isset($this->mapping[$value])){
-            return $this->mapping[$value];
+        if(isset($this->mapping[$key])){
+            return $this->mapping[$key];
+        }
+        if($this->fallbackDeserializer){
+            $value = ($this->fallbackDeserializer)($key);
+            if(!is_null($value)){
+                return $value;
+            }
         }
         throw new DNSMnemonicException('Invalid mnemonic key during deserialization.');
     }
@@ -77,6 +90,12 @@ class MnemonicMapper{
         $reverseMapping = array_flip($this->mapping);
         if(isset($reverseMapping[$value])){
             return $reverseMapping[$value];
+        }
+        if($this->fallbackSerializer){
+            $key = ($this->fallbackSerializer)($value);
+            if(!is_null($key)){
+                return $key;
+            }
         }
         if($this->allowInteger){
             return strval($value);

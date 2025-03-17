@@ -8,7 +8,6 @@ use YOCLIB\DNS\Fields\Bitmap;
 use YOCLIB\DNS\Fields\Field;
 use YOCLIB\DNS\Fields\FQDN;
 use YOCLIB\DNS\Fields\WindowBlockBitmap;
-use YOCLIB\DNS\MnemonicMapper;
 
 abstract class Type{
 

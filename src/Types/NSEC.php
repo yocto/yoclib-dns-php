@@ -1,7 +1,6 @@
 <?php
 namespace YOCLIB\DNS\Types;
 
-use YOCLIB\DNS\DNSType;
 use YOCLIB\DNS\Exceptions\DNSFieldException;
 use YOCLIB\DNS\Exceptions\DNSMnemonicException;
 use YOCLIB\DNS\Exceptions\DNSTypeException;
@@ -31,6 +30,21 @@ class NSEC extends Type{
     }
 
     /**
+     * @return MnemonicMapper
+     * @throws DNSMnemonicException
+     */
+    protected static function getMapper(): MnemonicMapper{
+        return new MnemonicMapper(MnemonicMapper::MAPPING_DNS_TYPES,false,static function($value){
+            if(preg_match('/^TYPE\d{1,5}$/',$value)){
+                return intval(substr($value,4));
+            }
+            return null;
+        },static function($key){
+            return 'TYPE'.$key;
+        });
+    }
+
+    /**
      * @param string $data
      * @return NSEC
      * @throws DNSFieldException
@@ -44,7 +58,7 @@ class NSEC extends Type{
         }
         return new self([
             FQDN::deserializeFromPresentationFormat($tokens[0]),
-            WindowBlockBitmap::deserializeFromPresentationFormat(array_slice($tokens,1),new MnemonicMapper(MnemonicMapper::MAPPING_DNS_TYPES)),
+            WindowBlockBitmap::deserializeFromPresentationFormat(array_slice($tokens,1),self::getMapper()),
         ]);
     }
 

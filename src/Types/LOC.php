@@ -131,10 +131,10 @@ class LOC extends Type{
             throw new DNSTypeException('Too less or much fields for latitude.');
         }
         $latitudeDirection = array_pop($latitude);
-        if(($latitude[0] ?? null)!==null && !preg_match('/\d+/',$latitude[0])){
+        if(($latitude[0] ?? null)!==null && !preg_match('/^\d+$/',$latitude[0])){
             throw new DNSTypeException('Invalid latitude degree format.');
         }
-        if(($latitude[1] ?? null)!==null && !preg_match('/\d+/',$latitude[1])){
+        if(($latitude[1] ?? null)!==null && !preg_match('/^\d+$/',$latitude[1])){
             throw new DNSTypeException('Invalid latitude minute format.');
         }
         if(($latitude[2] ?? null)!==null && !preg_match('/\d+(\.\d{1,3})?/',$latitude[2])){
@@ -151,10 +151,10 @@ class LOC extends Type{
             throw new DNSTypeException('Too less or much fields for longitude.');
         }
         $longitudeDirection = array_pop($longitude);
-        if(($longitude[0] ?? null)!==null && !preg_match('/\d+/',$longitude[0])){
+        if(($longitude[0] ?? null)!==null && !preg_match('/^\d+$/',$longitude[0])){
             throw new DNSTypeException('Invalid longitude degree format.');
         }
-        if(($longitude[1] ?? null)!==null && !preg_match('/\d+/',$longitude[1])){
+        if(($longitude[1] ?? null)!==null && !preg_match('/^\d+$/',$longitude[1])){
             throw new DNSTypeException('Invalid longitude minute format.');
         }
         if(($longitude[2] ?? null)!==null && !preg_match('/\d+(\.\d{1,3})?/',$longitude[2])){

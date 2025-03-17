@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use YOCLIB\DNS\DNSClass;
 use YOCLIB\DNS\DNSType;
 use YOCLIB\DNS\Exceptions\DNSFieldException;
+use YOCLIB\DNS\Exceptions\DNSMnemonicException;
 use YOCLIB\DNS\Exceptions\DNSTypeException;
 use YOCLIB\DNS\Helpers\TypeHelper;
 use YOCLIB\DNS\Types\A;
@@ -122,6 +123,7 @@ class TypeHelperTest extends TestCase{
     /**
      * @return void
      * @throws DNSFieldException
+     * @throws DNSMnemonicException
      * @throws DNSTypeException
      */
     public function testDeserializeFromPresentationFormatByClassAndType(): void{
@@ -395,6 +397,7 @@ class TypeHelperTest extends TestCase{
     /**
      * @return void
      * @throws DNSFieldException
+     * @throws DNSMnemonicException
      * @throws DNSTypeException
      */
     public function testDeserializeFromPresentationFormatByClassAndTypeZeroClass(): void{
@@ -407,6 +410,7 @@ class TypeHelperTest extends TestCase{
     /**
      * @return void
      * @throws DNSFieldException
+     * @throws DNSMnemonicException
      * @throws DNSTypeException
      */
     public function testDeserializeFromPresentationFormatByClassAndTypeZeroType(): void{
@@ -419,6 +423,7 @@ class TypeHelperTest extends TestCase{
     /**
      * @return void
      * @throws DNSFieldException
+     * @throws DNSMnemonicException
      * @throws DNSTypeException
      */
     public function testDeserializeFromPresentationFormatByClassAndTypeUnsupported(): void{

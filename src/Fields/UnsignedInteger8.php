@@ -53,7 +53,7 @@ class UnsignedInteger8 implements Field{
      * @throws DNSFieldException
      */
     public static function deserializeFromPresentationFormat(string $data): UnsignedInteger8{
-        if(!preg_match('/\d+/',$data)){
+        if(!preg_match('/^\d+$/',$data)){
             throw new DNSFieldException('Human readable UInt8 should only contain digits.');
         }
         return new self(intval($data));

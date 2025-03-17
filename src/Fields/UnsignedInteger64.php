@@ -61,7 +61,7 @@ class UnsignedInteger64 implements Field{
      * @throws DNSFieldException
      */
     public static function deserializeFromPresentationFormat(string $data): UnsignedInteger64{
-        if(!preg_match('/\d+/',$data)){
+        if(!preg_match('/^\d+$/',$data)){
             throw new DNSFieldException('Human readable UInt64 should only contain digits.');
         }
         return new self(new GMP($data));
