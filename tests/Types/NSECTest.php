@@ -88,7 +88,7 @@ class NSECTest extends TestCase{
 
         self::assertSame('host.example.com. TYPE1234',(new NSEC([
             new FQDN('host','example','com',''),
-            new WindowBlockBitmap([DNSType::A,DNSType::MX,DNSType::RRSIG,DNSType::NSEC,1234]),
+            new WindowBlockBitmap([1234]),
         ]))->serializeToPresentationFormat());
     }
 
