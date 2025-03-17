@@ -94,9 +94,6 @@ class Bitmap implements Field{
         if(is_string($data)){
             $data = LineLexer::tokenizeLine($data);
         }
-        if(!is_array($data)){
-            throw new DNSFieldException('Bitmap only accepts string or array.');
-        }
         foreach($data AS $token){
             if(!is_string($token)){
                 throw new DNSFieldException('Bitmap only supports string elements.');

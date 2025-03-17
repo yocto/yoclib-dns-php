@@ -123,6 +123,22 @@ class WindowBlockBitmapTest extends TestCase{
         self::assertSame([1,2,3,4],WindowBlockBitmap::deserializeFromPresentationFormat('ONE TWO THREE FOUR',$mapper)->getValue());
         self::assertSame([1,2,3,4,5],WindowBlockBitmap::deserializeFromPresentationFormat('ONE TWO THREE FOUR FIVE',$mapper)->getValue());
         self::assertSame([1,2,3,4,5,6],WindowBlockBitmap::deserializeFromPresentationFormat('ONE TWO THREE FOUR FIVE SIX',$mapper)->getValue());
+
+        self::assertSame([1,2,3,4],WindowBlockBitmap::deserializeFromPresentationFormat(['ONE','TWO','THREE','FOUR'],$mapper)->getValue());
+        self::assertSame([1,2,3,4,5],WindowBlockBitmap::deserializeFromPresentationFormat(['ONE','TWO','THREE','FOUR','FIVE'],$mapper)->getValue());
+        self::assertSame([1,2,3,4,5,6],WindowBlockBitmap::deserializeFromPresentationFormat(['ONE','TWO','THREE','FOUR','FIVE','SIX'],$mapper)->getValue());
+    }
+
+    /**
+     * @return void
+     * @throws DNSFieldException
+     * @throws DNSMnemonicException
+     */
+    public function testDeserializeFromPresentationFormatInvalidData(): void{
+        self::expectException(DNSFieldException::class);
+        self::expectExceptionMessage('Bitmap only supports string elements.');
+
+        self::assertSame([1,2,3,4],WindowBlockBitmap::deserializeFromPresentationFormat([1,2,3,4])->getValue());
     }
 
     /**
