@@ -85,12 +85,7 @@ class SIG extends Type{
         if(count($tokens)<8){
             throw new DNSTypeException('SIG record should contain at least 8 fields.');
         }
-        $omitTTL = false;
-        try{
-            if(!preg_match('/^\d+$/',$tokens[6]) && FQDN::deserializeFromPresentationFormat($tokens[6])){
-                $omitTTL = true;
-            }
-        }catch(DNSFieldException){}
+        $omitTTL = !preg_match('/^\d+$/',$tokens[6]);
         $output = '';
         for($i=($omitTTL?7:8);$i<count($tokens);$i++){
             $token = $tokens[$i];
