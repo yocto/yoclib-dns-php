@@ -7,6 +7,17 @@ use YOCLIB\DNS\Exceptions\DNSMnemonicException;
 
 class MnemonicMapper{
 
+    public const MAPPING_ALGORITHMS = [
+        'RSAMD5' => 1,
+        'DH' => 2,
+        'DSA' => 3,
+        'ECC' => 4,
+        'RSASHA1' => 5,
+        'INDIRECT' => 252,
+        'PRIVATEDNS' => 253,
+        'PRIVATEOID' => 254,
+    ];
+
     public const MAPPING_DNS_TYPES = [
         'A' => DNSType::A,
         'NS' => DNSType::NS,

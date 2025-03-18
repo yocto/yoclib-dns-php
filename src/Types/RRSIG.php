@@ -64,7 +64,7 @@ class RRSIG extends Type{
             (new MnemonicMapper(MnemonicMapper::MAPPING_DNS_TYPES,false,null,static function($key){
                 return 'TYPE'.$key;
             }))->serializeMnemonic($this->getFields()[0]->getValue()),
-            $this->getFields()[1]->serializeToPresentationFormat(),
+            (new MnemonicMapper(MnemonicMapper::MAPPING_ALGORITHMS))->serializeMnemonic($this->getFields()[1]->getValue()),
             $this->getFields()[2]->serializeToPresentationFormat(),
             $this->getFields()[3]->serializeToPresentationFormat(),
             (new DateTime)->setTimestamp($this->getFields()[4]->getValue())->format('YmdHis'),
@@ -99,7 +99,7 @@ class RRSIG extends Type{
                 }
                 return null;
             }))->deserializeMnemonic($tokens[0])),
-            UnsignedInteger8::deserializeFromPresentationFormat($tokens[1]),
+            new UnsignedInteger8((new MnemonicMapper(MnemonicMapper::MAPPING_ALGORITHMS))->deserializeMnemonic($tokens[1])),
             UnsignedInteger8::deserializeFromPresentationFormat($tokens[2]),
             UnsignedInteger32::deserializeFromPresentationFormat($tokens[3]),
             UnsignedInteger32::deserializeFromPresentationFormat(DateTime::createFromFormat('YmdHis',$tokens[4])->getTimestamp()),

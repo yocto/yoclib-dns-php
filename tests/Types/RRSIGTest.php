@@ -255,7 +255,7 @@ class RRSIGTest extends TestCase{
      * @throws DNSTypeException
      */
     public function testSerializeToPresentationFormat(): void{
-        self::assertSame('A 5 3 86400 20030322173103 20030220173103 2642 example.com. qrvM3Q==',(new RRSIG([
+        self::assertSame('A RSASHA1 3 86400 20030322173103 20030220173103 2642 example.com. qrvM3Q==',(new RRSIG([
             new UnsignedInteger16(DNSType::A),
             new UnsignedInteger8(5),
             new UnsignedInteger8(3),
@@ -267,7 +267,7 @@ class RRSIGTest extends TestCase{
             new Binary(hex2bin('AABBCCDD')),
         ]))->serializeToPresentationFormat());
 
-        self::assertSame('TYPE1234 5 3 86400 20030322173103 20030220173103 2642 example.com. qrvM3Q==',(new RRSIG([
+        self::assertSame('TYPE1234 RSASHA1 3 86400 20030322173103 20030220173103 2642 example.com. qrvM3Q==',(new RRSIG([
             new UnsignedInteger16(1234),
             new UnsignedInteger8(5),
             new UnsignedInteger8(3),

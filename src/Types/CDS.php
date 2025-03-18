@@ -43,16 +43,7 @@ class CDS extends Type{
     public function serializeToPresentationFormat(): string{
         return implode(' ',[
             $this->getFields()[0]->serializeToPresentationFormat(),
-            (new MnemonicMapper([
-                'RSAMD5' => 1,
-                'DH' => 2,
-                'DSA' => 3,
-                'ECC' => 4,
-                'RSASHA1' => 5,
-                'INDIRECT' => 252,
-                'PRIVATEDNS' => 253,
-                'PRIVATEOID' => 254,
-            ]))->serializeMnemonic($this->getFields()[1]->getValue()),
+            (new MnemonicMapper(MnemonicMapper::MAPPING_ALGORITHMS))->serializeMnemonic($this->getFields()[1]->getValue()),
             $this->getFields()[2]->serializeToPresentationFormat(),
             strtoupper(bin2hex($this->getFields()[3]->getValue())),
         ]);
@@ -80,16 +71,7 @@ class CDS extends Type{
         }
         return new self([
             UnsignedInteger16::deserializeFromPresentationFormat($tokens[0]),
-            new UnsignedInteger8((new MnemonicMapper([
-                'RSAMD5' => 1,
-                'DH' => 2,
-                'DSA' => 3,
-                'ECC' => 4,
-                'RSASHA1' => 5,
-                'INDIRECT' => 252,
-                'PRIVATEDNS' => 253,
-                'PRIVATEOID' => 254,
-            ]))->deserializeMnemonic($tokens[1])),
+            new UnsignedInteger8((new MnemonicMapper(MnemonicMapper::MAPPING_ALGORITHMS))->deserializeMnemonic($tokens[1])),
             UnsignedInteger8::deserializeFromPresentationFormat($tokens[2]),
             new Binary($output),
         ]);

@@ -44,16 +44,7 @@ class CDNSKEY extends Type{
         return implode(' ',[
             $this->getFields()[0]->serializeToPresentationFormat(),
             $this->getFields()[1]->serializeToPresentationFormat(),
-            (new MnemonicMapper([
-                'RSAMD5' => 1,
-                'DH' => 2,
-                'DSA' => 3,
-                'ECC' => 4,
-                'RSASHA1' => 5,
-                'INDIRECT' => 252,
-                'PRIVATEDNS' => 253,
-                'PRIVATEOID' => 254,
-            ]))->serializeMnemonic($this->getFields()[2]->getValue()),
+            (new MnemonicMapper(MnemonicMapper::MAPPING_ALGORITHMS))->serializeMnemonic($this->getFields()[2]->getValue()),
             base64_encode($this->getFields()[3]->getValue()),
         ]);
     }
@@ -78,16 +69,7 @@ class CDNSKEY extends Type{
         return new self([
             UnsignedInteger16::deserializeFromPresentationFormat($tokens[0]),
             UnsignedInteger8::deserializeFromPresentationFormat($tokens[1]),
-            new UnsignedInteger8((new MnemonicMapper([
-                'RSAMD5' => 1,
-                'DH' => 2,
-                'DSA' => 3,
-                'ECC' => 4,
-                'RSASHA1' => 5,
-                'INDIRECT' => 252,
-                'PRIVATEDNS' => 253,
-                'PRIVATEOID' => 254,
-            ]))->deserializeMnemonic($tokens[2])),
+            new UnsignedInteger8((new MnemonicMapper(MnemonicMapper::MAPPING_ALGORITHMS))->deserializeMnemonic($tokens[2])),
             new Binary(base64_decode($output)),
         ]);
     }
