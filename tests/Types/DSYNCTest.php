@@ -7,7 +7,6 @@ use YOCLIB\DNS\DNSType;
 use YOCLIB\DNS\Exceptions\DNSFieldException;
 use YOCLIB\DNS\Exceptions\DNSMnemonicException;
 use YOCLIB\DNS\Exceptions\DNSTypeException;
-use YOCLIB\DNS\Fields\Binary;
 use YOCLIB\DNS\Fields\FQDN;
 use YOCLIB\DNS\Fields\IPv4Address;
 use YOCLIB\DNS\Fields\UnsignedInteger16;
@@ -168,6 +167,18 @@ class DSYNCTest extends TestCase{
         self::expectExceptionMessage('Invalid mnemonic key during deserialization.');
 
         DSYNC::deserializeFromPresentationFormat('NON-EXISTING 1 5300 rr-endpoint.example.');
+    }
+
+    /**
+     * @return void
+     * @throws DNSFieldException
+     * @throws DNSTypeException
+     */
+    public function testDeserializeFromWireFormatRemainingData(): void{
+        self::expectException(DNSTypeException::class);
+        self::expectExceptionMessage('Cannot have remaining data.');
+
+        DSYNC::deserializeFromWireFormat(hex2bin('003B').hex2bin('01').hex2bin('14B4').hex2bin('0B72722D656E64706F696E74076578616D706C6500').'remaining');
     }
 
 }

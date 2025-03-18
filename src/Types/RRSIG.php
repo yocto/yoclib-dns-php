@@ -61,12 +61,7 @@ class RRSIG extends Type{
      */
     public function serializeToPresentationFormat(): string{
         return implode(' ',[
-            (new MnemonicMapper(MnemonicMapper::MAPPING_DNS_TYPES,false,static function($value){
-                if(preg_match('/^TYPE\d{1,5}$/',$value)){
-                    return intval(substr($value,4));
-                }
-                return null;
-            },static function($key){
+            (new MnemonicMapper(MnemonicMapper::MAPPING_DNS_TYPES,false,null,static function($key){
                 return 'TYPE'.$key;
             }))->serializeMnemonic($this->getFields()[0]->getValue()),
             $this->getFields()[1]->serializeToPresentationFormat(),
@@ -103,8 +98,6 @@ class RRSIG extends Type{
                     return intval(substr($value,4));
                 }
                 return null;
-            },static function($key){
-                return 'TYPE'.$key;
             }))->deserializeMnemonic($tokens[0])),
             UnsignedInteger8::deserializeFromPresentationFormat($tokens[1]),
             UnsignedInteger8::deserializeFromPresentationFormat($tokens[2]),
