@@ -60,11 +60,23 @@ class SIG extends Type{
      * @throws DNSMnemonicException
      */
     public function serializeToPresentationFormat(): string{
+        if($this->getFields()[3]->getValue()===''){
+            return implode(' ',[
+                (new MnemonicMapper(MnemonicMapper::MAPPING_DNS_TYPES))->serializeMnemonic($this->getFields()[0]->getValue()),
+                $this->getFields()[1]->serializeToPresentationFormat(),
+                $this->getFields()[2]->serializeToPresentationFormat(),
+                (new DateTime)->setTimestamp($this->getFields()[4]->getValue())->format('YmdHis'),
+                (new DateTime)->setTimestamp($this->getFields()[5]->getValue())->format('YmdHis'),
+                $this->getFields()[6]->serializeToPresentationFormat(),
+                $this->getFields()[7]->serializeToPresentationFormat(),
+                base64_encode($this->getFields()[8]->getValue()),
+            ]);
+        }
         return implode(' ',[
             (new MnemonicMapper(MnemonicMapper::MAPPING_DNS_TYPES))->serializeMnemonic($this->getFields()[0]->getValue()),
             $this->getFields()[1]->serializeToPresentationFormat(),
             $this->getFields()[2]->serializeToPresentationFormat(),
-            $this->getFields()[3]->getValue()===''?'-':$this->getFields()[3]->serializeToPresentationFormat(),
+            $this->getFields()[3]->serializeToPresentationFormat(),
             (new DateTime)->setTimestamp($this->getFields()[4]->getValue())->format('YmdHis'),
             (new DateTime)->setTimestamp($this->getFields()[5]->getValue())->format('YmdHis'),
             $this->getFields()[6]->serializeToPresentationFormat(),
