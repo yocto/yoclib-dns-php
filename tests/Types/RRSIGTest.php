@@ -3,6 +3,7 @@ namespace YOCLIB\DNS\Tests\Types;
 
 use PHPUnit\Framework\TestCase;
 
+use YOCLIB\DNS\DNSType;
 use YOCLIB\DNS\Exceptions\DNSFieldException;
 use YOCLIB\DNS\Exceptions\DNSMnemonicException;
 use YOCLIB\DNS\Exceptions\DNSTypeException;
@@ -25,15 +26,15 @@ class RRSIGTest extends TestCase{
      */
     public function testConstructor(): void{
         self::assertInstanceOf(RRSIG::class,new RRSIG([
-            new UnsignedInteger16(30),
-            new UnsignedInteger8(1),
-            new UnsignedInteger8(2),
-            new UnsignedInteger32(3600),
-            new UnsignedInteger32(852174245),
-            new UnsignedInteger32(850298948),
-            new UnsignedInteger16(2143),
-            new FQDN('foo','nil',''),
-            new Binary(hex2bin('0086000CFF1DDF360DC90C16D84338C1754576C94425C531FDFC647C1787D449788B13C58697C71449716EF2A85A6BE30D30A67E2632D97FBC5E9163C08087737F7C9335AC4CC2A5C68BE9CF61670933')),
+            new UnsignedInteger16(DNSType::A),
+            new UnsignedInteger8(5),
+            new UnsignedInteger8(3),
+            new UnsignedInteger32(86400),
+            new UnsignedInteger32(4660),
+            new UnsignedInteger32(4660),
+            new UnsignedInteger16(2642),
+            new FQDN('example','com',''),
+            new Binary(hex2bin('A090755BA58D1AFFA576F4375831B4310920E481218D18A9F164EB3D81AFD3B875D3C75428631E0CF2A28D50875F70C329D7DBFAFEA807DC1FBA1DC34C95D401F23F334CE63BFCF3F1B5B44739E5F0EDED18D6B33F040A911376D173D757A9F0C1FA1798941BB0B36B2DF9062790FA7F0166F2737EEA907378341FB12DC0A77A')),
         ]));
     }
 
@@ -47,14 +48,14 @@ class RRSIGTest extends TestCase{
         self::expectExceptionMessage('Only nine fields allowed.');
 
         new RRSIG([
-            new UnsignedInteger16(30),
-            new UnsignedInteger8(1),
-            new UnsignedInteger8(2),
-            new UnsignedInteger32(3600),
-            new UnsignedInteger32(852174245),
-            new UnsignedInteger32(850298948),
-            new UnsignedInteger16(2143),
-            new FQDN('foo','nil',''),
+            new UnsignedInteger16(DNSType::A),
+            new UnsignedInteger8(5),
+            new UnsignedInteger8(3),
+            new UnsignedInteger32(86400),
+            new UnsignedInteger32(4660),
+            new UnsignedInteger32(4660),
+            new UnsignedInteger16(2642),
+            new FQDN('example','com',''),
         ]);
     }
 
@@ -67,14 +68,14 @@ class RRSIGTest extends TestCase{
         self::expectExceptionMessage('First field should be an UInt16.');
 
         new RRSIG([
-            new UnsignedInteger8(30),
-            new UnsignedInteger8(1),
-            new UnsignedInteger8(2),
-            new UnsignedInteger32(3600),
-            new UnsignedInteger32(852174245),
-            new UnsignedInteger32(850298948),
-            new UnsignedInteger16(2143),
-            new FQDN('foo','nil',''),
+            new UnsignedInteger8(DNSType::A),
+            new UnsignedInteger8(5),
+            new UnsignedInteger8(3),
+            new UnsignedInteger32(86400),
+            new UnsignedInteger32(4660),
+            new UnsignedInteger32(4660),
+            new UnsignedInteger16(2642),
+            new FQDN('example','com',''),
             new Binary(hex2bin('AABBCCDD')),
         ]);
     }
@@ -88,14 +89,14 @@ class RRSIGTest extends TestCase{
         self::expectExceptionMessage('Second field should be an UInt8.');
 
         new RRSIG([
-            new UnsignedInteger16(30),
-            new UnsignedInteger16(1),
-            new UnsignedInteger8(2),
-            new UnsignedInteger32(3600),
-            new UnsignedInteger32(852174245),
-            new UnsignedInteger32(850298948),
-            new UnsignedInteger16(2143),
-            new FQDN('foo','nil',''),
+            new UnsignedInteger16(DNSType::A),
+            new UnsignedInteger16(5),
+            new UnsignedInteger8(3),
+            new UnsignedInteger32(86400),
+            new UnsignedInteger32(4660),
+            new UnsignedInteger32(4660),
+            new UnsignedInteger16(2642),
+            new FQDN('example','com',''),
             new Binary(hex2bin('AABBCCDD')),
         ]);
     }
@@ -109,14 +110,14 @@ class RRSIGTest extends TestCase{
         self::expectExceptionMessage('Third field should be an UInt8.');
 
         new RRSIG([
-            new UnsignedInteger16(30),
-            new UnsignedInteger8(1),
-            new UnsignedInteger16(2),
-            new UnsignedInteger32(3600),
-            new UnsignedInteger32(852174245),
-            new UnsignedInteger32(850298948),
-            new UnsignedInteger16(2143),
-            new FQDN('foo','nil',''),
+            new UnsignedInteger16(DNSType::A),
+            new UnsignedInteger8(5),
+            new UnsignedInteger16(3),
+            new UnsignedInteger32(86400),
+            new UnsignedInteger32(4660),
+            new UnsignedInteger32(4660),
+            new UnsignedInteger16(2642),
+            new FQDN('example','com',''),
             new Binary(hex2bin('AABBCCDD')),
         ]);
     }
@@ -130,14 +131,14 @@ class RRSIGTest extends TestCase{
         self::expectExceptionMessage('Fourth field should be an UInt32 or an empty binary.');
 
         new RRSIG([
-            new UnsignedInteger16(30),
-            new UnsignedInteger8(1),
-            new UnsignedInteger8(2),
-            new UnsignedInteger16(3600),
-            new UnsignedInteger32(852174245),
-            new UnsignedInteger32(850298948),
-            new UnsignedInteger16(2143),
-            new FQDN('foo','nil',''),
+            new UnsignedInteger16(DNSType::A),
+            new UnsignedInteger8(5),
+            new UnsignedInteger8(3),
+            new UnsignedInteger64(86400),
+            new UnsignedInteger32(4660),
+            new UnsignedInteger32(4660),
+            new UnsignedInteger16(2642),
+            new FQDN('example','com',''),
             new Binary(hex2bin('AABBCCDD')),
         ]);
     }
@@ -151,14 +152,14 @@ class RRSIGTest extends TestCase{
         self::expectExceptionMessage('Fifth field should be an UInt32.');
 
         new RRSIG([
-            new UnsignedInteger16(30),
-            new UnsignedInteger8(1),
-            new UnsignedInteger8(2),
-            new UnsignedInteger32(3600),
-            new UnsignedInteger64(852174245),
-            new UnsignedInteger32(850298948),
-            new UnsignedInteger16(2143),
-            new FQDN('foo','nil',''),
+            new UnsignedInteger16(DNSType::A),
+            new UnsignedInteger8(5),
+            new UnsignedInteger8(3),
+            new UnsignedInteger32(86400),
+            new UnsignedInteger64(4660),
+            new UnsignedInteger32(4660),
+            new UnsignedInteger16(2642),
+            new FQDN('example','com',''),
             new Binary(hex2bin('AABBCCDD')),
         ]);
     }
@@ -172,14 +173,14 @@ class RRSIGTest extends TestCase{
         self::expectExceptionMessage('Sixth field should be an UInt32.');
 
         new RRSIG([
-            new UnsignedInteger16(30),
-            new UnsignedInteger8(1),
-            new UnsignedInteger8(2),
-            new UnsignedInteger32(3600),
-            new UnsignedInteger32(852174245),
-            new UnsignedInteger64(850298948),
-            new UnsignedInteger16(2143),
-            new FQDN('foo','nil',''),
+            new UnsignedInteger16(DNSType::A),
+            new UnsignedInteger8(5),
+            new UnsignedInteger8(3),
+            new UnsignedInteger32(86400),
+            new UnsignedInteger32(4660),
+            new UnsignedInteger64(4660),
+            new UnsignedInteger16(2642),
+            new FQDN('example','com',''),
             new Binary(hex2bin('AABBCCDD')),
         ]);
     }
@@ -193,14 +194,14 @@ class RRSIGTest extends TestCase{
         self::expectExceptionMessage('Seventh field should be an UInt16.');
 
         new RRSIG([
-            new UnsignedInteger16(30),
-            new UnsignedInteger8(1),
-            new UnsignedInteger8(2),
-            new UnsignedInteger32(3600),
-            new UnsignedInteger32(852174245),
-            new UnsignedInteger32(850298948),
-            new UnsignedInteger32(2143),
-            new FQDN('foo','nil',''),
+            new UnsignedInteger16(DNSType::A),
+            new UnsignedInteger8(5),
+            new UnsignedInteger8(3),
+            new UnsignedInteger32(86400),
+            new UnsignedInteger32(4660),
+            new UnsignedInteger32(4660),
+            new UnsignedInteger32(2642),
+            new FQDN('example','com',''),
             new Binary(hex2bin('AABBCCDD')),
         ]);
     }
@@ -214,13 +215,13 @@ class RRSIGTest extends TestCase{
         self::expectExceptionMessage('Eighth field should be a FQDN.');
 
         new RRSIG([
-            new UnsignedInteger16(30),
-            new UnsignedInteger8(1),
-            new UnsignedInteger8(2),
-            new UnsignedInteger32(3600),
-            new UnsignedInteger32(852174245),
-            new UnsignedInteger32(850298948),
-            new UnsignedInteger16(2143),
+            new UnsignedInteger16(DNSType::A),
+            new UnsignedInteger8(5),
+            new UnsignedInteger8(3),
+            new UnsignedInteger32(86400),
+            new UnsignedInteger32(4660),
+            new UnsignedInteger32(4660),
+            new UnsignedInteger16(2642),
             new IPv4Address('127.0.0.1'),
             new Binary(hex2bin('AABBCCDD')),
         ]);
@@ -235,14 +236,14 @@ class RRSIGTest extends TestCase{
         self::expectExceptionMessage('Ninth field should be binary.');
 
         new RRSIG([
-            new UnsignedInteger16(30),
-            new UnsignedInteger8(1),
-            new UnsignedInteger8(2),
-            new UnsignedInteger32(3600),
-            new UnsignedInteger32(852174245),
-            new UnsignedInteger32(850298948),
-            new UnsignedInteger16(2143),
-            new FQDN('foo','nil',''),
+            new UnsignedInteger16(DNSType::A),
+            new UnsignedInteger8(5),
+            new UnsignedInteger8(3),
+            new UnsignedInteger32(86400),
+            new UnsignedInteger32(4660),
+            new UnsignedInteger32(4660),
+            new UnsignedInteger16(2642),
+            new FQDN('example','com',''),
             new Bitmap([]),
         ]);
     }
@@ -254,15 +255,27 @@ class RRSIGTest extends TestCase{
      * @throws DNSTypeException
      */
     public function testSerializeToPresentationFormat(): void{
-        self::assertSame('NXT 1 2 3600 19970102030405 19961211100908 2143 foo.nil. qrvM3Q==',(new RRSIG([
-            new UnsignedInteger16(30),
-            new UnsignedInteger8(1),
-            new UnsignedInteger8(2),
-            new UnsignedInteger32(3600),
-            new UnsignedInteger32(852174245),
-            new UnsignedInteger32(850298948),
-            new UnsignedInteger16(2143),
-            new FQDN('foo','nil',''),
+        self::assertSame('A 5 3 86400 20030322173103 20030220173103 2642 example.com. qrvM3Q==',(new RRSIG([
+            new UnsignedInteger16(DNSType::A),
+            new UnsignedInteger8(5),
+            new UnsignedInteger8(3),
+            new UnsignedInteger32(86400),
+            new UnsignedInteger32(1048354263),
+            new UnsignedInteger32(1045762263),
+            new UnsignedInteger16(2642),
+            new FQDN('example','com',''),
+            new Binary(hex2bin('AABBCCDD')),
+        ]))->serializeToPresentationFormat());
+
+        self::assertSame('TYPE1234 5 3 86400 20030322173103 20030220173103 2642 example.com. qrvM3Q==',(new RRSIG([
+            new UnsignedInteger16(1234),
+            new UnsignedInteger8(5),
+            new UnsignedInteger8(3),
+            new UnsignedInteger32(86400),
+            new UnsignedInteger32(1048354263),
+            new UnsignedInteger32(1045762263),
+            new UnsignedInteger16(2642),
+            new FQDN('example','com',''),
             new Binary(hex2bin('AABBCCDD')),
         ]))->serializeToPresentationFormat());
     }
@@ -274,7 +287,9 @@ class RRSIGTest extends TestCase{
      * @throws DNSTypeException
      */
     public function testDeserializeFromPresentationFormat(): void{
-        self::assertSame(30,RRSIG::deserializeFromPresentationFormat('NXT 1 2 3600 19970102030405 19961211100908 2143 foo.nil. qrvM3Q==')->getFields()[0]->getValue());
+        self::assertSame(DNSType::A,RRSIG::deserializeFromPresentationFormat('A 5 3 86400 20030322173103 20030220173103 2642 example.com. qrvM3Q==')->getFields()[0]->getValue());
+
+        self::assertSame(1234,RRSIG::deserializeFromPresentationFormat('TYPE1234 5 3 86400 20030322173103 20030220173103 2642 example.com. qrvM3Q==')->getFields()[0]->getValue());
     }
 
     /**
@@ -299,7 +314,7 @@ class RRSIGTest extends TestCase{
         self::expectException(DNSMnemonicException::class);
         self::expectExceptionMessage('Invalid mnemonic key during deserialization.');
 
-        RRSIG::deserializeFromPresentationFormat('NON-EXISTING 1 2 3600 19970102030405 19961211100908 2143 foo.nil. qrvM3Q==');
+        RRSIG::deserializeFromPresentationFormat('NON-EXISTING 5 3 86400 20030322173103 20030220173103 2642 example.com. qrvM3Q==');
     }
 
 }

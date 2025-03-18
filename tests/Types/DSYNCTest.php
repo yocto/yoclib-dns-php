@@ -124,6 +124,13 @@ class DSYNCTest extends TestCase{
             new UnsignedInteger16(5300),
             new FQDN('rr-endpoint','example',''),
         ]))->serializeToPresentationFormat());
+
+        self::assertSame('TYPE1234 1 5300 rr-endpoint.example.',(new DSYNC([
+            new UnsignedInteger16(1234),
+            new UnsignedInteger8(1),
+            new UnsignedInteger16(5300),
+            new FQDN('rr-endpoint','example',''),
+        ]))->serializeToPresentationFormat());
     }
 
     /**
@@ -134,6 +141,8 @@ class DSYNCTest extends TestCase{
      */
     public function testDeserializeFromPresentationFormat(): void{
         self::assertSame(DNSType::CDS,DSYNC::deserializeFromPresentationFormat('CDS 1 5300 rr-endpoint.example.')->getFields()[0]->getValue());
+
+        self::assertSame(1234,DSYNC::deserializeFromPresentationFormat('TYPE1234 1 5300 rr-endpoint.example.')->getFields()[0]->getValue());
     }
 
     /**

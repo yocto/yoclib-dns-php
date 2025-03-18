@@ -3,6 +3,7 @@ namespace YOCLIB\DNS\Tests\Types;
 
 use PHPUnit\Framework\TestCase;
 
+use YOCLIB\DNS\DNSType;
 use YOCLIB\DNS\Exceptions\DNSFieldException;
 use YOCLIB\DNS\Exceptions\DNSMnemonicException;
 use YOCLIB\DNS\Exceptions\DNSTypeException;
@@ -25,7 +26,7 @@ class SIGTest extends TestCase{
      */
     public function testConstructor(): void{
         self::assertInstanceOf(SIG::class,new SIG([
-            new UnsignedInteger16(30),
+            new UnsignedInteger16(DNSType::NXT),
             new UnsignedInteger8(1),
             new UnsignedInteger8(2),
             new UnsignedInteger32(3600),
@@ -47,7 +48,7 @@ class SIGTest extends TestCase{
         self::expectExceptionMessage('Only nine fields allowed.');
 
         new SIG([
-            new UnsignedInteger16(30),
+            new UnsignedInteger16(DNSType::NXT),
             new UnsignedInteger8(1),
             new UnsignedInteger8(2),
             new UnsignedInteger32(3600),
@@ -67,7 +68,7 @@ class SIGTest extends TestCase{
         self::expectExceptionMessage('First field should be an UInt16.');
 
         new SIG([
-            new UnsignedInteger8(30),
+            new UnsignedInteger8(DNSType::NXT),
             new UnsignedInteger8(1),
             new UnsignedInteger8(2),
             new UnsignedInteger32(3600),
@@ -88,7 +89,7 @@ class SIGTest extends TestCase{
         self::expectExceptionMessage('Second field should be an UInt8.');
 
         new SIG([
-            new UnsignedInteger16(30),
+            new UnsignedInteger16(DNSType::NXT),
             new UnsignedInteger16(1),
             new UnsignedInteger8(2),
             new UnsignedInteger32(3600),
@@ -109,7 +110,7 @@ class SIGTest extends TestCase{
         self::expectExceptionMessage('Third field should be an UInt8.');
 
         new SIG([
-            new UnsignedInteger16(30),
+            new UnsignedInteger16(DNSType::NXT),
             new UnsignedInteger8(1),
             new UnsignedInteger16(2),
             new UnsignedInteger32(3600),
@@ -130,7 +131,7 @@ class SIGTest extends TestCase{
         self::expectExceptionMessage('Fourth field should be an UInt32 or an empty binary.');
 
         new SIG([
-            new UnsignedInteger16(30),
+            new UnsignedInteger16(DNSType::NXT),
             new UnsignedInteger8(1),
             new UnsignedInteger8(2),
             new UnsignedInteger16(3600),
@@ -151,7 +152,7 @@ class SIGTest extends TestCase{
         self::expectExceptionMessage('Fifth field should be an UInt32.');
 
         new SIG([
-            new UnsignedInteger16(30),
+            new UnsignedInteger16(DNSType::NXT),
             new UnsignedInteger8(1),
             new UnsignedInteger8(2),
             new UnsignedInteger32(3600),
@@ -172,7 +173,7 @@ class SIGTest extends TestCase{
         self::expectExceptionMessage('Sixth field should be an UInt32.');
 
         new SIG([
-            new UnsignedInteger16(30),
+            new UnsignedInteger16(DNSType::NXT),
             new UnsignedInteger8(1),
             new UnsignedInteger8(2),
             new UnsignedInteger32(3600),
@@ -193,7 +194,7 @@ class SIGTest extends TestCase{
         self::expectExceptionMessage('Seventh field should be an UInt16.');
 
         new SIG([
-            new UnsignedInteger16(30),
+            new UnsignedInteger16(DNSType::NXT),
             new UnsignedInteger8(1),
             new UnsignedInteger8(2),
             new UnsignedInteger32(3600),
@@ -214,7 +215,7 @@ class SIGTest extends TestCase{
         self::expectExceptionMessage('Eighth field should be a FQDN.');
 
         new SIG([
-            new UnsignedInteger16(30),
+            new UnsignedInteger16(DNSType::NXT),
             new UnsignedInteger8(1),
             new UnsignedInteger8(2),
             new UnsignedInteger32(3600),
@@ -235,7 +236,7 @@ class SIGTest extends TestCase{
         self::expectExceptionMessage('Ninth field should be binary.');
 
         new SIG([
-            new UnsignedInteger16(30),
+            new UnsignedInteger16(DNSType::NXT),
             new UnsignedInteger8(1),
             new UnsignedInteger8(2),
             new UnsignedInteger32(3600),
@@ -255,7 +256,7 @@ class SIGTest extends TestCase{
      */
     public function testSerializeToPresentationFormat(): void{
 //        self::assertSame('30 1 2 3600 19970102030405 19961211100908 2143 foo.nil. qrvM3Q==',(new SIG([
-//            new UnsignedInteger16(30),
+//            new UnsignedInteger16(DNSType::NXT),
 //            new UnsignedInteger8(1),
 //            new UnsignedInteger8(2),
 //            new UnsignedInteger32(3600),
@@ -266,10 +267,33 @@ class SIGTest extends TestCase{
 //            new Binary(hex2bin('AABBCCDD')),
 //        ]))->serializeToPresentationFormat());
         self::assertSame('NXT 1 2 3600 19970102030405 19961211100908 2143 foo.nil. qrvM3Q==',(new SIG([
-            new UnsignedInteger16(30),
+            new UnsignedInteger16(DNSType::NXT),
             new UnsignedInteger8(1),
             new UnsignedInteger8(2),
             new UnsignedInteger32(3600),
+            new UnsignedInteger32(852174245),
+            new UnsignedInteger32(850298948),
+            new UnsignedInteger16(2143),
+            new FQDN('foo','nil',''),
+            new Binary(hex2bin('AABBCCDD')),
+        ]))->serializeToPresentationFormat());
+
+//        self::assertSame('30 1 2 19970102030405 19961211100908 2143 foo.nil. qrvM3Q==',(new SIG([
+//            new UnsignedInteger16(DNSType::NXT),
+//            new UnsignedInteger8(1),
+//            new UnsignedInteger8(2),
+//            new Binary(''),
+//            new UnsignedInteger32(852174245),
+//            new UnsignedInteger32(850298948),
+//            new UnsignedInteger16(2143),
+//            new FQDN('foo','nil',''),
+//            new Binary(hex2bin('AABBCCDD')),
+//        ]))->serializeToPresentationFormat());
+        self::assertSame('NXT 1 2 19970102030405 19961211100908 2143 foo.nil. qrvM3Q==',(new SIG([
+            new UnsignedInteger16(DNSType::NXT),
+            new UnsignedInteger8(1),
+            new UnsignedInteger8(2),
+            new Binary(''),
             new UnsignedInteger32(852174245),
             new UnsignedInteger32(850298948),
             new UnsignedInteger16(2143),
@@ -285,10 +309,10 @@ class SIGTest extends TestCase{
      * @throws DNSTypeException
      */
     public function testDeserializeFromPresentationFormat(): void{
-        self::assertSame(30,SIG::deserializeFromPresentationFormat('30 1 2 19970102030405 19961211100908 2143 foo.nil. qrvM3Q==')->getFields()[0]->getValue());
-        self::assertSame(30,SIG::deserializeFromPresentationFormat('30 1 2 3600 19970102030405 19961211100908 2143 foo.nil. qrvM3Q==')->getFields()[0]->getValue());
-        self::assertSame(30,SIG::deserializeFromPresentationFormat('NXT 1 2 19970102030405 19961211100908 2143 foo.nil. qrvM3Q==')->getFields()[0]->getValue());
-        self::assertSame(30,SIG::deserializeFromPresentationFormat('NXT 1 2 3600 19970102030405 19961211100908 2143 foo.nil. qrvM3Q==')->getFields()[0]->getValue());
+        self::assertSame(DNSType::NXT,SIG::deserializeFromPresentationFormat('30 1 2 19970102030405 19961211100908 2143 foo.nil. qrvM3Q==')->getFields()[0]->getValue());
+        self::assertSame(DNSType::NXT,SIG::deserializeFromPresentationFormat('30 1 2 3600 19970102030405 19961211100908 2143 foo.nil. qrvM3Q==')->getFields()[0]->getValue());
+        self::assertSame(DNSType::NXT,SIG::deserializeFromPresentationFormat('NXT 1 2 19970102030405 19961211100908 2143 foo.nil. qrvM3Q==')->getFields()[0]->getValue());
+        self::assertSame(DNSType::NXT,SIG::deserializeFromPresentationFormat('NXT 1 2 3600 19970102030405 19961211100908 2143 foo.nil. qrvM3Q==')->getFields()[0]->getValue());
     }
 
     /**
