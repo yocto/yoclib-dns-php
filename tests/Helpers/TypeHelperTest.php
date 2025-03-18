@@ -262,7 +262,7 @@ class TypeHelperTest extends TestCase{
         $this->assertInstanceOf(IPSECKEY::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('10 1 2 192.0.2.38 AQNRU3mG7TVTO2BkR47usntb102uFJtugbo6BSGvgqt4AQ==',DNSClass::IN,DNSType::IPSECKEY));
         $this->assertInstanceOf(IPSECKEY::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 41 0A 01 02 C0000226 010351537986ED35533B6064478EEEB27B5BD74DAE149B6E81BA3A0521AF82AB7801',DNSClass::IN,DNSType::IPSECKEY));
 
-        $this->assertInstanceOf(RRSIG::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('1 5 3 86400 20030322173103 20030220173103 2642 example.com. oJB1W6WNGv+ldvQ3WDG0MQkg5IEhjRip8WTrPYGv07h108dUKGMeDPKijVCHX3DDKdfb+v6oB9wfuh3DTJXUAfI/M0zmO/zz8bW0Rznl8O3tGNazPwQKkRN20XPXV6nwwfoXmJQbsLNrLfkGJ5D6fwFm8nN+6pBzeDQfsS3Ap3o=',DNSClass::IN,DNSType::RRSIG));
+        $this->assertInstanceOf(RRSIG::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('A 5 3 86400 20030322173103 20030220173103 2642 example.com. oJB1W6WNGv+ldvQ3WDG0MQkg5IEhjRip8WTrPYGv07h108dUKGMeDPKijVCHX3DDKdfb+v6oB9wfuh3DTJXUAfI/M0zmO/zz8bW0Rznl8O3tGNazPwQKkRN20XPXV6nwwfoXmJQbsLNrLfkGJ5D6fwFm8nN+6pBzeDQfsS3Ap3o=',DNSClass::IN,DNSType::RRSIG));
         $this->assertInstanceOf(RRSIG::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 159 0001 05 03 00015180 00001234 00001234 0A52 076578616D706C6503636F6D00 A090755BA58D1AFFA576F4375831B4310920E481218D18A9F164EB3D81AFD3B875D3C75428631E0CF2A28D50875F70C329D7DBFAFEA807DC1FBA1DC34C95D401F23F334CE63BFCF3F1B5B44739E5F0EDED18D6B33F040A911376D173D757A9F0C1FA1798941BB0B36B2DF9062790FA7F0166F2737EEA907378341FB12DC0A77A',DNSClass::IN,DNSType::RRSIG));
 
         $this->assertInstanceOf(NSEC::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('host.example.com. A MX RRSIG NSEC TYPE1234',DNSClass::IN,DNSType::NSEC));
@@ -319,7 +319,7 @@ class TypeHelperTest extends TestCase{
         $this->assertInstanceOf(HTTPS::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('1 alt3.example. port=9443 alpn=h2,h3',DNSClass::IN,DNSType::HTTPS));
         $this->assertInstanceOf(HTTPS::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 33 0001 04616C7433076578616D706C6500 0003000439343433 0001000568322C6833',DNSClass::IN,DNSType::HTTPS));
 
-        $this->assertInstanceOf(DSYNC::class,TypeHelper::deserializeFromPresentationFormatByClassAndType(DNSType::CDS.' 1 5300 rr-endpoint.example.',DNSClass::IN,DNSType::DSYNC));
+        $this->assertInstanceOf(DSYNC::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('CDS 1 5300 rr-endpoint.example.',DNSClass::IN,DNSType::DSYNC));
         $this->assertInstanceOf(DSYNC::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 26 003B 01 14B4 0B72722D656E64706F696E74076578616D706C6500',DNSClass::IN,DNSType::DSYNC));
 
         $this->assertInstanceOf(SPF::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('"v=spf1 -all"',DNSClass::IN,DNSType::SPF));

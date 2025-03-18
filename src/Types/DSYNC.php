@@ -2,12 +2,14 @@
 namespace YOCLIB\DNS\Types;
 
 use YOCLIB\DNS\Exceptions\DNSFieldException;
+use YOCLIB\DNS\Exceptions\DNSMnemonicException;
 use YOCLIB\DNS\Exceptions\DNSTypeException;
 use YOCLIB\DNS\Fields\Field;
 use YOCLIB\DNS\Fields\FQDN;
 use YOCLIB\DNS\Fields\UnsignedInteger16;
 use YOCLIB\DNS\Fields\UnsignedInteger8;
 use YOCLIB\DNS\LineLexer;
+use YOCLIB\DNS\MnemonicMapper;
 
 class DSYNC extends Type{
 
@@ -36,11 +38,18 @@ class DSYNC extends Type{
 
     /**
      * @return string
+     * @throws DNSMnemonicException
      */
     public function serializeToPresentationFormat(): string{
         return implode(' ',[
-            //TODO Add mnemonic serializing
-            $this->getFields()[0]->serializeToPresentationFormat(),
+            (new MnemonicMapper(MnemonicMapper::MAPPING_DNS_TYPES,false,static function($value){
+                if(preg_match('/^TYPE\d{1,5}$/',$value)){
+                    return intval(substr($value,4));
+                }
+                return null;
+            },static function($key){
+                return 'TYPE'.$key;
+            }))->serializeMnemonic($this->getFields()[0]->getValue()),
             $this->getFields()[1]->serializeToPresentationFormat(),
             $this->getFields()[2]->serializeToPresentationFormat(),
             $this->getFields()[3]->serializeToPresentationFormat(),
@@ -51,6 +60,7 @@ class DSYNC extends Type{
      * @param string $data
      * @return DSYNC
      * @throws DNSFieldException
+     * @throws DNSMnemonicException
      * @throws DNSTypeException
      */
     public static function deserializeFromPresentationFormat(string $data): DSYNC{
@@ -59,8 +69,14 @@ class DSYNC extends Type{
             throw new DNSTypeException('DSYNC record should contain 4 fields.');
         }
         return new self([
-            //TODO Add mnemonic deserializing
-            UnsignedInteger16::deserializeFromPresentationFormat($tokens[0]),
+            new UnsignedInteger16((new MnemonicMapper(MnemonicMapper::MAPPING_DNS_TYPES,false,static function($value){
+                if(preg_match('/^TYPE\d{1,5}$/',$value)){
+                    return intval(substr($value,4));
+                }
+                return null;
+            },static function($key){
+                return 'TYPE'.$key;
+            }))->deserializeMnemonic($tokens[0])),
             UnsignedInteger8::deserializeFromPresentationFormat($tokens[1]),
             UnsignedInteger16::deserializeFromPresentationFormat($tokens[2]),
             FQDN::deserializeFromPresentationFormat($tokens[3]),
