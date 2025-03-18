@@ -236,7 +236,7 @@ class TypeHelperTest extends TestCase{
         $this->assertInstanceOf(KX::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('10 kx.example.com.',DNSClass::IN,DNSType::KX));
         $this->assertInstanceOf(KX::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 18 000A 026B78076578616D706C6503636F6D00',DNSClass::IN,DNSType::KX));
 
-        $this->assertInstanceOf(CERT::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('3 0 0 AABBCCDD',DNSClass::IN,DNSType::CERT));
+        $this->assertInstanceOf(CERT::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('3 0 0 qrvM3Q==',DNSClass::IN,DNSType::CERT));
         $this->assertInstanceOf(CERT::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 10 0003 0000 0000 AABBCCDD',DNSClass::IN,DNSType::CERT));
 
         $this->assertInstanceOf(A6::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('40 0:0:0011:: A.NET.IP6.C.NET.',DNSClass::IN,DNSType::A6));

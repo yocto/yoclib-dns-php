@@ -2,12 +2,14 @@
 namespace YOCLIB\DNS\Types;
 
 use YOCLIB\DNS\Exceptions\DNSFieldException;
+use YOCLIB\DNS\Exceptions\DNSMnemonicException;
 use YOCLIB\DNS\Exceptions\DNSTypeException;
 use YOCLIB\DNS\Fields\Binary;
 use YOCLIB\DNS\Fields\Field;
 use YOCLIB\DNS\Fields\UnsignedInteger16;
 use YOCLIB\DNS\Fields\UnsignedInteger8;
 use YOCLIB\DNS\LineLexer;
+use YOCLIB\DNS\MnemonicMapper;
 
 class CERT extends Type{
 
@@ -36,13 +38,24 @@ class CERT extends Type{
 
     /**
      * @return string
+     * @throws DNSMnemonicException
      */
     public function serializeToPresentationFormat(): string{
         return implode(' ',[
-            //TODO Add mnemonic serializing
-            $this->getFields()[0]->serializeToPresentationFormat(),
+            (new MnemonicMapper([
+                'PKIX' => 1,
+                'SPKI' => 2,
+                'PGP' => 3,
+                'IPKIX' => 4,
+                'ISPKI' => 5,
+                'IPGP' => 6,
+                'ACPKIX' => 7,
+                'IACPKIX' => 8,
+                'URI' => 253,
+                'OID' => 254,
+            ]))->serializeMnemonic($this->getFields()[0]->getValue()),
             $this->getFields()[1]->serializeToPresentationFormat(),
-            $this->getFields()[2]->serializeToPresentationFormat(),
+            (new MnemonicMapper(MnemonicMapper::MAPPING_ALGORITHMS))->serializeMnemonic($this->getFields()[2]->getValue()),
             base64_encode($this->getFields()[3]->getValue()),
         ]);
     }
@@ -51,6 +64,7 @@ class CERT extends Type{
      * @param string $data
      * @return CERT
      * @throws DNSFieldException
+     * @throws DNSMnemonicException
      * @throws DNSTypeException
      */
     public static function deserializeFromPresentationFormat(string $data): CERT{
@@ -64,10 +78,20 @@ class CERT extends Type{
             $output .= $token;
         }
         return new self([
-            //TODO Add mnemonic deserializing
-            UnsignedInteger16::deserializeFromPresentationFormat($tokens[0]),
+            new UnsignedInteger16((new MnemonicMapper([
+                'PKIX' => 1,
+                'SPKI' => 2,
+                'PGP' => 3,
+                'IPKIX' => 4,
+                'ISPKI' => 5,
+                'IPGP' => 6,
+                'ACPKIX' => 7,
+                'IACPKIX' => 8,
+                'URI' => 253,
+                'OID' => 254,
+            ]))->deserializeMnemonic($tokens[0])),
             UnsignedInteger16::deserializeFromPresentationFormat($tokens[1]),
-            UnsignedInteger8::deserializeFromPresentationFormat($tokens[2]),
+            new UnsignedInteger8((new MnemonicMapper(MnemonicMapper::MAPPING_ALGORITHMS))->deserializeMnemonic($tokens[2])),
             new Binary(base64_decode($output)),
         ]);
     }
