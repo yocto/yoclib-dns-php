@@ -4,6 +4,7 @@ namespace YOCLIB\DNS\Types;
 use DateTime;
 
 use YOCLIB\DNS\Exceptions\DNSFieldException;
+use YOCLIB\DNS\Exceptions\DNSMnemonicException;
 use YOCLIB\DNS\Exceptions\DNSTypeException;
 use YOCLIB\DNS\Fields\Binary;
 use YOCLIB\DNS\Fields\Field;
@@ -12,6 +13,7 @@ use YOCLIB\DNS\Fields\UnsignedInteger16;
 use YOCLIB\DNS\Fields\UnsignedInteger32;
 use YOCLIB\DNS\Fields\UnsignedInteger8;
 use YOCLIB\DNS\LineLexer;
+use YOCLIB\DNS\MnemonicMapper;
 
 class SIG extends Type{
 
@@ -54,9 +56,28 @@ class SIG extends Type{
     }
 
     /**
+     * @return string
+     * @throws DNSMnemonicException
+     */
+    public function serializeToPresentationFormat(): string{
+        return implode(' ',[
+            (new MnemonicMapper(MnemonicMapper::MAPPING_DNS_TYPES))->serializeMnemonic($this->getFields()[0]->getValue()),
+            $this->getFields()[1]->serializeToPresentationFormat(),
+            $this->getFields()[2]->serializeToPresentationFormat(),
+            $this->getFields()[3]->getValue()===''?'-':$this->getFields()[3]->serializeToPresentationFormat(),
+            (new DateTime)->setTimestamp($this->getFields()[4]->getValue())->format('YmdHis'),
+            (new DateTime)->setTimestamp($this->getFields()[5]->getValue())->format('YmdHis'),
+            $this->getFields()[6]->serializeToPresentationFormat(),
+            $this->getFields()[7]->serializeToPresentationFormat(),
+            base64_encode($this->getFields()[8]->getValue()),
+        ]);
+    }
+
+    /**
      * @param string $data
      * @return SIG
      * @throws DNSFieldException
+     * @throws DNSMnemonicException
      * @throws DNSTypeException
      */
     public static function deserializeFromPresentationFormat(string $data): SIG{
@@ -66,7 +87,7 @@ class SIG extends Type{
         }
         $omitTTL = false;
         try{
-            if(FQDN::deserializeFromPresentationFormat($tokens[6])){
+            if(!preg_match('/^\d+$/',$tokens[6]) && FQDN::deserializeFromPresentationFormat($tokens[6])){
                 $omitTTL = true;
             }
         }catch(DNSFieldException){}
@@ -77,7 +98,7 @@ class SIG extends Type{
         }
         if($omitTTL){
             return new self([
-                UnsignedInteger16::deserializeFromPresentationFormat($tokens[0]),
+                new UnsignedInteger16((new MnemonicMapper(MnemonicMapper::MAPPING_DNS_TYPES))->deserializeMnemonic($tokens[0])),
                 UnsignedInteger8::deserializeFromPresentationFormat($tokens[1]),
                 UnsignedInteger8::deserializeFromPresentationFormat($tokens[2]),
                 new Binary(''),
@@ -89,7 +110,7 @@ class SIG extends Type{
             ]);
         }
         return new self([
-            UnsignedInteger16::deserializeFromPresentationFormat($tokens[0]),
+            new UnsignedInteger16((new MnemonicMapper(MnemonicMapper::MAPPING_DNS_TYPES))->deserializeMnemonic($tokens[0])),
             UnsignedInteger8::deserializeFromPresentationFormat($tokens[1]),
             UnsignedInteger8::deserializeFromPresentationFormat($tokens[2]),
             UnsignedInteger32::deserializeFromPresentationFormat($tokens[3]), //TODO Make TTL signed
