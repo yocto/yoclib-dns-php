@@ -310,7 +310,7 @@ class RRSIGTest extends TestCase{
      * @throws DNSFieldException
      * @throws DNSTypeException
      */
-    public function testDeserializeFromPresentationFormatUnknownProtocol(): void{
+    public function testDeserializeFromPresentationFormatUnknownType(): void{
         self::expectException(DNSMnemonicException::class);
         self::expectExceptionMessage('Invalid mnemonic key during deserialization.');
 

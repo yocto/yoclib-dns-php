@@ -232,7 +232,7 @@ class NSEC3Test extends TestCase{
      * @throws DNSMnemonicException
      * @throws DNSTypeException
      */
-    public function testDeserializeFromPresentationFormatUnknownProtocol(): void{
+    public function testDeserializeFromPresentationFormatUnknownBitmapMnemonic(): void{
         self::expectException(DNSMnemonicException::class);
         self::expectExceptionMessage('Invalid mnemonic key during deserialization.');
 
