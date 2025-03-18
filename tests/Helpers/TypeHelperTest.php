@@ -268,7 +268,7 @@ class TypeHelperTest extends TestCase{
         $this->assertInstanceOf(NSEC::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('host.example.com. A MX RRSIG NSEC TYPE1234',DNSClass::IN,DNSType::NSEC));
         $this->assertInstanceOf(NSEC::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 55 04686F7374076578616D706C6503636F6D00 0006400100000003041B000000000000000000000000000000000000000000000000000020',DNSClass::IN,DNSType::NSEC));
 
-        $this->assertInstanceOf(DNSKEY::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('1 1 1 dGVzdA==',DNSClass::IN,DNSType::DNSKEY));
+        $this->assertInstanceOf(DNSKEY::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('1 1 RSAMD5 dGVzdA==',DNSClass::IN,DNSType::DNSKEY));
         $this->assertInstanceOf(DNSKEY::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 9 0001 01 01 0474657374',DNSClass::IN,DNSType::DNSKEY));
 
         $this->assertInstanceOf(DHCID::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('AAIBY2/AuCccgoJbsaxcQc9TUapptP69lOjxfNuVAA2kjEA=',DNSClass::IN,DNSType::DHCID));
@@ -292,7 +292,7 @@ class TypeHelperTest extends TestCase{
         $this->assertInstanceOf(NINFO::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('"Healthy"',DNSClass::IN,DNSType::NINFO));
         $this->assertInstanceOf(NINFO::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 8 074865616C746879',DNSClass::IN,DNSType::NINFO));
 
-        $this->assertInstanceOf(RKEY::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('1 1 1 dGVzdA==',DNSClass::IN,DNSType::RKEY));
+        $this->assertInstanceOf(RKEY::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('1 1 RSAMD5 dGVzdA==',DNSClass::IN,DNSType::RKEY));
         $this->assertInstanceOf(RKEY::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 9 0001 01 01 0474657374',DNSClass::IN,DNSType::RKEY));
 
         $this->assertInstanceOf(TALINK::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('prev.example.com. next.example.com.',DNSClass::IN,DNSType::TALINK));
@@ -301,7 +301,7 @@ class TypeHelperTest extends TestCase{
         $this->assertInstanceOf(CDS::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('60485 5 1 2BB183AF5F22588179A53B0A98631FAD1A292118',DNSClass::IN,DNSType::CDS));
         $this->assertInstanceOf(CDS::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 26 EC45 0005 0001 2BB183AF5F22588179A53B0A98631FAD1A292118',DNSClass::IN,DNSType::CDS));
 
-        $this->assertInstanceOf(CDNSKEY::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('1 1 1 dGVzdA==',DNSClass::IN,DNSType::CDNSKEY));
+        $this->assertInstanceOf(CDNSKEY::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('1 1 RSAMD5 dGVzdA==',DNSClass::IN,DNSType::CDNSKEY));
         $this->assertInstanceOf(CDNSKEY::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('\# 9 0001 01 01 0474657374',DNSClass::IN,DNSType::CDNSKEY));
 
         $this->assertInstanceOf(OPENPGPKEY::class,TypeHelper::deserializeFromPresentationFormatByClassAndType('dGVzdA==',DNSClass::IN,DNSType::OPENPGPKEY));

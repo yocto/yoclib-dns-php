@@ -166,4 +166,17 @@ class DSTest extends TestCase{
         DS::deserializeFromPresentationFormat('60485 NON-EXISTING 1 2BB183AF5F22588179A53B0A98631FAD1A292118');
     }
 
+    /**
+     * @return void
+     * @throws DNSFieldException
+     * @throws DNSMnemonicException
+     * @throws DNSTypeException
+     */
+    public function testDeserializeFromPresentationFormatOddHexadecimalLength(): void{
+        self::expectException(DNSTypeException::class);
+        self::expectExceptionMessage('Every part of hexadecimal data should come in pairs of two.');
+
+        DS::deserializeFromPresentationFormat('60485 RSASHA1 1 2BB183AF5F22588179A53B0A98631FAD1A29211');
+    }
+
 }

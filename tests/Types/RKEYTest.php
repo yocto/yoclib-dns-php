@@ -11,9 +11,9 @@ use YOCLIB\DNS\Fields\Bitmap;
 use YOCLIB\DNS\Fields\UnsignedInteger16;
 use YOCLIB\DNS\Fields\UnsignedInteger32;
 use YOCLIB\DNS\Fields\UnsignedInteger8;
-use YOCLIB\DNS\Types\CDS;
+use YOCLIB\DNS\Types\RKEY;
 
-class CDSTest extends TestCase{
+class RKEYTest extends TestCase{
 
     /**
      * @return void
@@ -21,11 +21,11 @@ class CDSTest extends TestCase{
      * @throws DNSTypeException
      */
     public function testConstructor(): void{
-        self::assertInstanceOf(CDS::class,new CDS([
-            new UnsignedInteger16(60485),
-            new UnsignedInteger8(5),
+        self::assertInstanceOf(RKEY::class,new RKEY([
+            new UnsignedInteger16(1),
             new UnsignedInteger8(1),
-            new Binary(hex2bin('2BB183AF5F22588179A53B0A98631FAD1A292118')),
+            new UnsignedInteger8(1),
+            new Binary(hex2bin('74657374')),
         ]));
     }
 
@@ -38,9 +38,9 @@ class CDSTest extends TestCase{
         self::expectException(DNSTypeException::class);
         self::expectExceptionMessage('Only four fields allowed.');
 
-        new CDS([
-            new UnsignedInteger16(60485),
-            new UnsignedInteger8(5),
+        new RKEY([
+            new UnsignedInteger16(1),
+            new UnsignedInteger8(1),
             new UnsignedInteger8(1),
         ]);
     }
@@ -53,11 +53,11 @@ class CDSTest extends TestCase{
         self::expectException(DNSTypeException::class);
         self::expectExceptionMessage('First field should be an UInt16.');
 
-        new CDS([
-            new UnsignedInteger32(60485),
-            new UnsignedInteger8(5),
+        new RKEY([
+            new UnsignedInteger32(1),
             new UnsignedInteger8(1),
-            new Binary(hex2bin('2BB183AF5F22588179A53B0A98631FAD1A292118')),
+            new UnsignedInteger8(1),
+            new Binary(hex2bin('74657374')),
         ]);
     }
 
@@ -69,11 +69,11 @@ class CDSTest extends TestCase{
         self::expectException(DNSTypeException::class);
         self::expectExceptionMessage('Second field should be an UInt8.');
 
-        new CDS([
-            new UnsignedInteger16(60485),
-            new UnsignedInteger16(5),
+        new RKEY([
+            new UnsignedInteger16(1),
+            new UnsignedInteger16(1),
             new UnsignedInteger8(1),
-            new Binary(hex2bin('2BB183AF5F22588179A53B0A98631FAD1A292118')),
+            new Binary(hex2bin('74657374')),
         ]);
     }
 
@@ -85,11 +85,11 @@ class CDSTest extends TestCase{
         self::expectException(DNSTypeException::class);
         self::expectExceptionMessage('Third field should be an UInt8.');
 
-        new CDS([
-            new UnsignedInteger16(60485),
-            new UnsignedInteger8(5),
+        new RKEY([
             new UnsignedInteger16(1),
-            new Binary(hex2bin('2BB183AF5F22588179A53B0A98631FAD1A292118')),
+            new UnsignedInteger8(1),
+            new UnsignedInteger16(1),
+            new Binary(hex2bin('74657374')),
         ]);
     }
 
@@ -101,9 +101,9 @@ class CDSTest extends TestCase{
         self::expectException(DNSTypeException::class);
         self::expectExceptionMessage('Fourth field should be binary.');
 
-        new CDS([
-            new UnsignedInteger16(60485),
-            new UnsignedInteger8(5),
+        new RKEY([
+            new UnsignedInteger16(1),
+            new UnsignedInteger8(1),
             new UnsignedInteger8(1),
             new Bitmap([]),
         ]);
@@ -116,17 +116,17 @@ class CDSTest extends TestCase{
      * @throws DNSTypeException
      */
     public function testSerializeToPresentationFormat(): void{
-//        self::assertSame('60485 5 1 2BB183AF5F22588179A53B0A98631FAD1A292118',(new CDS([
-//            new UnsignedInteger16(60485),
-//            new UnsignedInteger8(5),
+//        self::assertSame('1 1 1 dGVzdA==',(new RKEY([
+//            new UnsignedInteger16(1),
 //            new UnsignedInteger8(1),
-//            new Binary(hex2bin('2BB183AF5F22588179A53B0A98631FAD1A292118')),
+//            new UnsignedInteger8(1),
+//            new Binary(hex2bin('74657374')),
 //        ]))->serializeToPresentationFormat());
-        self::assertSame('60485 RSASHA1 1 2BB183AF5F22588179A53B0A98631FAD1A292118',(new CDS([
-            new UnsignedInteger16(60485),
-            new UnsignedInteger8(5),
+        self::assertSame('1 1 RSAMD5 dGVzdA==',(new RKEY([
+            new UnsignedInteger16(1),
             new UnsignedInteger8(1),
-            new Binary(hex2bin('2BB183AF5F22588179A53B0A98631FAD1A292118')),
+            new UnsignedInteger8(1),
+            new Binary(hex2bin('74657374')),
         ]))->serializeToPresentationFormat());
     }
 
@@ -137,8 +137,8 @@ class CDSTest extends TestCase{
      * @throws DNSTypeException
      */
     public function testDeserializeFromPresentationFormat(): void{
-        self::assertSame(5,CDS::deserializeFromPresentationFormat('60485 5 1 2BB183AF5F22588179A53B0A98631FAD1A292118')->getFields()[1]->getValue());
-        self::assertSame(5,CDS::deserializeFromPresentationFormat('60485 RSASHA1 1 2BB183AF5F22588179A53B0A98631FAD1A292118')->getFields()[1]->getValue());
+        self::assertSame(1,RKEY::deserializeFromPresentationFormat('1 1 1 dGVzdA==')->getFields()[2]->getValue());
+        self::assertSame(1,RKEY::deserializeFromPresentationFormat('1 1 RSAMD5 dGVzdA==')->getFields()[2]->getValue());
     }
 
     /**
@@ -149,9 +149,9 @@ class CDSTest extends TestCase{
      */
     public function testDeserializeFromPresentationFormatTooLessFields(): void{
         self::expectException(DNSTypeException::class);
-        self::expectExceptionMessage('CDS record should contain at least 4 fields.');
+        self::expectExceptionMessage('RKEY record should contain at least 3 fields.');
 
-        CDS::deserializeFromPresentationFormat('');
+        RKEY::deserializeFromPresentationFormat('');
     }
 
     /**
@@ -163,20 +163,7 @@ class CDSTest extends TestCase{
         self::expectException(DNSMnemonicException::class);
         self::expectExceptionMessage('Invalid mnemonic key during deserialization.');
 
-        CDS::deserializeFromPresentationFormat('60485 NON-EXISTING 1 2BB183AF5F22588179A53B0A98631FAD1A292118');
-    }
-
-    /**
-     * @return void
-     * @throws DNSFieldException
-     * @throws DNSMnemonicException
-     * @throws DNSTypeException
-     */
-    public function testDeserializeFromPresentationFormatOddHexadecimalLength(): void{
-        self::expectException(DNSTypeException::class);
-        self::expectExceptionMessage('Every part of hexadecimal data should come in pairs of two.');
-
-        CDS::deserializeFromPresentationFormat('60485 RSASHA1 1 2BB183AF5F22588179A53B0A98631FAD1A29211');
+        RKEY::deserializeFromPresentationFormat('1 1 NON-EXISTING dGVzdA==');
     }
 
 }

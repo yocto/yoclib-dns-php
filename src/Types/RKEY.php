@@ -2,12 +2,14 @@
 namespace YOCLIB\DNS\Types;
 
 use YOCLIB\DNS\Exceptions\DNSFieldException;
+use YOCLIB\DNS\Exceptions\DNSMnemonicException;
 use YOCLIB\DNS\Exceptions\DNSTypeException;
 use YOCLIB\DNS\Fields\Binary;
 use YOCLIB\DNS\Fields\Field;
 use YOCLIB\DNS\Fields\UnsignedInteger16;
 use YOCLIB\DNS\Fields\UnsignedInteger8;
 use YOCLIB\DNS\LineLexer;
+use YOCLIB\DNS\MnemonicMapper;
 
 class RKEY extends Type{
 
@@ -36,12 +38,13 @@ class RKEY extends Type{
 
     /**
      * @return string
+     * @throws DNSMnemonicException
      */
     public function serializeToPresentationFormat(): string{
         return implode(' ',[
             $this->getFields()[0]->serializeToPresentationFormat(),
             $this->getFields()[1]->serializeToPresentationFormat(),
-            $this->getFields()[2]->serializeToPresentationFormat(),
+            (new MnemonicMapper(MnemonicMapper::MAPPING_ALGORITHMS))->serializeMnemonic($this->getFields()[2]->getValue()),
             base64_encode($this->getFields()[3]->getValue()),
         ]);
     }
@@ -50,6 +53,7 @@ class RKEY extends Type{
      * @param string $data
      * @return RKEY
      * @throws DNSFieldException
+     * @throws DNSMnemonicException
      * @throws DNSTypeException
      */
     public static function deserializeFromPresentationFormat(string $data): RKEY{
@@ -65,7 +69,7 @@ class RKEY extends Type{
         return new self([
             UnsignedInteger16::deserializeFromPresentationFormat($tokens[0]),
             UnsignedInteger8::deserializeFromPresentationFormat($tokens[1]),
-            UnsignedInteger8::deserializeFromPresentationFormat($tokens[2]),
+            new UnsignedInteger8((new MnemonicMapper(MnemonicMapper::MAPPING_ALGORITHMS))->deserializeMnemonic($tokens[2])),
             new Binary(base64_decode($output)),
         ]);
     }
