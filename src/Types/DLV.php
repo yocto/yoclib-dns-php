@@ -2,12 +2,14 @@
 namespace YOCLIB\DNS\Types;
 
 use YOCLIB\DNS\Exceptions\DNSFieldException;
+use YOCLIB\DNS\Exceptions\DNSMnemonicException;
 use YOCLIB\DNS\Exceptions\DNSTypeException;
 use YOCLIB\DNS\Fields\Binary;
 use YOCLIB\DNS\Fields\Field;
 use YOCLIB\DNS\Fields\UnsignedInteger16;
 use YOCLIB\DNS\Fields\UnsignedInteger8;
 use YOCLIB\DNS\LineLexer;
+use YOCLIB\DNS\MnemonicMapper;
 
 class DLV extends Type{
 
@@ -36,11 +38,12 @@ class DLV extends Type{
 
     /**
      * @return string
+     * @throws DNSMnemonicException
      */
     public function serializeToPresentationFormat(): string{
         return implode(' ',[
             $this->getFields()[0]->serializeToPresentationFormat(),
-            $this->getFields()[1]->serializeToPresentationFormat(),
+            (new MnemonicMapper(MnemonicMapper::MAPPING_ALGORITHMS))->serializeMnemonic($this->getFields()[1]->getValue()),
             $this->getFields()[2]->serializeToPresentationFormat(),
             strtoupper(bin2hex($this->getFields()[3]->getValue())),
         ]);
@@ -50,6 +53,7 @@ class DLV extends Type{
      * @param string $data
      * @return DLV
      * @throws DNSFieldException
+     * @throws DNSMnemonicException
      * @throws DNSTypeException
      */
     public static function deserializeFromPresentationFormat(string $data): DLV{
@@ -67,7 +71,7 @@ class DLV extends Type{
         }
         return new self([
             UnsignedInteger16::deserializeFromPresentationFormat($tokens[0]),
-            UnsignedInteger8::deserializeFromPresentationFormat($tokens[1]),
+            new UnsignedInteger8((new MnemonicMapper(MnemonicMapper::MAPPING_ALGORITHMS))->deserializeMnemonic($tokens[1])),
             UnsignedInteger8::deserializeFromPresentationFormat($tokens[2]),
             new Binary($output),
         ]);
